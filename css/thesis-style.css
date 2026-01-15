@@ -303,3 +303,38 @@ a[href^="#eq:"]:hover {
         box-shadow: 0 0 0 0 rgba(52, 152, 219, 0);
     }
 }
+
+
+/* Pandoc-generated styles */
+code { white-space: pre-wrap; }
+span.smallcaps { font-variant: small-caps; }
+div.columns { display: flex; gap: min(4vw, 1.5em); }
+div.column { flex: auto; overflow-x: auto; }
+div.hanging-indent { margin-left: 1.5em; text-indent: -1.5em; }
+ul.task-list[class] { list-style: none; }
+ul.task-list li input[type="checkbox"] {
+  font-size: inherit;
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left: 2em;
+  text-indent: -2em;
+}
+div.csl-left-margin {
+  min-width: 2em;
+  float: left;
+}
+div.csl-right-inline {
+  margin-left: 2em;
+  padding-left: 1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
