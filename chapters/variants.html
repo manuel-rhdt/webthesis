@@ -45,7 +45,7 @@
   <a href="../index.html" class="back-link">← Back to Contents</a>
   <script src="../js/equation-tooltips.js"></script>
 </head>
-<body>
+<body data-chapter="3">
 <header id="title-block-header">
 <h1 class="title">Variants of PWS</h1>
 </header>
@@ -92,7 +92,7 @@ Approximation of the Linear System </a></li>
 <li><a href="#bibliography" id="toc-bibliography">References</a></li>
 </ul>
 </nav>
-<h1 id="abstract">Abstract</h1>
+<h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>In the previous chapter, we introduced Path Weight Sampling (PWS), a
 computational approach capable of providing exact information rate
@@ -110,8 +110,8 @@ path sampling. We benchmark these methods using a simple coupled
 birth-death model, comparing the effectiveness of all three PWS variants
 against analytical results and the Gaussian approximation.</p>
 </blockquote>
-<h1 id="ch:variants" id="more-efficient-variants-of-pws">More Efficient
-Variants of PWS</h1>
+<h2 id="ch:variants" id="more-efficient-variants-of-pws">More Efficient
+Variants of PWS</h2>
 <p>To quantify information transmission, be it in a natural or
 engineered information processing system, we need to be able to compute
 the mutual information between input and output trajectories, from which
@@ -164,9 +164,9 @@ href="#ref-2009.Tostevin" role="doc-biblioref">8</a>]</span> and the
 technique by Duso and Zechner <span class="citation"
 data-cites="2019.Duso"> [<a href="#ref-2019.Duso"
 role="doc-biblioref">9</a>]</span>.</p>
-<h2 id="sec:marginalization"
+<h3 id="sec:marginalization"
 id="marginalizing-in-trajectory-space">Marginalizing in Trajectory
-Space</h2>
+Space</h3>
 <p>PWS evaluates the mutual information
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathcal{S},\mathcal{X})</annotation></semantics></math>
 from the marginal entropy
@@ -437,7 +437,7 @@ TI-PWS is inspired by Transition Path Sampling (TPS) for sampling rare
 trajectories <span class="citation" data-cites="2002.Bolhuis"> [<a
 href="#ref-2002.Bolhuis" role="doc-biblioref">7</a>]</span> and uses
 thermodynamic integration for free-energy estimation.</p>
-<h2 id="sec:smc" id="rr-pws">RR-PWS</h2>
+<h3 id="sec:smc" id="rr-pws">RR-PWS</h3>
 <figure id="fig:smc">
 <img src="../images/FigureSMC.svg"  />
 <figcaption>Illustration of one step of the bootstrap particle filter in
@@ -504,7 +504,7 @@ class="citation" data-cites="2006.Allen 2012.Becker"> [<a
 href="#ref-2006.Allen" role="doc-biblioref">14</a>,<a
 href="#ref-2012.Becker" role="doc-biblioref">15</a>]</span> could be
 developed.</p>
-<h3 id="bootstrap-particle-filter">Bootstrap Particle Filter</h3>
+<h4 id="bootstrap-particle-filter">Bootstrap Particle Filter</h4>
 <p>In the methods discussed above, a polymer is grown monomer by
 monomer. In a continuous-time Markov process this translates to
 trajectories being grown segment by segment. To define the segments, we
@@ -628,8 +628,8 @@ to compute the marginal density
 substituting the brute-force estimate given in <a
 href="#eq:marginal-naive">eq:marginal-naive</a>. We call the resulting
 algorithm to compute the mutual information <em>RR-PWS</em>.</p>
-<h3 id="intuitive-justification-of-the-algorithm">Intuitive
-Justification of the Algorithm</h3>
+<h4 id="intuitive-justification-of-the-algorithm">Intuitive
+Justification of the Algorithm</h4>
 <p>First note that steps 1 and 2(a) of the procedure above involve just
 propagating
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
@@ -668,8 +668,8 @@ be used to estimate the marginal probability
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>.
 For illustration of the algorithm, one iteration of the particle filter
 is presented schematically in <a href="#fig:smc">Fig. smc</a>.</p>
-<h3 id="sec:smc-correctness" id="detailed-justification">Detailed
-Justification</h3>
+<h4 id="sec:smc-correctness" id="detailed-justification">Detailed
+Justification</h4>
 <p>This subsection justifies the marginal probability estimate shown in
 <a href="#eq:smc-marginal">eq:smc-marginal</a> in greater detail, and
 may be skipped on first reading. We show that the bootstrap particle
@@ -694,7 +694,7 @@ even though we only generate trajectories according to
 Finally, we use this result to show that the particle filter provides a
 consistent estimate for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>.</p>
-<h4 id="sampling-and-resampling">Sampling and resampling</h4>
+<h5 id="sampling-and-resampling">Sampling and resampling</h5>
 <p>Sampling and then resampling is a strategy to use samples
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝒔</mi><mn>1</mn></msup><mo>,</mo><mi>…</mi><mo>,</mo><msup><mi>𝒔</mi><mi>M</mi></msup></mrow><annotation encoding="application/x-tex">\mathbfit{s}^1,\ldots,\mathbfit{s}^M</annotation></semantics></math>
 from a given prior distribution
@@ -732,7 +732,7 @@ href="#ref-1992.Smith" role="doc-biblioref">17</a>]</span>. We use
 resampling at each iteration of the algorithm of <a href="#sec:smc">Sec.
 smc</a> to regularly prune those trajectories with low overall
 contribution to the marginalization integral.</p>
-<h4 id="particle-filter">Particle filter</h4>
+<h5 id="particle-filter">Particle filter</h5>
 <p>In the bootstrap particle filter, at each iteration, we start with a
 set of trajectories
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>𝒔</mi><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><mn>1</mn></msubsup><mo>,</mo><mi>…</mi><mo>,</mo><msubsup><mi>𝒔</mi><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><mi>M</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathbfit{s}^1_{[0,i-1]},\ldots,\mathbfit{s}^M_{[0,i-1]}</annotation></semantics></math>.
@@ -838,8 +838,8 @@ iteration of the particle filter, which is what we wanted to show. At
 its heart, the particle filter is therefore an algorithm to produce
 samples that are approximately distributed according to
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo stretchy="false" form="prefix">|</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s}|\mathbfit{x}]</annotation></semantics></math>.</p>
-<h4 id="marginal-probability-estimate">Marginal probability
-estimate</h4>
+<h5 id="marginal-probability-estimate">Marginal probability
+estimate</h5>
 <p>We now use these insights to derive an estimate of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>.
 We start by noting that the marginal density of the
@@ -896,7 +896,7 @@ estimate for the marginal output probability </p>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝒫</mi><mo accent="true">̂</mo></mover><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mi mathvariant="normal">P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mfrac><msub><mi>w</mi><mi>i</mi></msub><mi>M</mi></mfrac></mrow><annotation encoding="application/x-tex">\hat{\mathcal{P}}[\mathbfit{x}] = \mathrm{P}(x_0) \prod^n_{i=1} \frac{w_i}{M}</annotation></semantics></math>
 <p> which is precisely <a
 href="#eq:smc-marginal">eq:smc-marginal</a>.</p>
-<h3 id="tuning-the-particle-filter">Tuning the Particle Filter</h3>
+<h4 id="tuning-the-particle-filter">Tuning the Particle Filter</h4>
 <p>For the efficiency of the particle filter, it is important to
 carefully choose the number of segments
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.
@@ -942,7 +942,7 @@ simple sampling is very minor. Using these techniques, the only
 parameter that needs to be chosen by hand for the particle filter is the
 ensemble size
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>.</p>
-<h2 id="sec:thermodynamic-integration" id="ti-pws">TI-PWS</h2>
+<h3 id="sec:thermodynamic-integration" id="ti-pws">TI-PWS</h3>
 <p>Thermodynamic integration PWS (TI-PWS), is based on the analogy of
 marginalization integrals with free-energy computations. As before, we
 view the problem of computing the marginal probability
@@ -1042,8 +1042,8 @@ role="doc-biblioref">20</a>]</span>. Since the efficiency of MCMC
 samplers strongly depends on the proposal moves that are employed, we
 are certain that better MCMC estimates are possible with more
 sophisticated proposal distributions.</p>
-<h3 id="sec:mcmc" id="mcmc-sampling-in-trajectory-space">MCMC Sampling
-in Trajectory Space</h3>
+<h4 id="sec:mcmc" id="mcmc-sampling-in-trajectory-space">MCMC Sampling
+in Trajectory Space</h4>
 <p>TI-PWS relies on the computation of averages with respect to the
 ensembles corresponding to the interaction parameter
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>,
@@ -1213,8 +1213,8 @@ role="doc-biblioref">27</a>]</span>. Another class of efficient samplers
 for Markov jump processes can be built using uniformization <span
 class="citation" data-cites="2013.Rao"> [<a href="#ref-2013.Rao"
 role="doc-biblioref">28</a>]</span>.</p>
-<h2 id="sec:pws_variants_benchmark">Simple Application and
-Benchmark</h2>
+<h3 id="sec:pws_variants_benchmark">Simple Application and
+Benchmark</h3>
 <p>To demonstrate the power of our framework and illustrate how the
 techniques of the previous sections can be used in practice, we apply
 PWS to a simple chemical reaction network. We consider a linearly
@@ -1450,7 +1450,7 @@ frequently make small changes to an existing trajectory such that the
 system moves slowly in path space, leading to poor statistics. In
 contrast, in RR-PWS we generate new trajectories from scratch, segment
 by segment, and these explore the trajectory space much faster.</p>
-<h2 id="discussion">Discussion</h2>
+<h3 id="discussion">Discussion</h3>
 <p>Aside from Direct PWS introduced in <a href="#ch:dpws">Ch. dpws</a>,
 we developed two additional variants of PWS, capitalizing on the
 connection between information theory and statistical physics.
@@ -1529,10 +1529,10 @@ presented in <a href="#ch:ml-pws">Ch. ml-pws</a> (<a
 href="#sec:ml_variational">Sec. ml_variational</a>) is likely to prove
 useful in these scenarios with complex temporal dependences between the
 input and output trajectories.</p>
-<h2 id="supplementary-information">Supplementary Information</h2>
-<h3 id="sec:gaussian-covariance"
+<h3 id="supplementary-information">Supplementary Information</h3>
+<h4 id="sec:gaussian-covariance"
 id="gaussian-approximation-of-the-linear-system">Gaussian Approximation
-of the Linear System </h3>
+of the Linear System </h4>
 <p>We derive the Gaussian approximation of the simple reaction system
 used in <a href="#sec:pws_variants_benchmark">Sec.
 pws_variants_benchmark</a>. We recall the elementary biochemical
@@ -1687,7 +1687,7 @@ large copy numbers <span class="citation" data-cites="2023.Moor"> [<a
 href="#ref-2023.Moor" role="doc-biblioref">40</a>]</span>. This finding
 is also further discussed in <a href="#ch:lna_vs_pws">Ch. lna_vs_pws</a>
 (<a href="#sec:linsys">Sec. linsys</a>).</p>
-<h1 class="unnumbered" id="bibliography">References</h1>
+<h2 class="unnumbered" id="bibliography">References</h2>
 <div id="refs" class="references csl-bib-body" data-entry-spacing="0"
 role="list">
 <div id="ref-1990.Siepmann" class="csl-entry" role="listitem">

@@ -46,7 +46,7 @@
   <a href="../index.html" class="back-link">← Back to Contents</a>
   <script src="../js/equation-tooltips.js"></script>
 </head>
-<body>
+<body data-chapter="4">
 <header id="title-block-header">
 <h1 class="title">Chemotaxis</h1>
 </header>
@@ -101,7 +101,7 @@ experiments</a></li>
 <li><a href="#bibliography" id="toc-bibliography">References</a></li>
 </ul>
 </nav>
-<h1 id="abstract">Abstract</h1>
+<h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>The chemotaxis signaling network of the bacterium <em>Escherichia
 coli</em> is a sophisticated information processing system, enabling the
@@ -142,7 +142,7 @@ validating its use by Mattingly et al. <span class="citation"
 data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
 role="doc-biblioref">1</a>]</span> a posteriori.</p>
 </blockquote>
-<h1 id="ch:chemotaxis">Application—Bacterial Chemotaxis</h1>
+<h2 id="ch:chemotaxis">Application—Bacterial Chemotaxis</h2>
 <p>The chemotaxis system of the bacterium <em>Escherichia coli</em> is a
 complex information processing system. It is responsible for detecting
 nutrient gradients in the cell’s environment and using that information
@@ -240,9 +240,9 @@ role="doc-biblioref">1</a>]</span> to compute the information
 transmission rate and in <a href="#sec:comparison">Sec. comparison</a>
 we present the results. We conclude with a discussion of our findings,
 particularly regarding the number of clusters and their size.</p>
-<h2 id="sec:chemotaxis_input"
+<h3 id="sec:chemotaxis_input"
 id="stochastic-dynamics-of-the-input-signal-for-chemotaxis">Stochastic
-Dynamics of the Input Signal for Chemotaxis</h2>
+Dynamics of the Input Signal for Chemotaxis</h3>
 <p>The information transmission rate depends not only on the biochemical
 chemotaxis network, but also on the dynamics of the input signal. It is
 therefore important that the dynamics of this signal in our model agree
@@ -377,8 +377,8 @@ monotonic mapping between
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>.</p>
-<h2 id="sec:chemotaxis-model"
-id="stochastic-chemotaxis-model">Stochastic Chemotaxis Model</h2>
+<h3 id="sec:chemotaxis-model"
+id="stochastic-chemotaxis-model">Stochastic Chemotaxis Model</h3>
 <figure id="fig:chemotaxis_cartoon">
 <img src="../images/chemotaxis_cartoon.svg"  />
 <figcaption>Cartoon of the chemotaxis network of <em>E. coli</em>.
@@ -432,7 +432,7 @@ their size, change in the “fitted model”, which is based on fitting the
 response kernel and noise correlation function to the data of Mattingly
 et al. <span class="citation" data-cites="2021.Mattingly"> [<a
 href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>.</p>
-<h3 id="mwc-model">MWC Model</h3>
+<h4 id="mwc-model">MWC Model</h4>
 <p>In our model, each cluster consists of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
 receptors. report a typical value for the cluster size of
@@ -611,7 +611,7 @@ data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
 role="doc-biblioref">1</a>]</span>, we use a larger phosphorylation rate
 due to the smaller number of clusters
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>.</p>
-<h3 id="reaction-kinetics">Reaction Kinetics</h3>
+<h4 id="reaction-kinetics">Reaction Kinetics</h4>
 <p>S̱ince the timescale of conformational switching of active and
 inactive receptors and ligand binding is much faster <span
 class="citation" data-cites="2013.Ortega"> [<a href="#ref-2013.Ortega"
@@ -671,10 +671,10 @@ cluster. The dephosphorylation
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub><mo>→</mo><mi mathvariant="normal">Y</mi></mrow><annotation encoding="application/x-tex">\mathrm{Y_p}\rightarrow \mathrm{Y}</annotation></semantics></math>
 is carried out by the phosphatase CheZ at a constant rate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>Z</mi></msub><mo>=</mo><mn>10</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_Z=10\,\text{s}^{-1}</annotation></semantics></math>.</p>
-<h2 id="sec:lna"
+<h3 id="sec:lna"
 id="mutual-information-rate-for-the-chemotaxis-system-in-the-gaussian-approximation">Mutual
 Information Rate for the Chemotaxis System in the Gaussian Approximation
-</h2>
+</h3>
 <p>To test the validity of the Gaussian approach used by Mattingly et
 al. <span class="citation" data-cites="2021.Mattingly"> [<a
 href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, we also
@@ -709,10 +709,10 @@ and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>,
 from which the correlation functions can be inferred. We follow this
 approach for calculating the Gaussian information transmission rate.</p>
-<h3
+<h4
 id="computing-the-gaussian-information-rate-using-linear-response-kernels-vt-kt-and-nt">Computing
 the Gaussian information rate using linear response kernels <em>V(t),
-K(t),</em> and <em>N(t)</em></h3>
+K(t),</em> and <em>N(t)</em></h4>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>
 denotes the autocorrelation function of the swimming velocity of
 bacteria, i.e.,
@@ -843,9 +843,9 @@ and
 from experiments by fitting phenomenological models to their single-cell
 data. We obtain the kernels from the simulation outputs of our
 stochastic chemotaxis model.</p>
-<h3 id="estimating-the-kernels-from-simulations">Estimating the kernels
-from simulations</h3>
-<h4 id="response-kernel-kt">Response Kernel <em>K(t)</em></h4>
+<h4 id="estimating-the-kernels-from-simulations">Estimating the kernels
+from simulations</h4>
+<h5 id="response-kernel-kt">Response Kernel <em>K(t)</em></h5>
 <p>To compute the response kernel from simulations of our model, we
 study how the system responds to a sudden increase in ligand
 concentration. First, we allow the system to reach steady state by
@@ -890,7 +890,7 @@ by averaging the changes in measured activity over
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>5</mn></msup><annotation encoding="application/x-tex">10^5</annotation></semantics></math>
 simulated trajectories </p>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>c</mi><mi>s</mi></msub><msub><mi>c</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">⟨</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">K(t) = \ln\left( \frac{c_s}{c_0} \right) \langle a(t-t_0)-a(t_0) \rangle\,.</annotation></semantics></math>
-<h4 id="output-noise-kernel-nt">Output Noise Kernel <em>N(t)</em></h4>
+<h5 id="output-noise-kernel-nt">Output Noise Kernel <em>N(t)</em></h5>
 <p>We can similarly obtain the noise statistics of the output from
 simulations of our chemotaxis model. In this case, we stochastically
 evolve the chemotaxis model at constant ligand concentration
@@ -918,8 +918,8 @@ of the activity. To obtain precise results we average the correlation
 function for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>5</mn></msup><annotation encoding="application/x-tex">10^5</annotation></semantics></math>
 trajectories.</p>
-<h4 id="obtaining-the-fourier-kernels-using-the-fft">Obtaining the
-Fourier Kernels using the FFT</h4>
+<h5 id="obtaining-the-fourier-kernels-using-the-fft">Obtaining the
+Fourier Kernels using the FFT</h5>
 <p>Ṯo compute the Gaussian information rate, we need the frequency-space
 representations of the kernels
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
@@ -997,16 +997,16 @@ with
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>ω</mi><mo>=</mo><mn>2</mn><mi>π</mi><msub><mi>f</mi><mi>s</mi></msub><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">\Delta\omega = 2\pi f_s / N</annotation></semantics></math>.
 More precisely, we compute the Gaussian information rate as </p>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msup><mi>g</mi><mn>2</mn></msup><mrow><mn>4</mn><mi>π</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mi mathvariant="normal">Δ</mi><mi>ω</mi><mspace width="0.222em"></mspace><mfrac><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><msub><mover><mi>k</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><msub><mover><mi>n</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \sum^{N-1}_{k=0} \Delta\omega\ \frac{V(\omega_k)|\tilde{k}_k|^2}{\tilde{n}_k} \,.</annotation></semantics></math>
-<h2 id="sec:comparison" id="results"> Results</h2>
+<h3 id="sec:comparison" id="results"> Results</h3>
 <p>We first asked whether our chemotaxis model based on the current
 literature can reproduce the information transmission rate as recently
 measured by Mattingly et al. <span class="citation"
 data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
 role="doc-biblioref">1</a>]</span>. In what follows, we call this model
 the “literature-based” model.</p>
-<h3
+<h4
 id="discrepancy-between-experimental-results-and-literature-based-model">Discrepancy
-between experimental results and literature-based model</h3>
+between experimental results and literature-based model</h4>
 <p>In our model, the output is the concentration of phosphorylated CheY,
 while in the experiments of Mattingly et al. <span class="citation"
 data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
@@ -1188,8 +1188,8 @@ observed discrepancies in the information rate. We have indeed already
 seen in <a href="#ch:variants">Ch. variants</a> that there can be
 substantial differences between exact computations and the Gaussian
 approximation for the trajectory mutual information.</p>
-<h3 id="revising-the-literature-based-model">Revising the
-literature-based model</h3>
+<h4 id="revising-the-literature-based-model">Revising the
+literature-based model</h4>
 <p>To uncover the reason for the discrepancy we first tested whether our
 literature-based model reproduces the experimentally measured kernels.
 If the kernels do not match, then, clearly, the discrepancy in the
@@ -1331,9 +1331,9 @@ plot, the integrand is multiplied by
 so that with log scaling of the axes the area under the curve is equal
 to the integral. </figcaption>
 </figure>
-<h3
+<h4
 id="comparing-the-chemotaxis-information-rate-of-the-models-against-experiments">Comparing
-the chemotaxis information rate of the models against experiments</h3>
+the chemotaxis information rate of the models against experiments</h4>
 <figure id="tab:fit_coefficients">
 <img src="../images/num-clusters.svg" style="width:75.0%"  />
 <figcaption>The information rate as a function of the number of receptor
@@ -1383,7 +1383,7 @@ gradients, the Gaussian model is thus highly accurate. Our analysis
 validates <em>a posteriori</em> the Gaussian framework adopted by
 Mattingly et al. <span class="citation" data-cites="2021.Mattingly"> [<a
 href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>.</p>
-<h2 id="discussion">Discussion</h2>
+<h3 id="discussion">Discussion</h3>
 <p>The application of PWS to the bacterial chemotaxis system shows how
 crucial it is to have a simulation technique that is exact. Without the
 latter it would be impossible to determine whether the difference
@@ -1467,7 +1467,7 @@ whether the system has been optimized for information transmission, and
 how the latter affects chemotactic performance in other spatio-temporal
 concentration profiles, remain interesting questions for future
 work.</p>
-<h1 class="unnumbered" id="bibliography">References</h1>
+<h2 class="unnumbered" id="bibliography">References</h2>
 <div id="refs" class="references csl-bib-body" data-entry-spacing="0"
 role="list">
 <div id="ref-2021.Mattingly" class="csl-entry" role="listitem">

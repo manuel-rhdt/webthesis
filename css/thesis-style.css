@@ -28,6 +28,22 @@ body {
     max-width: 50rem;
     margin: 0 auto;
     padding: 2rem;
+    counter-reset: section subsection;
+}
+
+/* Set chapter counter based on data-chapter attribute */
+body[data-chapter="1"] { counter-reset: chapter 0 section subsection; }
+body[data-chapter="2"] { counter-reset: chapter 1 section subsection; }
+body[data-chapter="3"] { counter-reset: chapter 2 section subsection; }
+body[data-chapter="4"] { counter-reset: chapter 3 section subsection; }
+body[data-chapter="5"] { counter-reset: chapter 4 section subsection; }
+body[data-chapter="6"] { counter-reset: chapter 5 section subsection; }
+body[data-chapter="A"] { counter-reset: chapter 6 section subsection; }
+body[data-chapter="none"] { counter-reset: section subsection; }
+
+/* Hide chapter numbers for back matter pages */
+body[data-chapter="none"] h1::before {
+    content: "";
 }
 
 /* Navigation */
@@ -74,16 +90,41 @@ h1 {
     font-size: 2.5rem;
     font-weight: 700;
     padding-bottom: 0.5rem;
+    counter-increment: chapter;
+    counter-reset: section subsection;
+}
+
+h1::before {
+    content: counter(chapter) ". ";
 }
 
 h2 {
     font-size: 1.8rem;
     font-weight: 600;
+    counter-increment: section;
+    counter-reset: subsection;
+}
+
+h2::before {
+    content: counter(chapter) "." counter(section) " ";
+}
+
+body[data-chapter="none"] h2::before {
+    content: "";
 }
 
 h3 {
     font-size: 1.4rem;
     font-weight: 500;
+    counter-increment: subsection;
+}
+
+h3::before {
+    content: counter(chapter) "." counter(section) "." counter(subsection) " ";
+}
+
+body[data-chapter="none"] h3::before {
+    content: "";
 }
 
 /* Links */

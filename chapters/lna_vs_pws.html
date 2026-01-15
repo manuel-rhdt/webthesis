@@ -45,7 +45,7 @@
   <a href="../index.html" class="back-link">← Back to Contents</a>
   <script src="../js/equation-tooltips.js"></script>
 </head>
-<body>
+<body data-chapter="5">
 <header id="title-block-header">
 <h1 class="title">LNA vs PWS</h1>
 </header>
@@ -87,7 +87,7 @@ approximation for a nonlinear system</a></li>
 <li><a href="#bibliography" id="toc-bibliography">References</a></li>
 </ul>
 </nav>
-<h1 id="abstract">Abstract</h1>
+<h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>Efficient information processing is crucial for both living organisms
 and engineered systems. The mutual information rate, a core concept of
@@ -113,7 +113,7 @@ the Gaussian approximation’s performance across different stochastic
 models and highlight when more computationally intensive methods, such
 as PWS, are necessary.</p>
 </blockquote>
-<h1 id="ch:lna_vs_pws">The Accuracy of the Gaussian Approximation</h1>
+<h2 id="ch:lna_vs_pws">The Accuracy of the Gaussian Approximation</h2>
 <p>For the functioning of both living and engineered systems it is
 paramount that they collect and process information effectively.
 Increasingly, it has become evident that beyond instantaneous
@@ -244,8 +244,8 @@ href="#ref-2023.Reinhardt" role="doc-biblioref">5</a>]</span> or the
 method developed by Moor and Zechner <span class="citation"
 data-cites="2023.Moor"> [<a href="#ref-2023.Moor"
 role="doc-biblioref">4</a>]</span> should be used.</p>
-<h2 id="methods">Methods</h2>
-<h3 id="the-mutual-information-rate">The mutual information rate</h3>
+<h3 id="methods">Methods</h3>
+<h4 id="the-mutual-information-rate">The mutual information rate</h4>
 <p>The mutual information between two random variables
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
 and
@@ -345,7 +345,7 @@ performance metric for stochastic information processing systems.
 However, its information-theoretic definition does not translate into an
 obvious scheme for computing it. As a result, various methods have been
 developed to compute or approximate the mutual information rate.</p>
-<h3 id="gaussian-approximation">Gaussian Approximation</h3>
+<h4 id="gaussian-approximation">Gaussian Approximation</h4>
 <p>One way to significantly simplify the computation of the information
 rate, is to assume that the input and output trajectories obey
 stationary Gaussian statistics. Under this assumption <a
@@ -419,8 +419,8 @@ data-cites="2007.vanKampen"> [<a href="#ref-2007.vanKampen"
 role="doc-biblioref">26</a>]</span>, see also <a
 href="#app:gauss">app:gauss</a>. In this work, we will analyze both of
 these methods.</p>
-<h3 id="path-weight-sampling-for-diffusive-systems">Path Weight Sampling
-for diffusive systems</h3>
+<h4 id="path-weight-sampling-for-diffusive-systems">Path Weight Sampling
+for diffusive systems</h4>
 <p>To evaluate the accuracy of the Gaussian information rate for
 non-Gaussian systems, an exact method for determining the true
 information rate is required. Recently, a method called Path Weight
@@ -528,14 +528,14 @@ is the deterministic drift, and
 represents the white noise amplitude. This expression captures the
 likelihood of a particular trajectory, given the stochastic dynamics of
 the system, and serves as the path weight in the PWS computation.</p>
-<h2 id="case-studies">Case Studies</h2>
+<h3 id="case-studies">Case Studies</h3>
 <p>To investigate the conditions under which the Gaussian approximation
 deviates from the exact mutual information rate, we conducted two case
 studies. In both studies we compare the Gaussian approximation against
 the exact mutual information rate, computed via PWS. In the first case
 study we focus on a discrete linear system which is inspired by minimal
 motifs of cellular signaling.</p>
-<h3 id="sec:linsys">Discrete reaction system</h3>
+<h4 id="sec:linsys">Discrete reaction system</h4>
 <p>We consider a simple linear reaction system of two species,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
 and
@@ -760,7 +760,7 @@ role="doc-biblioref">4</a>]</span>, prompting the question of which
 features of the discrete trajectories are not captured by the Gaussian
 approximation. <a href="#fn1" class="footnote-ref" id="fnref1"
 role="doc-noteref"><sup>1</sup></a></p>
-<h3 id="sec:nonlinsys">Nonlinear continuous system</h3>
+<h4 id="sec:nonlinsys">Nonlinear continuous system</h4>
 <p>Next, we study a nonlinear variant of the reaction system above. In
 contrast to the previous case study, we deliberately avoid using
 discrete dynamics, as we already observed that the Gaussian
@@ -1009,7 +1009,7 @@ in terms of relative error the curves for different response timescales
 largely overlap. In terms of relative approximation error, the gain,
 rather than response timescale, is the primary factor affecting the
 accuracy of the Gaussian approximation.</p>
-<h2 id="discussion">Discussion</h2>
+<h3 id="discussion">Discussion</h3>
 <p>We investigated the accuracy of the Gaussian approximation for the
 mutual information rate in two case studies, each highlighting a
 scenario where the approximation may be inaccurate. We were able to
@@ -1157,8 +1157,8 @@ quantified the prerequisites to safely use this approach. Moreover, we
 elucidate how an empirical Gaussian approximation constitutes a lower
 bound on the true information rate for systems with a sufficiently large
 input copy number.</p>
-<h2 id="supplementary-information">Supplementary Information</h2>
-<h3 id="app:gauss">Gaussian approximation</h3>
+<h3 id="supplementary-information">Supplementary Information</h3>
+<h4 id="app:gauss">Gaussian approximation</h4>
 <p>Here we derive the analytical expressions for the Gaussian
 information rate of the networks considered in the main text. To this
 end we first discuss the dynamics of the input signal
@@ -1173,7 +1173,7 @@ and
 for the nonlinear network. Finally, we derive the Gaussian information
 rate of the linear network from our expression of the Gaussian
 information rate of the nonlinear network.</p>
-<h4 id="signal">Signal</h4>
+<h5 id="signal">Signal</h5>
 <p>The input signal is generated by a birth-death process, </p>
 <div id="eq:SBD">
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">∅ &amp; ⇌ S</mtext><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd></mtr></mtable><annotation encoding="application/x-tex">\label{eq:SBD}
@@ -1214,7 +1214,7 @@ href="#eq:sigdyn">eq:sigdyn</a> is thus given by </p>
     &amp;= \frac{\langle \eta_s^2 \rangle}{\omega^2+\lambda^2}=\frac{2 \lambda \bar s}{\omega^2+\lambda^2}. 
 \end{aligned}</annotation></semantics></math>
 </div>
-<h4 id="app:gauss:lna">Linear approximation</h4>
+<h5 id="app:gauss:lna">Linear approximation</h5>
 <p>We now consider the readout
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>,
 which is produced via a nonlinear activation function
@@ -1300,8 +1300,8 @@ given by the noise strength at steady state, </p>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msubsup><mi>η</mi><mi>x</mi><mn>2</mn></msubsup><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mi>ρ</mi><mover><mi>a</mi><mo accent="true">‾</mo></mover><mo>+</mo><mi>μ</mi><mover><mi>x</mi><mo accent="true">‾</mo></mover><mo>=</mo><mn>2</mn><mi>μ</mi><mover><mi>x</mi><mo accent="true">‾</mo></mover><mi>.</mi></mrow><annotation encoding="application/x-tex">\label{eq:etax}
     \langle \eta_x^2 \rangle = \rho \bar a + \mu \bar x = 2 \mu \bar x.</annotation></semantics></math>
 </div>
-<h4 id="sec:gaussian-info-rate" id="information-rate">Information
-rate</h4>
+<h5 id="sec:gaussian-info-rate" id="information-rate">Information
+rate</h5>
 <p>Following Tostevin &amp; Ten Wolde <span class="citation"
 data-cites="2009.Tostevin 2010.Tostevin"> [<a href="#ref-2009.Tostevin"
 role="doc-biblioref">1</a>,<a href="#ref-2010.Tostevin"
@@ -1400,7 +1400,7 @@ the static gain
 of <a href="#eq:g">eq:g</a>, and the synthesis rate
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
 of <a href="#eq:r">eq:r</a>.</p>
-<h4 id="linear-network">Linear network</h4>
+<h5 id="linear-network">Linear network</h5>
 <p>To disambiguate differences in the information rate caused by the
 linear approximation of our nonlinear reaction network on one hand and
 the Gaussian approximation of the underlying jump process on the other,
@@ -1436,8 +1436,8 @@ yields </p>
 data-cites="2009.Tostevin 2010.Tostevin"> [<a href="#ref-2009.Tostevin"
 role="doc-biblioref">1</a>,<a href="#ref-2010.Tostevin"
 role="doc-biblioref">2</a>]</span> (motif III).</p>
-<h3 id="sec:relative-deviation">Relative deviation of the Gaussian
-approximation for a nonlinear system</h3>
+<h4 id="sec:relative-deviation">Relative deviation of the Gaussian
+approximation for a nonlinear system</h4>
 <figure id="fig:lna_pws_ratio">
 <img src="../images/lna_pws_ratio.svg"  />
 <figcaption>Relative deviation from the exact information rate for the
@@ -1483,7 +1483,7 @@ slow timescales, and thus better approximated by the Gaussian model. The
 fact that this is not the case for the LNA approximation is intriguing,
 indicating the need for further investigation into the interplay between
 timescales, system nonlinearity, and the LNA.</p>
-<h1 class="unnumbered" id="bibliography">References</h1>
+<h2 class="unnumbered" id="bibliography">References</h2>
 <div id="refs" class="references csl-bib-body" data-entry-spacing="0"
 role="list">
 <div id="ref-2009.Tostevin" class="csl-entry" role="listitem">

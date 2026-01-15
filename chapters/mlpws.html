@@ -22,7 +22,6 @@
       vertical-align: middle;
     }
     /* CSS for citations */
-    div.csl-bib-body { }
     div.csl-entry {
       clear: both;
       margin-bottom: 0em;
@@ -46,7 +45,7 @@
   <a href="../index.html" class="back-link">← Back to Contents</a>
   <script src="../js/equation-tooltips.js"></script>
 </head>
-<body>
+<body data-chapter="6">
 <header id="title-block-header">
 <h1 class="title">ML-PWS</h1>
 </header>
@@ -91,7 +90,7 @@ id="toc-sec:ml_discussion">Discussion</a></li>
 <li><a href="#bibliography" id="toc-bibliography">References</a></li>
 </ul>
 </nav>
-<h1 id="abstract">Abstract</h1>
+<h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>Understanding the flow of information in natural and engineered
 systems is crucial for their design and analysis. The mutual information
@@ -115,8 +114,8 @@ represents a significant advance for data-driven quantification of
 information transmission in general nonlinear and non-Gaussian
 systems.</p>
 </blockquote>
-<h1 id="ch:ml-pws">ML-PWS: Quantifying Information Transmission Using
-Neural Networks</h1>
+<h2 id="ch:ml-pws">ML-PWS: Quantifying Information Transmission Using
+Neural Networks</h2>
 <p></p>
 <p>Information theory is the most general framework for studying signal
 processing systems and quantifying their performance. Shannon <span
@@ -284,9 +283,9 @@ approximately linear systems, our model combined with PWS provides more
 accurate mutual information estimates than the Gaussian approximation
 because it suffers less from bias caused by using a finite-size
 dataset.</p>
-<h2 id="methods">Methods</h2>
-<h3 id="the-mutual-information-rate-for-discrete-time-processes">The
-Mutual Information Rate for Discrete-time Processes</h3>
+<h3 id="methods">Methods</h3>
+<h4 id="the-mutual-information-rate-for-discrete-time-processes">The
+Mutual Information Rate for Discrete-time Processes</h4>
 <p>The mutual information between two random variables
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
 and
@@ -384,7 +383,7 @@ a Monte Carlo estimator introduced recently for exactly computing the
 mutual information between trajectories <span class="citation"
 data-cites="2023.Reinhardt"> [<a href="#ref-2023.Reinhardt"
 role="doc-biblioref">26</a>]</span>.</p>
-<h3 id="path-weight-sampling">Path Weight Sampling</h3>
+<h4 id="path-weight-sampling">Path Weight Sampling</h4>
 <p>In the previous chapters, we developed Path Weight Sampling, which
 addresses many of the shortcomings of previous techniques for computing
 the mutual information. PWS is an exact technique that supports
@@ -543,9 +542,9 @@ model of the experimental system is not available. To overcome this
 problem, we learn a stochastic model from data which can then be used in
 combination with PWS to compute the mutual information rate directly
 from experimental time series data.</p>
-<h3
+<h4
 id="autoregressive-neural-networks-for-stochastic-sequence-modeling">Autoregressive
-neural networks for stochastic sequence modeling</h3>
+neural networks for stochastic sequence modeling</h4>
 <p>For computing the mutual information between trajectories using PWS,
 we require a generative sequence model that specifies the stochastic
 dynamics of the input-output mapping. We assume that the input
@@ -619,8 +618,8 @@ efficiently model a sequence, we need to make two main choices:
 conditional probability, and (b) which neural network architecture to
 use for obtaining the parameters for the chosen family of distributions,
 at each time.</p>
-<h4 id="gaussian-autoregressive-model">Gaussian autoregressive
-model</h4>
+<h5 id="gaussian-autoregressive-model">Gaussian autoregressive
+model</h5>
 <p>The choice of the parametric family of distributions depends on the
 nature of the data. For example, for scalar continuous data, a Gaussian
 distribution might be appropriate, whereas for discrete data, a
@@ -668,7 +667,7 @@ and
 and the choice must be made depending on the amount of training data,
 the complexity of the input-output mapping, as well as computational
 constraints.</p>
-<h4 id="network-architecture">Network architecture</h4>
+<h5 id="network-architecture">Network architecture</h5>
 <p>The network architecture is crucial because it directly determines
 the number of neural network parameters (or weights) that need to be
 learned. This, in turn, affects both the flexibility of the model and
@@ -710,7 +709,7 @@ data-cites="2017.Vaswani 2018.Devlin"> [<a href="#ref-2017.Vaswani"
 role="doc-biblioref">44</a>,<a href="#ref-2018.Devlin"
 role="doc-biblioref">45</a>]</span> could similarly be used but are not
 presented here.</p>
-<h5 id="recurrent-neural-networks">Recurrent neural networks</h5>
+<h6 id="recurrent-neural-networks">Recurrent neural networks</h6>
 <p>Recurrent Neural Networks (RNNs) process sequential data while
 maintaining a hidden state that evolves over time. At each time step, an
 RNN takes the current input and the previous hidden state to produce an
@@ -814,8 +813,8 @@ and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mrow><mn>1</mn><mo>:</mo><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">x_{1:i-1}</annotation></semantics></math>.
 Therefore, the model can incorporate long-range information for
 predicting the next output.</p>
-<h5 id="convolutional-neural-networks">Convolutional neural
-networks</h5>
+<h6 id="convolutional-neural-networks">Convolutional neural
+networks</h6>
 <p>Autoregressive convolutional networks model sequential data using
 masked 1D-convolutions. The masking ensures that the prediction at each
 time step only depends on the current and preceding elements of the
@@ -885,8 +884,8 @@ corresponding output from the CNN
 is fully defined by the convolution weights
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝛉</mi><annotation encoding="application/x-tex">\symbf\theta</annotation></semantics></math>
 and the sampling step.</p>
-<h4 id="evaluating-and-training-the-network">Evaluating and training the
-network</h4>
+<h5 id="evaluating-and-training-the-network">Evaluating and training the
+network</h5>
 <p>The autoregressive neural network described above can be viewed as
 generative models that approximate the conditional distribution
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mrow><mn>1</mn><mo>:</mo><mi>n</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>s</mi><mrow><mn>1</mn><mo>:</mo><mi>n</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{P}(x_{1:n}|s_{1:n})</annotation></semantics></math>,
@@ -973,8 +972,8 @@ instead of the whole training set of size
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>.
 At the beginning of each iteration, the data subset that is used is
 randomly selected (without replacement) from the whole data set.</p>
-<h3 id="sec:ml_variational">Efficient Marginalization Using Variational
-Inference</h3>
+<h4 id="sec:ml_variational">Efficient Marginalization Using Variational
+Inference</h4>
 <p>In the preceding section, we have shown how machine learning
 techniques can be leveraged to obtain a Path Weight Sampling (PWS)
 estimate of the mutual information rate directly from empirical data. By
@@ -1213,12 +1212,12 @@ role="doc-biblioref">54</a>]</span>, a widely used method for training
 variational models. SGVB leverages the reparameterization trick to
 estimate the gradient of the ELBO, which makes the training procedure
 efficient.</p>
-<h2 id="sec:ml_application">Application to a Minimal Nonlinear
-Model</h2>
+<h3 id="sec:ml_application">Application to a Minimal Nonlinear
+Model</h3>
 <p>We evaluate our approach using synthetic training data to train a
 generative model and then using PWS to compute the mutual information
 rate.</p>
-<h3 id="nonlinear-model">Nonlinear Model</h3>
+<h4 id="nonlinear-model">Nonlinear Model</h4>
 <p>To generate training data for the neural network, we combine a linear
 auto-regressive input, with a stochastic nonlinear output model.
 Specifically, we considered an input that evolves according to AR(1)
@@ -1273,7 +1272,7 @@ highest gain
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>10.0</mn></mrow><annotation encoding="application/x-tex">\gamma = \num{10.0}</annotation></semantics></math>,
 we observe saturation of the output.</figcaption>
 </figure>
-<h3 id="training-the-neural-networks">Training the Neural Networks</h3>
+<h4 id="training-the-neural-networks">Training the Neural Networks</h4>
 <p>We trained our machine learning model with synthetic data generated
 according to <a href="#eq:nonlinear_model">eq:nonlinear_model</a> for
 various values of the gain, denoted by
@@ -1392,8 +1391,8 @@ information. Yet, ML-PWS does not suffer from this problem and correctly
 estimates the mutual information for the whole range of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>.</figcaption>
 </figure>
-<h3 id="comparison-against-the-true-mutual-information">Comparison
-Against the True Mutual Information</h3>
+<h4 id="comparison-against-the-true-mutual-information">Comparison
+Against the True Mutual Information</h4>
 <p>The green dots in <a href="#fig:mi_gain">Fig. mi_gain</a> display the
 ML-PWS estimate of the mutual information
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>S</mi><mrow><mn>1</mn><mo>:</mo><mn>50</mn></mrow></msub><mo>,</mo><msub><mi>X</mi><mrow><mn>1</mn><mo>:</mo><mn>50</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(S_{1:50}, X_{1:50})</annotation></semantics></math>
@@ -1426,8 +1425,8 @@ estimate the path likelihood, which is required for the Monte Carlo
 estimate of mutual information. These results confirm that combining PWS
 with machine learning is a feasible and promising approach for computing
 the mutual information rate in complex nonlinear systems.</p>
-<h3 id="comparison-against-the-gaussian-approximation">Comparison
-Against the Gaussian Approximation</h3>
+<h4 id="comparison-against-the-gaussian-approximation">Comparison
+Against the Gaussian Approximation</h4>
 <p>Second, we use the Gaussian approximation as a benchmark, which is
 widely used for directly estimating mutual information rates from
 time-series data. We obtain the Gaussian estimate by computing the
@@ -1506,7 +1505,7 @@ Gaussian approximation. Strikingly thus, our new method based on machine
 learning yields a better estimate for the mutual information using the
 training set, even at low gain, where the Gaussian approximation is
 expected to hold.</p>
-<h2 id="sec:ml_discussion">Discussion</h2>
+<h3 id="sec:ml_discussion">Discussion</h3>
 <p>By combining neural networks with PWS, we introduced ML-PWS, a new
 scheme to estimate the mutual information between input and output
 trajectories of a system. PWS is a Monte Carlo method for calculating
@@ -1661,7 +1660,7 @@ the mutual information rate, we anticipate that ML-PWS could contribute
 to a deeper understanding of complex dynamical systems, with potential
 applications spanning neuroscience, biology, physics, and machine
 learning.</p>
-<h1 class="unnumbered" id="bibliography">References</h1>
+<h2 class="unnumbered" id="bibliography">References</h2>
 <div id="refs" class="references csl-bib-body" data-entry-spacing="0"
 role="list">
 <div id="ref-1948.Shannon" class="csl-entry" role="listitem">
