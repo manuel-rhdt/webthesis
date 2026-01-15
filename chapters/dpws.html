@@ -52,7 +52,7 @@
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#abstract" id="toc-abstract">Abstract</a></li>
+
 <li><a href="#path-weight-sampling" id="toc-path-weight-sampling">Path
 Weight Sampling</a>
 <ul>
@@ -87,7 +87,6 @@ Integrals for Systems with Feedback</a></li>
 <li><a href="#bibliography" id="toc-bibliography">References</a></li>
 </ul>
 </nav>
-<h2 id="abstract">Abstract</h2>
 <blockquote>
 <p>Most natural and engineered information-processing systems transmit
 information via signals that vary in time. Computing the information
@@ -108,7 +107,7 @@ makes it possible to compute the mutual information between input and
 output trajectories for systems with hidden internal states as well as
 systems with feedback from output to input.</p>
 </blockquote>
-<h2 id="ch:dpws" id="path-weight-sampling">Path Weight Sampling</h2>
+<h2 id="ch:dpws" id="path-weight-sampling">Introduction</h2>
 <p>Quantifying information transmission is vital for understanding and
 designing natural and engineered information-processing systems, ranging
 from biochemical and neural networks, to electronic circuits and optical
@@ -304,14 +303,14 @@ processing systems contain such hidden states, and generally we want to
 integrate out these latent network components. In addition, we can
 generalize PWS to systems with feedback from the output to the input as
 shown in <a href="#sec:feedback">Sec. feedback</a>.</p>
-<h3 id="sec:sec2"
+<h2 id="sec:sec2"
 id="monte-carlo-estimate-of-the-mutual-information">Monte Carlo Estimate
-of the Mutual Information</h3>
+of the Mutual Information</h2>
 <p>In this section we present the fundamental ideas of PWS. These ideas
 lie at the heart of Direct PWS (DPWS) and also form the foundation of
 the other two more advanced PWS variants which will be explained in <a
 href="#ch:variants">Ch. variants</a>.</p>
-<h4 id="statement-of-the-problem">Statement of the Problem</h4>
+<h3 id="statement-of-the-problem">Statement of the Problem</h3>
 <p>All information processing systems repeatedly take an input value
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
 and produce a corresponding output
@@ -430,7 +429,7 @@ href="#ref-2003.Paninski" role="doc-biblioref">17</a>]</span>. These
 limitations of the conventional method make it impractical for
 high-dimensional data, highlighting the need for alternative approaches
 to accurately compute mutual information for trajectories.</p>
-<h4 id="sec:algorithm" id="direct-pws"> Direct PWS</h4>
+<h3 id="sec:algorithm" id="direct-pws"> Direct PWS</h3>
 <figure id="fig:algorithm">
 <img src="../images/Algorithm.svg"  />
 <figcaption>The PWS framework to compute the mutual information between
@@ -729,10 +728,10 @@ given by
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><msubsup><mo>∫</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><msub><mi>t</mi><mi>i</mi></msub></msubsup><mi>d</mi><mi>t</mi><mspace width="0.222em"></mspace><msub><mi>Q</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\exp\int^{t_{i}}_{t_{i-1}} dt\ Q_t(x_{i-1}, x_{i-1})</annotation></semantics></math>
 for
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">i=1,\ldots,n</annotation></semantics></math>.</p>
-<h5 id="sec:likelihood"
+<h4 id="sec:likelihood"
 id="computing-the-likelihood-mathcalpxs">Computing the Likelihood
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mi>s</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[x|s]</annotation></semantics></math>
-</h5>
+</h4>
 <p>To compute the likelihood or conditional
 probability <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="prefix">|</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}|\mathbfit{s}]</annotation></semantics></math>
 of an output
@@ -863,8 +862,8 @@ role="doc-biblioref">45</a>,<a href="#ref-2007.Kim"
 role="doc-biblioref">46</a>]</span>), or computationally from stochastic
 simulations <span class="citation" data-cites="1976.Gillespie"> [<a
 href="#ref-1976.Gillespie" role="doc-biblioref">47</a>]</span>.</p>
-<h5 id="sec:gillespie" id="sampling-from-mathcalpxs">Sampling from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mi>s</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[x|s]</annotation></semantics></math></h5>
+<h4 id="sec:gillespie" id="sampling-from-mathcalpxs">Sampling from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mi>s</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[x|s]</annotation></semantics></math></h4>
 <p>Standard kinetic Monte Carlo simulations naturally produce exact
 samples of the probability distribution
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="prefix">|</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}|\mathbfit{s}]</annotation></semantics></math>
@@ -928,8 +927,8 @@ SSA with time dependent rates could be used <span class="citation"
 data-cites="1997.Prados 2015.Thanh"> [<a href="#ref-1997.Prados"
 role="doc-biblioref">48</a>,<a href="#ref-2015.Thanh"
 role="doc-biblioref">49</a>]</span>.</p>
-<h4 id="sec:input-statistics" id="input-statistics">Input
-Statistics</h4>
+<h3 id="sec:input-statistics" id="input-statistics">Input
+Statistics</h3>
 <p>For our mutual information estimate, we need to be able to draw
 samples from the input distribution
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal P[\mathbfit{s}]</annotation></semantics></math>.
@@ -965,9 +964,9 @@ stochastic processes that are found as solutions to stochastic
 differential equations <span class="citation"
 data-cites="1992.Kloeden"> [<a href="#ref-1992.Kloeden"
 role="doc-biblioref">50</a>]</span>.</p>
-<h3 id="sec:integrating-out"
+<h2 id="sec:integrating-out"
 id="integrating-out-internal-components">Integrating Out Internal
-Components </h3>
+Components </h2>
 <p>So far the output trajectory
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒙</mi><annotation encoding="application/x-tex">\mathbfit{x}</annotation></semantics></math>
 has been considered to correspond to the trajectory of the system in the
@@ -1206,8 +1205,8 @@ efficiency of computing the marginalized distribution,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>
 or
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><msup><mi>𝒙</mi><mi>n</mi></msup><mo stretchy="false" form="prefix">|</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]</annotation></semantics></math>.</p>
-<h3 id="sec:feedback" id="dealing-with-feedback">Dealing with
-Feedback</h3>
+<h2 id="sec:feedback" id="dealing-with-feedback">Dealing with
+Feedback</h2>
 <p>In principle all physical information processing systems exhibit
 feedback. The physical interaction needed to measure the input signal
 necessarily affects the incoming signal, and indeed, it follows that no
@@ -1223,9 +1222,9 @@ discuss the additional problems that arise when computing the mutual
 information for a system with feedback, and subsequently present a
 modified version of PWS that can be used to compute the trajectory
 mutual information for these systems.</p>
-<h4 id="sec:mi-feedback"
+<h3 id="sec:mi-feedback"
 id="computing-the-mutual-information-with-feedback-between-input-and-output">Computing
-the Mutual Information with Feedback between Input and Output</h4>
+the Mutual Information with Feedback between Input and Output</h3>
 <p>PWS requires the computation of the trajectory likelihood
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="prefix">|</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}|\mathbfit{s}]</annotation></semantics></math>,
 a quantity that is not readily available for systems with feedback.
@@ -1302,9 +1301,9 @@ components of the master equation even when the output feeds back onto
 these internal components. The technique discussed below can also be
 used in this case as a way to compute the marginalization integral in <a
 href="#eq:marginalization_integral">eq:marginalization_integral</a>.</p>
-<h4 id="sec:marginalization-feedback"
+<h3 id="sec:marginalization-feedback"
 id="marginalization-integrals-for-systems-with-feedback">Marginalization
-Integrals for Systems with Feedback</h4>
+Integrals for Systems with Feedback</h3>
 <p>Computing marginalization integrals in systems with feedback is
 harder than it is in the case without feedback. Specifically, we will
 show that it is not obvious how apply the Monte Carlo estimate from <a
@@ -1530,7 +1529,7 @@ can be found, we can make use of the techniques developed in <a
 href="#sec:marginalization">Sec. marginalization</a> to compute marginal
 probability
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>.</p>
-<h3 id="discussion">Discussion</h3>
+<h2 id="discussion">Discussion</h2>
 <p>In this chapter, we have described a general, practical, and flexible
 method that makes it possible to compute the mutual information between
 trajectories exactly. PWS is a Monte Carlo scheme based on the exact
