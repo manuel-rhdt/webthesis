@@ -106,7 +106,7 @@ h2 {
 }
 
 h2::before {
-    content: counter(chapter) "." counter(section) " ";
+    content: counter(section) " ";
 }
 
 body[data-chapter="none"] h2::before {
@@ -120,7 +120,7 @@ h3 {
 }
 
 h3::before {
-    content: counter(chapter) "." counter(section) "." counter(subsection) " ";
+    content: counter(section) "." counter(subsection) " ";
 }
 
 body[data-chapter="none"] h3::before {
