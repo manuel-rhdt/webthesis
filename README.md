@@ -11,3 +11,7 @@ Currently it is still a bit rough around the edges
 - some artifacts from conversion
 
 However the content is the same as the print thesis and is much easier to read, especially on mobile.
+
+## License
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt the material for any purpose, even commercially, as long as you provide appropriate credit to the original author, provide a link to the license, and indicate if changes were made.
