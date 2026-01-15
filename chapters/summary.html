@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Summary</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../css/thesis-style.css" />
+  <a href="../index.html" class="back-link">← Back to Contents</a>
+  <script src="../js/equation-tooltips.js"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Summary</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#summary" id="toc-summary">Summary</a></li>
+<li><a href="#bibliography" id="toc-bibliography">References</a></li>
+</ul>
+</nav>
+<h1 id="summary">Summary</h1>
+<p>Understanding and quantifying information transmission is crucial for
+improving and analyzing biological and engineered systems. Most, if not
+all, information-processing systems process signals that vary in time
+and generally information is not just contained in the instantaneous
+values of these signals, but also in their temporal characteristics.
+Quantifying information transmitted via time-varying signals thus
+requires the mutual information between input and output signals as a
+function of time, i.e., between the input and output trajectories.
+Moreover, the trajectory mutual information is needed for calculating
+the key performance measure of information processing—the mutual
+information rate—quantifying the amount of information transmitted per
+unit time. Yet, computing the mutual information between trajectories is
+notoriously difficult due to the high dimensionality of trajectory
+space. The curse of dimensionality makes traditional non-parametric
+information estimates infeasible, so existing methods for computing the
+mutual information between trajectories rely on approximations or
+simplifying assumptions.</p>
+<p>This thesis introduces Path Weight Sampling (PWS), a novel Monte
+Carlo framework for exactly calculating the trajectory mutual
+information for any system described by a dynamical stochastic model.
+The principal idea is to use the stochastic model to evaluate the exact
+conditional probability of an individual output trajectory, for a given
+input trajectory, and to compute the marginal probability for the same
+output trajectory via a Monte Carlo marginalization in trajectory space.
+By averaging the log-ratio of these probabilities over many stochastic
+realizations of the system, we obtain an unbiased estimate of the
+trajectory mutual information. Moreover, PWS also makes it possible to
+compute the mutual information between input and output trajectories for
+systems with hidden internal states as well as systems with feedback
+from output to input. In this thesis, we present three variants of PWS,
+which all compute the conditional probability in the same way but differ
+in the way the marginal output probability is obtained.</p>
+<p>In <strong><a href="#ch:dpws">Ch. dpws</a></strong>, we present
+Direct PWS, the simplest variant of PWS which computes the marginal
+output probability as a brute-force average over the conditional
+trajectory probabilities. While this scheme is feasible for simple
+systems, the direct Monte Carlo averaging procedure becomes more
+difficult for larger systems and exponentially harder for longer
+trajectories.</p>
+<p>Our second and third variants of PWS are based on the realization
+that computing the marginal trajectory probability for a stochastic
+model is equivalent to computing the partition function in statistical
+physics. These schemes leverage techniques for computing free energies
+from statistical physics. In <strong><a href="#ch:variants">Ch.
+variants</a></strong>, we first introduce Rosenbluth-Rosenbluth PWS
+(RR-PWS) which exploits the analogy between signal trajectory sampling
+and polymer sampling, and is based on efficient techniques for computing
+the (excess) chemical potential of a polymer. Secondly, we introduce
+thermodynamic integration PWS (TI-PWS) which is based on using MCMC
+sampling trajectory space to compute the marginal probability via
+thermodynamic integration. We apply PWS to a simple toy model of gene
+expression, showing that both of these variants, but especially RR-PWS,
+significantly improve the performance of PWS.</p>
+<p>To demonstrate the power of PWS and to gain new insights about the
+accuracy of biochemical signaling we apply PWS to the bacterial
+chemotaxis system, a complex biological information-processing system.
+In <strong><a href="#ch:chemotaxis">Ch. chemotaxis</a></strong>, we
+build a mechanistic model of chemotaxis based on previous literature and
+use PWS with this model to compute the mutual information rate of a
+bacterium in a shallow gradient. By comparing our model against
+experiments performed by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, we find discrepancies between the
+model predictions and the experimental results. We resolve these
+discrepancies by adapting our literature-based model, suggesting that in
+<em>E. coli</em> the number of receptor clusters is much smaller than
+hitherto believed, while their size is much larger. Moreover, using the
+adjusted model we find that in shallow gradients the mutual information
+rate computed using PWS closely matches the rate obtained by Mattingly
+et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> via a
+Gaussian approximation, justifying their use of the approximation <em>a
+posteriori</em>.</p>
+<p>The Gaussian approximation for the mutual information rate is widely
+used in practice, yet it relies on assumptions of linear dynamics and
+additive Gaussian noise which are often violated in inherently nonlinear
+physical or biological systems. To assess the accuracy of the Gaussian
+approximation when applied to nonlinear systems we require an exact
+method, such as PWS, to provide an accurate benchmark for the trajectory
+mutual information. In <strong><a href="#ch:lna_vs_pws">Ch.
+lna_vs_pws</a></strong> we use PWS to systematically assess the accuracy
+of the Gaussian approximation through two case studies: first, a
+discrete linear system which has near-Gaussian statistics but leads to a
+surprisingly large error in the Gaussian information rate; and second, a
+continuous diffusive system with a nonlinear transfer function, allowing
+us to quantify the error of the Gaussian approximation as nonlinearity
+increases. These findings highlight key instances where the Gaussian
+approximation fails and exact methods like PWS become essential.</p>
+<p>While PWS does not suffer from the limitations of the Gaussian
+approximation, it requires a stochastic model of the system of interest,
+which is often unavailable. In <strong><a href="#ch:ml-pws">Ch.
+ml-pws</a></strong> we leverage recent advances in machine learning to
+learn a data-driven stochastic model directly from experimental
+time-series data and use PWS with the resulting model to compute the
+trajectory mutual information. This approach, which we call ML-PWS,
+makes it possible to compute the mutual information rate of nonlinear
+systems, even in the absence of a known mechanistic or phenomenological
+model. We demonstrate that ML-PWS can yield highly accurate mutual
+information estimates purely from data, outperforming the Gaussian
+approximation for nonlinear systems.</p>
+<h1 class="unnumbered" id="bibliography">References</h1>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
+role="list">
+<div id="ref-2021.Mattingly" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">H.
+H. Mattingly, K. Kamino, B. B. Machta, and T. Emonet, <a
+href="https://doi.org/10.1038/s41567-021-01380-3"><span
+class="nocase">Escherichia coli chemotaxis is information
+limited</span></a>, Nature Physics <strong>17</strong>, 1426
+(2021).</div>
+</div>
+</div>
+</body>
+</html>

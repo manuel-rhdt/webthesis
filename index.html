@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Manuel Reinhardt">
+    <meta name="description" content="PhD Thesis: Quantifying the Flow of Information in Biochemical Signaling Networks">
+    <meta name="keywords" content="information theory, biochemical signaling, stochastic processes, path weight sampling">
+    <meta name="citation_title" content="Quantifying the Flow of Information">
+    <meta name="citation_author" content="Reinhardt, Manuel">
+    <meta name="citation_publication_date" content="2025">
+    <meta name="citation_dissertation_institution" content="Vrije Universiteit Amsterdam">
+    <meta name="citation_isbn" content="978-94-92323-76-7">
+    <meta name="citation_doi" content="10.5463/thesis.1092">
+    <title>Quantifying the Flow of Information - Manuel Reinhardt</title>
+    <link rel="stylesheet" href="css/thesis-style.css">
+    <style>
+        .title-page {
+            text-align: center;
+            padding: 3rem 2rem 2rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .university {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .title-page h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            border: none;
+            line-height: 1.2;
+        }
+        .title-page .author {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 2rem 0;
+        }
+        .metadata {
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(52, 152, 219, 0.05);
+            border-radius: 8px;
+            max-width: 600px;
+            text-align: left;
+        }
+        .metadata-row {
+            display: flex;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .metadata-label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #555;
+        }
+        .metadata-value {
+            color: #333;
+        }
+        .metadata-value a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        .metadata-value a:hover {
+            text-decoration: underline;
+        }
+        .supervisors {
+            margin: 1.5rem auto;
+            max-width: 600px;
+            text-align: left;
+        }
+        .supervisors h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        .pdf-link {
+            display: inline-block;
+            margin: 2rem 0;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .pdf-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        .chapter-list {
+            list-style: none;
+            padding: 0;
+            max-width: 700px;
+            margin: 2rem auto;
+        }
+        .chapter-list li {
+            margin: 0.8rem 0;
+        }
+        .chapter-list a {
+            display: block;
+            padding: 1rem 1.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .chapter-list a:hover {
+            border-color: var(--secondary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transform: translateX(4px);
+        }
+        .chapter-number {
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-right: 0.5rem;
+        }
+        .section-header {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-page">
+        <p class="university">PhD thesis</p>
+        <h1>Quantifying the Flow of Information</h1>
+        <p class="author">Manuel Reinhardt</p>
+
+        <div class="metadata">
+            <div class="metadata-row">
+                <span class="metadata-label">ISBN:</span>
+                <span class="metadata-value">978-94-92323-76-7</span>
+            </div>
+            <div class="metadata-row">
+                <span class="metadata-label">DOI:</span>
+                <span class="metadata-value"><a href="https://doi.org/10.5463/thesis.1092" target="_blank">10.5463/thesis.1092</a></span>
+            </div>
+            <div class="metadata-row">
+                <span class="metadata-label">Defense Date:</span>
+                <span class="metadata-value">June 13, 2025</span>
+            </div>
+            <div class="metadata-row">
+                <span class="metadata-label">Institution:</span>
+                <span class="metadata-value">Vrije Universiteit Amsterdam &amp; AMOLF</span>
+            </div>
+        </div>
+
+        <div class="supervisors">
+            <h3>Promotor:</h3>
+            <p style="margin: 0 0 1rem 0;">Prof. dr. Pieter Rein ten Wolde<br>
+            <span style="font-size: 0.9rem; color: #666;">Vrije Universiteit Amsterdam, The Netherlands</span></p>
+
+            <h3>Copromotor:</h3>
+            <p style="margin: 0;">Prof. dr. Gašper Tkačik<br>
+            <span style="font-size: 0.9rem; color: #666;">Institute of Science and Technology Austria</span></p>
+        </div>
+    </div>
+
+    <nav>
+        <h2>Contents</h2>
+
+        <p class="section-header">Chapters</p>
+        <ul class="chapter-list">
+            <li><a href="chapters/introduction.html"><span class="chapter-number">1.</span> Introduction</a></li>
+            <li><a href="chapters/dpws.html"><span class="chapter-number">2.</span> Path Weight Sampling</a></li>
+            <li><a href="chapters/variants.html"><span class="chapter-number">3.</span> Variants of PWS</a></li>
+            <li><a href="chapters/chemotaxis.html"><span class="chapter-number">4.</span> Chemotaxis</a></li>
+            <li><a href="chapters/lna_vs_pws.html"><span class="chapter-number">5.</span> LNA vs PWS</a></li>
+            <li><a href="chapters/mlpws.html"><span class="chapter-number">6.</span> ML-PWS</a></li>
+        </ul>
+
+        <p class="section-header">Appendix</p>
+        <ul class="chapter-list">
+            <li><a href="chapters/appendix.html"><span class="chapter-number">A.</span> Notes on Gaussian Approximation Computation</a></li>
+        </ul>
+
+        <p class="section-header">Back Matter</p>
+        <ul class="chapter-list">
+            <li><a href="chapters/summary.html">Summary</a></li>
+            <li><a href="chapters/publications.html">List of Publications</a></li>
+            <li><a href="chapters/acknowledgments.html">Acknowledgments</a></li>
+            <li><a href="chapters/about-the-author.html">About the Author</a></li>
+        </ul>
+
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 3rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <a href="https://www.vu.nl/" target="_blank" rel="noopener noreferrer" title="Vrije Universiteit Amsterdam">
+                    <img src="logos/VU-logo.svg" alt="VU Amsterdam" style="height: 45px; width: auto; display: block;">
+                </a>
+                <a href="https://www.amolf.nl/" target="_blank" rel="noopener noreferrer" title="AMOLF - Institute for Atomic and Molecular Physics">
+                    <img src="logos/amolf-logo.svg" alt="AMOLF" style="height: 50px; width: auto; display: block;">
+                </a>
+                <a href="https://www.nwo.nl/" target="_blank" rel="noopener noreferrer" title="NWO - Dutch Research Council">
+                    <img src="logos/NWO-logo.svg" alt="NWO" style="height: 70px; width: auto; display: block;">
+                </a>
+            </div>
+            <p style="text-align: center; color: #888; font-size: 0.85rem; margin: 0.5rem 0;">
+                This research was conducted at <a href="https://www.amolf.nl/" target="_blank" rel="noopener noreferrer" style="color: var(--link-color); text-decoration: none;">AMOLF</a>,<br>
+                with funding from the <a href="https://www.nwo.nl/" target="_blank" rel="noopener noreferrer" style="color: var(--link-color); text-decoration: none;">Dutch Research Council (NWO)</a>
+            </p>
+            <p style="text-align: center; color: #666; font-size: 0.9rem; margin-top: 1rem;">
+                <em>This HTML version was converted from the original LaTeX source using Pandoc.</em>
+            </p>
+        </div>
+    </nav>
+</body>
+</html>

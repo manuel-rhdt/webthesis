@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Appendix: Notes on Gaussian Approximation</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="../css/thesis-style.css" />
+  <a href="../index.html" class="back-link">← Back to Contents</a>
+  <script src="../js/equation-tooltips.js"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Appendix: Notes on Gaussian Approximation</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#notes-on-the-computation-of-the-gaussian-approximation"
+id="toc-notes-on-the-computation-of-the-gaussian-approximation">Notes on
+the Computation of the Gaussian Approximation</a>
+<ul>
+<li><a
+href="#structure-of-covariance-matrices-in-the-gaussian-framework"
+id="toc-structure-of-covariance-matrices-in-the-gaussian-framework"><span
+id="sec:level1" data-label="sec:level1"></span>Structure of Covariance
+Matrices in the Gaussian Framework</a></li>
+<li><a href="#efficient-evaluation-of-determinants"
+id="toc-efficient-evaluation-of-determinants">Efficient Evaluation of
+Determinants</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="notes-on-the-computation-of-the-gaussian-approximation">Notes on
+the Computation of the Gaussian Approximation</h1>
+<p>Mathematically, computing the mutual information between trajectories
+in the Gaussian framework is relatively simple. From Shannon’s formula
+for the entropy of a multivariate Gaussian distribution it follows that
+the MI is given by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo>,</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">|</mo><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><mi>Z</mi><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mrow><mo stretchy="false" form="prefix" mathvariant="normal">[</mo><mi mathvariant="normal">n</mi><mi mathvariant="normal">a</mi><mi mathvariant="normal">t</mi><mi mathvariant="normal">s</mi><mo stretchy="false" form="postfix" mathvariant="normal">]</mo></mrow><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">I(S, X) = \frac{1}{2} \ln \left(
+    \frac{|\Sigma_{ss}|\,|\Sigma_{xx}|}{|Z|}
+    \right)\quad \mathrm{[nats]}\,.
+    \label{eq:mi}</annotation></semantics></math> See <span
+class="citation" data-cites="2009.Tostevin 2010.Tostevin"></span> for
+details. This is a straightforward formula involving the logarithm of
+determinants of symmetric matrices.</p>
+<p>However, computationally evaluating this formula correctly and
+efficiently requires some thought. The matrices
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{ss}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{xx}</annotation></semantics></math>
+have dimensions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N\times N</annotation></semantics></math>,
+and the matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+has dimensions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>N</mi><mo>×</mo><mn>2</mn><mi>N</mi></mrow><annotation encoding="application/x-tex">2N \times 2N</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+is the trajectory length. Thus, for long trajectories, the involved
+matrices can become very large. Computing the determinant of a large
+matrix is computationally non-trivial and possibly numerically unstable.
+Note that the generic algorithm to compute the determinant of a matrix
+of dimensions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">N \times N</annotation></semantics></math>
+scales with order
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>N</mi><mn>3</mn></msup><annotation encoding="application/x-tex">N^3</annotation></semantics></math>.
+Thus, doubling the size of the matrix makes the computation of the
+determinant take approximately 8 times as long. Moreover, the
+determinant of a large matrix may be very close to zero or very close to
+infinity. Representing such numbers in the computer using floating point
+representations can lead to significant numerical accuracy issues. In
+practice this further limits the maximal size of covariance matrices
+that one can use.</p>
+<p>Fortunately, we can leverage the special structure of the Gaussian
+covariance matrices to simplify the computation of determinants
+significantly. Generally, all involved matrices are symmetric and
+positive definite. Using a clever trick we can speed up the computation
+of the determinant of a symmetric matrix. But even then, we still have a
+scaling of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>n</mi><mn>3</mn></msup><annotation encoding="application/x-tex">n^3</annotation></semantics></math>
+with matrix size. Using one additional assumption we can do much better.
+If the system under consideration is in steady state, the matrices have
+Toeplitz structure. We will see that this structure allows us to
+construct a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mrow><mi>log</mi><mo>&#8289;</mo></mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n \log n</annotation></semantics></math>
+scaling algorithm that approximates the determinant very well for large
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.
+Lastly, to deal with numerical accuracy issues, we will discuss how to
+compute the log-determinant of a matrix directly. This will be
+dramatically more accurate than first computing the determinant and then
+taking the logarithm.</p>
+<h2
+id="structure-of-covariance-matrices-in-the-gaussian-framework"><span
+id="sec:level1" data-label="sec:level1"></span>Structure of Covariance
+Matrices in the Gaussian Framework</h2>
+<p>We consider a Gaussian system with stochastic input
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐬</mi><annotation encoding="application/x-tex">\symbf{s}</annotation></semantics></math>
+and output
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐱</mi><annotation encoding="application/x-tex">\symbf{x}</annotation></semantics></math>.
+Both, input and output, are vectors representing trajectories
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>
+sampled at discrete times
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mrow><mi>d</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">t_0,\ldots,t_{d-1}</annotation></semantics></math>.
+Hence,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>∈</mo><mi>ℕ</mi></mrow><annotation encoding="application/x-tex">d \in \mathbb{N}</annotation></semantics></math>
+is the dimensionality of the vector space of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐬</mi><annotation encoding="application/x-tex">\symbf{s}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐱</mi><annotation encoding="application/x-tex">\symbf{x}</annotation></semantics></math>.
+The joint probability density of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐬</mi><annotation encoding="application/x-tex">\symbf{s}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐱</mi><annotation encoding="application/x-tex">\symbf{x}</annotation></semantics></math>
+is given by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">P</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐬</mi><mo>,</mo><mi>𝐱</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>π</mi><mo stretchy="false" form="prefix">|</mo><mi>Z</mi><mo stretchy="false" form="prefix">|</mo><msup><mo stretchy="false" form="postfix">)</mo><mi>d</mi></msup></mrow></mfrac><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>𝐬</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>𝐱</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>Z</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>𝐬</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>𝐱</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\mathrm{P}(\symbf{s}, \symbf{x}) = \frac{1}{(2\pi |Z|)^{d}} \exp\left[
+    -\frac{1}{2}
+    \left(
+    \begin{array}{cc}
+        \symbf{s} &amp; \symbf{x} 
+    \end{array}
+    \right)
+    Z^{-1}
+    \left(
+    \begin{array}{c}
+        \symbf{s} \\
+        \symbf{x}
+    \end{array}
+    \right)
+    \right]</annotation></semantics></math> which is the PDF of a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>d</mi></mrow><annotation encoding="application/x-tex">2d</annotation></semantics></math>-dimensional
+multivariate Gaussian distribution.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+is a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>d</mi><mo>×</mo><mn>2</mn><mi>d</mi></mrow><annotation encoding="application/x-tex">2d \times 2d</annotation></semantics></math>
+matrix with block form
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>s</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">Z = \left(
+    \begin{array}{cc}
+        \Sigma_{ss} &amp; \Sigma_{sx} \\
+        \Sigma_{xs} &amp; \Sigma_{xx}
+    \end{array}
+    \right)\,.</annotation></semantics></math> The individual block
+entries of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+correspond to the (cross-)covariance matrices of input and output.
+Specifically,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{\alpha\beta}</annotation></semantics></math>
+is a
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>×</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">d\times d</annotation></semantics></math>
+matrix with entries
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow><mrow><mi>i</mi><mi>j</mi></mrow></msubsup><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>α</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>β</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\Sigma^{ij}_{\alpha\beta} = \langle \alpha(t_i) \beta(t_j) \rangle \,.</annotation></semantics></math></p>
+<p>We can make a few observations concerning the form of these matrices.
+It follows immediately from the definition that both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{ss}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{xx}</annotation></semantics></math>
+are positive definite, symmetric matrices.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{sx}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{xs}</annotation></semantics></math>
+are generally not symmetric, but they are transposes of each other,
+i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">Σ</mi><mrow><mi>s</mi><mi>x</mi></mrow><mi>T</mi></msubsup><mo>=</mo><msub><mi mathvariant="normal">Σ</mi><mrow><mi>x</mi><mi>s</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\Sigma^T_{sx} = \Sigma_{xs}</annotation></semantics></math>.
+It follows from these two observations that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+itself is symmetric. Furthermore, we usually deal with systems in steady
+state, in which case the matrices have even more structure. When a
+system is in steady state, the correlation functions are
+(time-)translation invariant. That means that the correlation of
+observations at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>i</mi></msub><annotation encoding="application/x-tex">t_i</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>j</mi></msub><annotation encoding="application/x-tex">t_j</annotation></semantics></math>
+only depends on the difference
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>j</mi></msub><mo>−</mo><msub><mi>t</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">t_j-t_i</annotation></semantics></math>,
+i.e., we can find functions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">C_{\alpha\beta}(t)</annotation></semantics></math>
+such that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>j</mi></msub><mo>−</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>α</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>β</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">C_{\alpha\beta}(t_j-t_i) = \langle \alpha(t_i) \beta(t_j) \rangle</annotation></semantics></math>.
+It follows that the matrix element
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow><mrow><mi>i</mi><mi>j</mi></mrow></msubsup><annotation encoding="application/x-tex">\Sigma^{ij}_{\alpha\beta}</annotation></semantics></math>
+only depends on the difference
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>−</mo><mi>i</mi></mrow><annotation encoding="application/x-tex">j-i</annotation></semantics></math>.
+We can thus write the matrix elements as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow><mrow><mi>i</mi><mi>j</mi></mrow></msubsup><mo>=</mo><msubsup><mi>c</mi><mrow><mi>α</mi><mi>β</mi></mrow><mrow><mi>j</mi><mo>−</mo><mi>i</mi></mrow></msubsup></mrow><annotation encoding="application/x-tex">\Sigma^{ij}_{\alpha\beta} = c^{j-i}_{\alpha\beta}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>c</mi><mrow><mi>α</mi><mi>β</mi></mrow><mi>i</mi></msubsup><mo>=</mo><msub><mi>C</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c^{i}_{\alpha\beta} = C_{\alpha\beta}(t_i-t_0)</annotation></semantics></math>
+are the components of a vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐜</mi><annotation encoding="application/x-tex">\symbf{c}</annotation></semantics></math>
+that fully specifies the matrix. A matrix with this structure is called
+<em>Toeplitz</em> matrix. We can use this structure to simplify the
+computation of determinants significantly, as described below. But
+before we explain how to compute determinants efficiently, we discuss
+one further issue regarding the matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+itself.</p>
+<p>Note that unlike the matrices
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{\alpha\beta}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+itself does not have Toeplitz structure in general. This means the
+method described below is not directly applicable for the computation of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>Z</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|Z|</annotation></semantics></math>.
+Yet, it seems we need to find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>Z</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|Z|</annotation></semantics></math>
+for computing the MI using <a href="#eq:mi"
+data-reference-type="ref+label" data-reference="eq:mi">[eq:mi]</a>. It
+turns out that this is not necessary. One can make use of the fact that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>
+is composed of Toeplitz blocks to avoid computing its determinant. At
+the end of the following section we show how to adapt the formula
+described in Ref. <span class="citation"
+data-cites="2006.Kamiyabu"></span> for computing the mutual information
+rate to derive an efficient approximation of it in terms of the discrete
+Fourier transform.</p>
+<h2 id="efficient-evaluation-of-determinants">Efficient Evaluation of
+Determinants</h2>
+<p>For a symmetric positive definite matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>d</mi><mo>×</mo><mi>d</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\Sigma\in\mathbb{R}^{d\times d}</annotation></semantics></math>
+the determinant can be computed faster than for a general matrix. We
+exploit the fact that such a matrix can always be decomposed as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Σ</mi><mo>=</mo><mi>L</mi><msup><mi>L</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\Sigma = L L^T</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>d</mi><mo>×</mo><mi>d</mi></mrow></msup></mrow><annotation encoding="application/x-tex">L\in\mathbb{R}^{d\times d}</annotation></semantics></math>
+is a lower triangular matrix with positive diagonal entries. This
+factorization is called <em>Cholesky decomposition</em> and there are
+efficient algorithms for computing the Cholesky decomposition in many
+numerical linear algebra packages.</p>
+<p>Now we make use of two basic properties of the determinant. First,
+the determinant of a product of matrices is equal to the product of the
+individual matrices’ determinants. Second, the determinant of the
+transpose is equal to the determinant of the original matrix. Combining
+these two facts, we see that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="normal">Σ</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>L</mi><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="prefix">|</mo><msup><mi>L</mi><mi>T</mi></msup><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>L</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|\Sigma|=|L| |L^T| = |L|^2</annotation></semantics></math>.
+Now, we remember that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>L</mi><annotation encoding="application/x-tex">L</annotation></semantics></math>
+is a lower triangular matrix. It is easily checked that the determinant
+of a lower triangular matrix is given by the product of its diagonal
+entries
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℓ</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>ℓ</mi><mrow><mi>d</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\ell_0,\ldots,\ell_{d-1}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ℓ</mi><mi>k</mi></msub><mo>=</mo><msup><mi>L</mi><mrow><mi>k</mi><mi>k</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\ell_k = L^{kk}</annotation></semantics></math>.
+Thus, we find two important identities for symmetric positive definite
+matrices:
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="prefix">|</mo><mi mathvariant="normal">Σ</mi><mo stretchy="false" form="prefix">|</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><munderover><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>d</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mi>ℓ</mi><mi>i</mi><mn>2</mn></msubsup><mspace width="0.167em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="normal">Σ</mi><mo stretchy="false" form="prefix">|</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mn>2</mn><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>d</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><msub><mi>ℓ</mi><mi>i</mi></msub><mspace width="0.167em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    |\Sigma| &amp;= \prod^{d-1}_{i=0} \ell^2_i\,, \\
+    \ln |\Sigma| &amp;= 2 \sum^{d-1}_{i=0} \ln\ell_i\,.
+\end{aligned}</annotation></semantics></math> The second form is
+especially useful for large matrices. There, computing the
+log-determinant is numerically preferable to computing the determinant
+itself.</p>
+<p>We can also exploit the structure of symmetric Toeplitz matrices to
+further simplify the computation of the determinant. However, here we
+won’t obtain an exact result but only an asymptotic approximation. This
+will nonetheless be very useful for large matrices where even the
+Cholesky factorization can be difficult to obtain.</p>
+<p>We will investigate the asymptotic behavior of eigenvalues of
+Toeplitz matrices. First, we recall the defining property of Toeplitz
+matrices. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>d</mi><mo>×</mo><mi>d</mi></mrow></msup></mrow><annotation encoding="application/x-tex">T\in\mathbb{R}^{d\times d}</annotation></semantics></math>
+be a Toeplitz matrix. Then we can write
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>T</mi><mrow><mi>i</mi><mi>j</mi></mrow></msup><mo>=</mo><msup><mi>t</mi><mrow><mo stretchy="false" form="prefix">|</mo><mi>j</mi><mo>−</mo><mi>i</mi><mo stretchy="false" form="prefix">|</mo></mrow></msup></mrow><annotation encoding="application/x-tex">T^{ij} = t^{|j-i|}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝐭</mi><mo>∈</mo><msup><mi>ℝ</mi><mi>d</mi></msup></mrow><annotation encoding="application/x-tex">\symbf{t}\in\mathbb{R}^d</annotation></semantics></math>
+is a vector that fully specifies the matrix. We will now try to
+understand what happens in the asymptotic limit that the vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐭</mi><annotation encoding="application/x-tex">\symbf{t}</annotation></semantics></math>
+is very high dimensional. Thus, suppose we have an infinite sequence of
+real numbers
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>k</mi></msub><mo>∣</mo><mi>k</mi><mo>=</mo><mi>…</mi><mo>,</mo><mi>−</mi><mn>2</mn><mo>,</mo><mi>−</mi><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(t_k \mid k=\ldots,-2,-1,0,1,2,\ldots)</annotation></semantics></math>.
+From this sequence we can construct a sequence of Toeplitz matrices
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>n</mi></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow></msup></mrow><annotation encoding="application/x-tex">T_n\in\mathbb{R}^{n\times n}</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">n=1,2,\ldots</annotation></semantics></math>
+as follows. For any
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi>ℕ</mi></mrow><annotation encoding="application/x-tex">n\in\mathbb{N}</annotation></semantics></math>,
+we define the matrix elements of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>
+as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>T</mi><mi>n</mi><mrow><mi>i</mi><mi>j</mi></mrow></msubsup><mo>=</mo><msub><mi>t</mi><mrow><mi>i</mi><mo>−</mo><mi>j</mi></mrow></msub><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">for </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>n</mi><mo>−</mo><mn>1</mn><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">T^{ij}_n = t_{i-j}\quad\text{for } i,j=0,1,\ldots,n-1 \,.</annotation></semantics></math>
+The definition of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>
+will thus only need
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2n-1</annotation></semantics></math>
+elements
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">t_{-(n-1)},\ldots,t_0,\ldots,t_{n-1}</annotation></semantics></math>
+from the sequence. Note that for a symmetric Toeplitz sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><msub><mi>t</mi><mrow><mi>−</mi><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">t_k = t_{-k}</annotation></semantics></math>.</p>
+<p>Under some light conditions there exists a continuous
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>-periodic
+function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>λ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(\lambda)</annotation></semantics></math>
+that is defined through the discrete-time Fourier transform
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mi>∞</mi></mrow><mo accent="false">∞</mo></munderover><msub><mi>t</mi><mi>k</mi></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>i</mi><mi>ω</mi><mi>k</mi></mrow></msup><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f(\omega) = \sum^\infty_{k=-\infty} t_k e^{-i\omega k} \,.
+    \label{eq:fourier-series}</annotation></semantics></math>
+Conversely, the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>k</mi></msub><annotation encoding="application/x-tex">t_k</annotation></semantics></math>
+can be recovered from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+using inverse transform
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>e</mi><mrow><mi>i</mi><mi>ω</mi><mi>k</mi></mrow></msup><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">t_k = \frac{1}{2\pi} \int^{2\pi}_0 d\omega\ f(\omega) e^{i\omega k} \,.</annotation></semantics></math>
+Thus the sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(t_k)</annotation></semantics></math>
+determines the function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+and vice versa. Moreover, this means that the entire sequence of
+Toeplitz matrices is completely specified by the continuous function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>.</p>
+<p>Now we are ready to state one of the most important theorems about
+Toeplitz matrices: <em>Szegő’s theorem</em>. Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mrow><mi>n</mi><mo>,</mo><mn>1</mn></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>τ</mi><mrow><mi>n</mi><mo>,</mo><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\tau_{n,1},\ldots,\tau_{n,n}</annotation></semantics></math>
+be the eigenvalues of the matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>.
+Szegő’s theorem states that
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><mfrac><mn>1</mn><mi>n</mi></mfrac><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>τ</mi><mrow><mi>n</mi><mo>,</mo><mi>i</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} \frac{1}{n}\sum^{n-1}_{i=1} F(\tau_{n,i}) = \frac{1}{2\pi} \int^{2\pi}_0 d\omega\ F(f(\omega))</annotation></semantics></math>
+for any continuous function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>.
+This result is very useful to find the asymptotic determinant. In
+particular, note that the determinant is the product of eigenvalues, and
+hence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><msub><mi>τ</mi><mrow><mi>n</mi><mo>,</mo><mi>i</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\ln |T_n| = \sum^{n-1}_{i=1}\ln \tau_{n,i}</annotation></semantics></math>.
+Thus, it is not hard to show that
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} \ln \frac{|T_n|}{|T_{n-1}|} = \frac{1}{2\pi} \int^{2\pi}_0 d\omega\ \ln f(\omega)</annotation></semantics></math>
+which we can leverage to compute information rates. In particular, this
+formula can be used for analytical computation of entropy rates of
+Gaussian processes <span class="citation"
+data-cites="2009.Tostevin"></span>.</p>
+<p>We will instead use this theorem to find a an approximate way to
+compute the determinant of a large Toeplitz matrix. We can approximate
+the integral by a Riemann sum
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><mfrac><mrow><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><mi>n</mi></mfrac><mo>≈</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ω</mi><mi>m</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} \frac{\ln |T_n|}{n} \approx \frac{1}{N}\sum^{N-1}_{m=0} \ln f\left( \omega_m \right)</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>m</mi></msub><mo>=</mo><mn>2</mn><mi>π</mi><mi>m</mi><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">\omega_m = 2\pi m/N</annotation></semantics></math>
+for some large
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>.
+Now, inserting <a href="#eq:fourier-series"
+data-reference-type="ref+label"
+data-reference="eq:fourier-series">[eq:fourier-series]</a> we find
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><mfrac><mrow><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><mi>n</mi></mfrac><mo>≈</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mi>∞</mi></mrow><mo accent="false">∞</mo></munderover><msub><mi>t</mi><mi>k</mi></msub><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mi>i</mi><mn>2</mn><mi>π</mi><mi>k</mi><mi>m</mi></mrow><mi>N</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} \ln \sum^{\infty}_{k=-\infty} t_k 
+    \exp\left(-\frac{i 2\pi k m}{N} \right)\,.
+    \label{eq:logdet-toeplitz}</annotation></semantics></math> In
+practice we cannot perform the infinite sum over
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>.
+Thus, we must truncate the series. We truncate the series such that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>k</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t_k=0</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mi>N</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">|k|&gt;N/2</annotation></semantics></math>.
+Then, the sum over
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+becomes the discrete Fourier transform (DFT). We recall that the DFT of
+the sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>k</mi></msub><annotation encoding="application/x-tex">t_k</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo><mo>,</mo><mi>…</mi><mo>,</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">k=-\lfloor N/2 \rfloor,\ldots,0,\ldots,\lfloor N/2 \rfloor</annotation></semantics></math>
+is another sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\lambda_m)</annotation></semantics></math>,
+defined by
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>m</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo></mrow><mrow><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo></mrow></munderover><msub><mi>t</mi><mi>k</mi></msub><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mi>i</mi><mn>2</mn><mi>π</mi><mi>k</mi><mi>m</mi></mrow><mi>N</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_m = \sum^{\lfloor N/2 \rfloor}_{k=-\lfloor N/2 \rfloor} t_k \exp\left( -\frac{i 2\pi k m}{N} \right)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">m=0,\ldots,N-1</annotation></semantics></math>.
+Hence, we have derived the approximation
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi>lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><mfrac><mrow><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo></mrow><mi>n</mi></mfrac><mo>≈</mo><mfrac><mn>1</mn><mi>N</mi></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><msub><mi>λ</mi><mi>m</mi></msub><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} 
+    \ln \lambda_m\,.</annotation></semantics></math></p>
+<p>The DFT coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\lambda_m</annotation></semantics></math>
+represent the inner sum in <a href="#eq:logdet-toeplitz"
+data-reference-type="ref+label"
+data-reference="eq:logdet-toeplitz">[eq:logdet-toeplitz]</a>, when
+truncated to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo><mo>,</mo><mi>…</mi><mo>,</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><mo stretchy="false" form="prefix">⌊</mo><mi>N</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">⌋</mo></mrow><annotation encoding="application/x-tex">k=-\lfloor N/2 \rfloor,\ldots,0,\ldots,\lfloor N/2 \rfloor</annotation></semantics></math>.
+In principle we want to choose
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+as large as possible. However, given a matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>
+we only know the values
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mrow><mi>−</mi><mi>n</mi></mrow></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">t_{-n},\ldots,t_0,\ldots,t_n</annotation></semantics></math>.
+Thus, the maximum value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+that we can use is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>2</mn><mi>n</mi></mrow><annotation encoding="application/x-tex">N=2n</annotation></semantics></math>.</p>
+<p>This means, our approximation for the log-determinant of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>
+for large
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+can be written as
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>≈</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><msub><mi>λ</mi><mi>m</mi></msub><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\ln |T_n| \approx \frac{1}{2} \sum^{2n-1}_{m=0} \ln \lambda_{m} \,.</annotation></semantics></math>
+It is easy to verify that this formula converges to <a
+href="#eq:logdet-toeplitz" data-reference-type="ref+label"
+data-reference="eq:logdet-toeplitz">[eq:logdet-toeplitz]</a> as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">n\to\infty</annotation></semantics></math>.
+This formula is also very efficient to evaluate on modern computers. The
+sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>λ</mi><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\lambda_0,\ldots,\lambda_{2n-1}</annotation></semantics></math>
+can be easily computed via the FFT algorithm from the sequence of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mi>k</mi></msub><annotation encoding="application/x-tex">t_k</annotation></semantics></math>.
+Efficient implementations of the FFT algorithm are widely available.</p>
+<p>Finally, we discuss how to evaluate the mutual information
+<em>rate</em>, defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo>,</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi>lim</mi><mo>&#8289;</mo></mrow><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></msub><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>t</mi><mn>0</mn></msub><mo>:</mo><msub><mi>t</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>X</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>t</mi><mn>0</mn></msub><mo>:</mo><msub><mi>t</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">R(S, X) = \lim_{n\to\infty} I(S[t_0:t_n],X[t_0:t_n])/n</annotation></semantics></math>,
+using Szegő’s theorem. <span class="citation"
+data-cites="2006.Kamiyabu"></span> used Szegő’s theorem to derive the
+formula
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo>,</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>f</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><mrow><msub><mi>f</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>f</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">R(S, X) = -\frac{1}{2} \int^{2\pi}_0 d\omega\ \ln\left( 1 - \frac{|f_{sx}(\omega)|^2}{f_{ss}(\omega) f_{xx}(\omega)} \right)</annotation></semantics></math>
+where the functions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mi>∞</mi></mrow><mi>∞</mi></msubsup><msub><mi>t</mi><mrow><mi>α</mi><mi>β</mi><mo>,</mo><mi>k</mi></mrow></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>i</mi><mi>ω</mi><mi>k</mi></mrow></msup></mrow><annotation encoding="application/x-tex">f_{\alpha\beta}(\omega) = \sum^\infty_{k=-\infty} t_{\alpha\beta,k} e^{-i\omega k}</annotation></semantics></math>
+represent the discrete-time Fourier transforms of the covariances of the
+matrices
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{\alpha\beta}</annotation></semantics></math>
+in the limit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">n\to\infty</annotation></semantics></math>.
+As above, we are going to approximate this formula using the discrete
+Fourier transform. We define DFT sequences for the matrices
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Σ</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{\alpha\beta}</annotation></semantics></math>
+as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mrow><mi>α</mi><mi>β</mi><mo>,</mo><mi>m</mi></mrow></msub><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mi>−</mi><mi>n</mi></mrow><mi>n</mi></msubsup><msub><mi>t</mi><mrow><mi>α</mi><mi>β</mi><mo>,</mo><mi>m</mi></mrow></msub><mrow><mi>exp</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>i</mi><msub><mi>ω</mi><mi>m</mi></msub><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\lambda_{\alpha\beta,m} = \sum^n_{k=-n} t_{\alpha\beta,m} \exp(-i \omega_m k)</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>m</mi></msub><mo>=</mo><mn>2</mn><mi>π</mi><mi>m</mi><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">\omega_m = 2\pi m / N</annotation></semantics></math>.
+This results in the estimate for the mutual information rate
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo>,</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><mi>−</mi><mfrac><mn>1</mn><mn>2</mn></mfrac><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>0</mn></mrow><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>λ</mi><mrow><mi>s</mi><mi>x</mi><mo>,</mo><mi>m</mi></mrow></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><mrow><msub><mi>λ</mi><mrow><mi>s</mi><mi>s</mi><mo>,</mo><mi>m</mi></mrow></msub><msub><mi>λ</mi><mrow><mi>x</mi><mi>x</mi><mo>,</mo><mi>m</mi></mrow></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(S, X) \approx
+    -\frac{1}{2} \sum^{2n-1}_{m=0} \ln
+    \left( 
+    1 - \frac{|\lambda_{sx,m}|^2}{\lambda_{ss,m} \lambda_{xx,m}}
+    \right) \,.</annotation></semantics></math></p>
+<p>More information about asymptotics and other results for Toeplitz
+matrices can be found in the review of <span class="citation"
+data-cites="2005.Gray"></span>.</p>
+</body>
+</html>

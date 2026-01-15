@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Chemotaxis</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="../css/thesis-style.css" />
+  <a href="../index.html" class="back-link">← Back to Contents</a>
+  <script src="../js/equation-tooltips.js"></script>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Chemotaxis</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#abstract" id="toc-abstract">Abstract</a></li>
+<li><a href="#ch:chemotaxis"
+id="toc-ch:chemotaxis">Application—Bacterial Chemotaxis</a>
+<ul>
+<li><a href="#stochastic-dynamics-of-the-input-signal-for-chemotaxis"
+id="toc-stochastic-dynamics-of-the-input-signal-for-chemotaxis">Stochastic
+Dynamics of the Input Signal for Chemotaxis</a></li>
+<li><a href="#stochastic-chemotaxis-model"
+id="toc-stochastic-chemotaxis-model">Stochastic Chemotaxis Model</a>
+<ul>
+<li><a href="#mwc-model" id="toc-mwc-model">MWC Model</a></li>
+<li><a href="#reaction-kinetics" id="toc-reaction-kinetics">Reaction
+Kinetics</a></li>
+</ul></li>
+<li><a
+href="#mutual-information-rate-for-the-chemotaxis-system-in-the-gaussian-approximation"
+id="toc-mutual-information-rate-for-the-chemotaxis-system-in-the-gaussian-approximation">Mutual
+Information Rate for the Chemotaxis System in the Gaussian Approximation
+</a>
+<ul>
+<li><a
+href="#computing-the-gaussian-information-rate-using-linear-response-kernels-vt-kt-and-nt"
+id="toc-computing-the-gaussian-information-rate-using-linear-response-kernels-vt-kt-and-nt">Computing
+the Gaussian information rate using linear response kernels <em>V(t),
+K(t),</em> and <em>N(t)</em></a></li>
+<li><a href="#estimating-the-kernels-from-simulations"
+id="toc-estimating-the-kernels-from-simulations">Estimating the kernels
+from simulations</a></li>
+</ul></li>
+<li><a href="#results" id="toc-results"> Results</a>
+<ul>
+<li><a
+href="#discrepancy-between-experimental-results-and-literature-based-model"
+id="toc-discrepancy-between-experimental-results-and-literature-based-model">Discrepancy
+between experimental results and literature-based model</a></li>
+<li><a href="#revising-the-literature-based-model"
+id="toc-revising-the-literature-based-model">Revising the
+literature-based model</a></li>
+<li><a
+href="#comparing-the-chemotaxis-information-rate-of-the-models-against-experiments"
+id="toc-comparing-the-chemotaxis-information-rate-of-the-models-against-experiments">Comparing
+the chemotaxis information rate of the models against
+experiments</a></li>
+</ul></li>
+<li><a href="#discussion" id="toc-discussion">Discussion</a></li>
+</ul></li>
+<li><a href="#bibliography" id="toc-bibliography">References</a></li>
+</ul>
+</nav>
+<h1 id="abstract">Abstract</h1>
+<blockquote>
+<p>The chemotaxis signaling network of the bacterium <em>Escherichia
+coli</em> is a sophisticated information processing system, enabling the
+bacterium to sense nutrient gradients and dynamically adjust its
+movement. The bacterium’s ability to climb chemical gradients is
+constrained by the mutual information rate between the sensed nutrient
+concentration and the phosphorylated messenger protein CheYp. A recent
+study by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> (<span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>) used a Gaussian approximation to
+estimate this rate, based on the assumption that in shallow gradients
+the chemotactic response is approximately linear. However, the nonlinear
+nature of chemotaxis suggests that Gaussian methods may only approximate
+the true information rate. In this chapter, we apply an exact technique,
+Path Weight Sampling (PWS), to precisely quantify information
+transmission in <em>E. coli</em> chemotaxis and compare the results
+against the Gaussian approximation. We build a stochastic model based on
+literature data, which we use to simulate nonlinear chemotactic
+responses to time-dependent stimuli. Our PWS results for this model
+yield information rates 4–5 times higher than those obtained
+experimentally. While this finding can be viewed as surprisingly
+accurate for an ab initio prediction, the question remains whether the
+discrepancy is due to the limitations of the Gaussian framework used by
+Mattingly et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> or due to
+the assumptions of our stochastic model. Examining the latter question
+reveals that our initial model underestimates both the magnitude of the
+response and the biochemical noise. We refined the model by changing two
+key parameters that describe the receptor array, namely the number of
+clusters and their size. This leads to information rate estimates that
+closely align with experimental data, indicating that the number of
+receptor clusters is much smaller than hitherto believed, while their
+size is much larger. Finally, our analysis confirms the accuracy of the
+Gaussian framework for studying chemotaxis in shallow gradients,
+validating its use by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> a posteriori.</p>
+</blockquote>
+<h1 id="ch:chemotaxis">Application—Bacterial Chemotaxis</h1>
+<p>The chemotaxis system of the bacterium <em>Escherichia coli</em> is a
+complex information processing system. It is responsible for detecting
+nutrient gradients in the cell’s environment and using that information
+to guide the bacterium’s movement. <em>E. coli</em> navigates through
+its environment by performing a biased random walk, successively
+alternating between so-called <span><em>runs</em></span>, during which
+it swims with a nearly constant speed, and
+<span><em>tumbles</em></span>, during which it randomly chooses a new
+direction <span class="citation" data-cites="1977.Berg"> [<a
+href="#ref-1977.Berg" role="doc-biblioref">2</a>]</span>. By adaptively
+varying the tumbling probability and thus adjusting the relative
+duration of runs and tumbles, the bacterium is able to climb a chemical
+gradient.</p>
+<p>Recently, Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> found that the ability of the
+bacterium to climb chemical gradients is fundamentally limited by the
+information it can acquire via its receptors. However, to calculate the
+information rate from their experimental data, they relied on a Gaussian
+approximation which assumes linear Gaussian statistics for the
+trajectories. The use of the approximation is justified by the argument
+that in shallow concentration gradients the behavior of the chemotaxis
+network is approximately linear. Nevertheless, it is well known that
+chemotaxis generally exhibits a highly nonlinear response, which
+suggests limitations to the Gaussian framework’s accuracy in capturing
+the full dynamics of the system. Moreover, we have seen in the previous
+chapter that the Gaussian approximation may fail in surprising ways.</p>
+<p>In this chapter, we use Path Weight Sampling (PWS) to exactly
+quantify information transmission in <em>E. coli</em> chemotaxis, and to
+assess the accuracy of the Gaussian approximation. To study information
+transmission in <em>E. coli</em> chemotaxis using PWS, we first develop
+a stochastic model of the biochemical chemotaxis network based on the
+MWC model for receptor cooperativity <span class="citation"
+data-cites="1965.Monod 1997.Barkai 2004.Sourjik"> [<a
+href="#ref-1965.Monod" role="doc-biblioref">3</a>–<a
+href="#ref-2004.Sourjik" role="doc-biblioref">5</a>]</span>. This model
+accurately describes the nonlinear behavior of the chemotaxis network
+and allows us to simulate the chemotactic response to an arbitrary
+time-dependent stimulus. Furthermore, we can use PWS to compute the
+mutual information rate between arbitrary input signals and the response
+signal generated by the model. To obtain realistic time-dependent input
+signals, we assume a cell performing a random walk in a static
+exponential gradient, following Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>. By using the same input dynamics as
+those in Ref. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, we can
+rigorously compare our results against the experiments.</p>
+<p>One of our principal findings is that the information transmission
+rate computed by PWS for the model based on the literature data—which we
+refer to as the “literature-based model”—is approximately 4–5 times
+higher than the rate measured experimentally by Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>. Given
+that this model relies entirely on available literature data without any
+fitting to the results of Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, an agreement within a factor of 4–5
+is perhaps unexpectedly good. Still, the source of the discrepancy
+remains unclear: does it stem from the inaccuracy of the Gaussian
+framework used by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> or from the inaccuracy of our
+literature-based model?</p>
+<p>To address this question, we examined the data of Mattingly et al.
+<span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> on the
+response and the noise amplitude. We found that the literature-based
+model underestimates not only the response strength but also the noise.
+By fitting the response kernel and the noise correlation function, we
+developed a “fitted model” in which receptor clusters are larger,
+enhancing the response amplitude, but significantly fewer in number,
+leading to much greater noise and thus a lower information transmission
+rate. Recomputing the information rate with PWS for this model, fitted
+to the linear response and the noise, yielded close agreement with the
+information rate measurements of Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, suggesting that the receptor array
+composition differs substantially from previous assumptions. In
+particular, while the predicted cluster size is about a factor of 2
+larger than previous estimates, the number of clusters is about tenfold
+lower. Lastly, we found that the Gaussian framework is highly accurate
+in the regime of shallow gradients as studied by Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, thus
+verifying their Gaussian approach <em>a posteriori</em>.</p>
+<p>In <a href="#sec:chemotaxis_input">Sec. chemotaxis_input</a> we
+describe the dynamics of the input signal. <a
+href="#sec:chemotaxis-model">Section chemotaxis-model</a> introduces the
+stochastic model of the chemotaxis system that we developed based on
+available literature. In <a href="#sec:lna">Sec. lna</a> we describe the
+Gaussian approximation used by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> to compute the information
+transmission rate and in <a href="#sec:comparison">Sec. comparison</a>
+we present the results. We conclude with a discussion of our findings,
+particularly regarding the number of clusters and their size.</p>
+<h2 id="sec:chemotaxis_input"
+id="stochastic-dynamics-of-the-input-signal-for-chemotaxis">Stochastic
+Dynamics of the Input Signal for Chemotaxis</h2>
+<p>The information transmission rate depends not only on the biochemical
+chemotaxis network, but also on the dynamics of the input signal. It is
+therefore important that the dynamics of this signal in our model agree
+with those in the experiments of Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>. For these experiments the input
+signal is the time-dependent ligand concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+that is experienced by the swimming bacterium.</p>
+<figure>
+<p><img src="../images/ecoli_swimming.svg"  /> </p>
+<figcaption>In a shallow exponential gradient
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(x)</annotation></semantics></math>,
+the bacterium diffuses nearly freely in the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>-direction.
+The variance of the position increases with time, the hallmark of a
+random walk. The input signal is the concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)=c(x(t))</annotation></semantics></math>
+as experienced by the bacterium at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</figcaption>
+</figure>
+<p>We consider an <em>Escherichia coli</em> bacterium that swims in a
+static nutrient concentration gradient
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(x)</annotation></semantics></math>.
+Following Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, the gradient is exponential:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>c</mi><mn>0</mn></msub><msup><mi>e</mi><mrow><mi>g</mi><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">c(x)=c_0 e^{gx}</annotation></semantics></math>
+with steepness
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>.
+In a shallow gradient, the speed
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_x(t)</annotation></semantics></math>
+of <em>E. coli</em> along the gradient axis can be considered as a
+stochastic process that fluctuates around the net chemotactic drift
+velocity. Following Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, we assume that in a shallow gradient
+the bacterial swimming dynamics are, to a good approximation, the same
+as they are in the absence of a gradient. Their experimental evidence
+shows that the velocity fluctuations in absence of a gradient are
+described by an exponentially decaying auto-correlation function: </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><msub><mi>a</mi><mi>v</mi></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>λ</mi><mo stretchy="false" form="prefix">|</mo><mi>t</mi><mo stretchy="false" form="prefix">|</mo></mrow></msup><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">V(t) = \langle v_x(0) v_x(t) \rangle = a_v e^{-\lambda |t|} \,.</annotation></semantics></math>
+<p> Therefore, in a shallow gradient, the gradient-climbing speed can be
+modeled as a zero-mean Ornstein-Uhlenbeck process </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>v</mi><mi>x</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mi>λ</mi><msub><mi>v</mi><mi>x</mi></msub><mo>+</mo><mi>σ</mi><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\frac{dv_x}{dt} = -\lambda v_x + \sigma \xi(t)</annotation></semantics></math>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><msqrt><mrow><mn>2</mn><msub><mi>a</mi><mi>v</mi></msub><mi>λ</mi></mrow></msqrt></mrow><annotation encoding="application/x-tex">\sigma = \sqrt{2 a_v \lambda}</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\xi(t)</annotation></semantics></math>
+is white noise with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mi>δ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>−</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\langle \xi(t) \xi(t^\prime) \rangle = \delta (t - t^\prime)</annotation></semantics></math>.
+The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>-position
+of the bacterium is given by the integral of the velocity, i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mi>d</mi><mi>τ</mi><mspace width="0.167em"></mspace><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)=\int^t_0d\tau\, v_x(\tau)</annotation></semantics></math>.
+Thus, when projected onto the gradient axis, the bacterium performs a 1D
+random walk described by the Langevin equation </p>
+<div id="eq:random_walk">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>d</mi><mn>2</mn></msup><mi>x</mi></mrow><mrow><mi>d</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mi>−</mi><mi>λ</mi><mfrac><mrow><mi>d</mi><mi>x</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>+</mo><mi>σ</mi><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{d^2 x}{dt^2} = -\lambda \frac{dx}{dt} + \sigma \xi(t) \,.
+    \label{eq:random_walk}</annotation></semantics></math>
+</div>
+<p>Since the bacterium moves in a static concentration gradient
+described by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(x)</annotation></semantics></math>,
+the concentration dynamics that the cell observes are generated directly
+from its own movement dynamics, see Fig.  . At time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+the cell is at position
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>
+and thus measures the concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)=c(x(t))</annotation></semantics></math>.
+We find the stochastic dynamics of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+by differentiating using the chain rule </p>
+<div id="eq:concentration_dynamics">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>c</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>c</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>x</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>g</mi><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{dc}{dt} = \frac{\partial c}{\partial x} \frac{\partial x}{\partial t} = g c(t)\,v_x(t)\,.
+    \label{eq:concentration_dynamics}</annotation></semantics></math>
+</div>
+<p> The concentration dynamics are thus fully determined by the
+stochastic dynamics of the cell’s swimming velocity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_x(t)</annotation></semantics></math>
+in the absence of a gradient and by the shape of the concentration
+gradient
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(x)</annotation></semantics></math>.
+The resulting stochastic dynamics are visualized in <a
+href="#fig:trajectories">Fig. trajectories</a>.</p>
+<figure id="fig:trajectories">
+<img src="../images/input_trajectories.svg"  />
+<figcaption>Input dynamics. <em>Left column:</em> two example time
+traces of the up-gradient velocity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_x(t)</annotation></semantics></math>
+and the observed concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+obtained by integrating <a
+href="#eq:concentration_dynamics">eq:concentration_dynamics</a>.
+<em>Right column:</em> averages of velocity and concentration traces
+obtained from 1000 simulated trajectories. The solid lines show the mean
+as a function of time and boundaries of the shaded regions indicate the
+5% and 95% quantiles.</figcaption>
+</figure>
+<p>In the PWS simulations we use
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+directly as the input to our system. Yet, for the Gaussian
+approximation, to which we will compare the PWS result, we need to use a
+different input signal because the chemotaxis system does not respond
+linearly to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>.
+Instead, Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> show that the chemotaxis system
+responds approximately linear to an input
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+defined by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mi>d</mi><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">s(t) = \frac{d}{dt} \ln{c}(t) = gv_x(t) \,.</annotation></semantics></math>
+<p> The correlation function of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>+</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><msup><mi>g</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">C_{ss}(t) = \langle s(\tau) s(t + \tau) \rangle = g^2 V(t)\,.</annotation></semantics></math>
+<p> The power spectral density of this signal is given by the Fourier
+transform of its correlation function: </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>g</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>g</mi><mn>2</mn></msup><mfrac><mrow><mn>2</mn><msub><mi>a</mi><mi>v</mi></msub><mi>λ</mi></mrow><mrow><msup><mi>ω</mi><mn>2</mn></msup><mo>+</mo><msup><mi>λ</mi><mn>2</mn></msup></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">P_{ss}(\omega) = g^2 V(\omega) = g^2 \frac{2a_v \lambda}{\omega^2 + \lambda^2}\,.</annotation></semantics></math>
+<p>We use this same input below in <a href="#sec:lna">Sec. lna</a> to
+compute the Gaussian approximation of the mutual information rate. As
+discussed in more detail in the main text, we note that the mutual
+information between the output and the input trajectory
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>,
+as measured in the PWS simulations, is identical to that between the
+output and the input trajectory
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>,
+as computed in the Gaussian model because of the deterministic and
+monotonic mapping between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>.</p>
+<h2 id="sec:chemotaxis-model"
+id="stochastic-chemotaxis-model">Stochastic Chemotaxis Model</h2>
+<figure id="fig:chemotaxis_cartoon">
+<img src="../images/chemotaxis_cartoon.svg"  />
+<figcaption>Cartoon of the chemotaxis network of <em>E. coli</em>.
+Receptors form clusters with an associated CheA kinase. A cluster can
+either be active or inactive, depending on the number of bound ligands
+(green dots) and methylated sites (orange dots). Active CheA can
+phosphorylate CheY; phosphorylated CheY controls the rotation direction
+of the flagellar motors and thereby the movement of the
+bacterium.</figcaption>
+</figure>
+<p>We apply PWS to a stochastic model of the chemotaxis network that
+describes individual reactions via a master equation. In this model, the
+receptors are grouped in clusters. Each receptor can switch between an
+active and an inactive conformational state, but, in the spirit of the
+Monod-Wyman-Changeux model <span class="citation"
+data-cites="1965.Monod"> [<a href="#ref-1965.Monod"
+role="doc-biblioref">3</a>]</span>, the energetic cost of having two
+different conformations in the same cluster is prohibitively large. We
+can then speak of each cluster as either being active or inactive. Each
+receptor in a cluster can bind ligand and be (de)methylated, which,
+together, control the probability that the cluster is active. In the
+simulations, receptor (de)methylation is modeled explicitly, because the
+(de)methylation reactions are slow. In contrast, the timescale of
+receptor-ligand (un)binding is much faster than the other timescales in
+the system, i.e., those of the input dynamics, CheY (de)phosphorylation,
+and receptor (de)methylation. The receptor-ligand binding dynamics can
+therefore be integrated out without affecting information transmission,
+in order to avoid wasting CPU time. In addition, the receptor clusters
+can phosphorylate CheY, while phosphorylated CheY is dephosphorylated at
+a constant rate. The dynamics of the kinase CheA and the phosphatase
+CheZ which drive (de)phosphorylation are not modeled explicitly. <a
+href="#fig:chemotaxis_cartoon">Figure chemotaxis_cartoon</a> shows a
+depiction of the bacterial chemotaxis network.</p>
+<p>Table shows the parameter values of our chemotaxis model, which are
+all based on values reported in the literature. For what follows below,
+the key parameters are the number of receptors per cluster, which is
+taken to be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">N=6</annotation></semantics></math>
+based on Refs. <span class="citation"
+data-cites="2010.Shimizu 2020.Kamino"> [<a href="#ref-2010.Shimizu"
+role="doc-biblioref">6</a>,<a href="#ref-2020.Kamino"
+role="doc-biblioref">7</a>]</span>, while the number of clusters is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>=</mo><msub><mi>N</mi><mi mathvariant="normal">r</mi></msub><mi>/</mi><mi>N</mi><mo>=</mo><mn>400</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c} = N_{\mathrm r} / N = 400</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>10</mn><mn>3</mn></msup><mo>&lt;</mo><msub><mi>N</mi><mi mathvariant="normal">r</mi></msub><mo>&lt;</mo><msup><mn>10</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">10^3 &lt; N_{\mathrm r} &lt; 10^4</annotation></semantics></math>
+is an estimate for the total number of receptors based on Ref. <span
+class="citation" data-cites="2004.Li"> [<a href="#ref-2004.Li"
+role="doc-biblioref">8</a>]</span>. These are the numbers of the
+“literature-based model”. The key parameters, the number of clusters and
+their size, change in the “fitted model”, which is based on fitting the
+response kernel and noise correlation function to the data of Mattingly
+et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>.</p>
+<h3 id="mwc-model">MWC Model</h3>
+<p>In our model, each cluster consists of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+receptors. report a typical value for the cluster size of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">N=6</annotation></semantics></math>.
+Detailed balance requires that the ligand binding affinity depends on
+whether a cluster is in the active or inactive state. Consequently, we
+have a dissociation constant
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>a</mi></msub><annotation encoding="application/x-tex">K_a</annotation></semantics></math>
+for a ligand bound to an active receptor and another dissociation
+constant
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>i</mi></msub><annotation encoding="application/x-tex">K_i</annotation></semantics></math>
+for a ligand bound to an inactive receptor. For chemotaxis,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>a</mi></msub><mo>≫</mo><msub><mi>K</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">K_a\gg K_i</annotation></semantics></math>,
+i.e. the ligand binding affinity is higher for the inactive state.</p>
+<p>Additionally, each receptor monomer has
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+methylation sites that can affect its conformation and therefore the
+kinase activity. The aspartate receptor Tar has
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">M=4</annotation></semantics></math>
+methylation sites <span class="citation" data-cites="2010.Shimizu"> [<a
+href="#ref-2010.Shimizu" role="doc-biblioref">6</a>]</span>. We model
+the receptors’ methylation dynamics such that CheB only demethylates
+active receptors while CheR only methylates inactive receptors,
+following previous models for chemotaxis <span class="citation"
+data-cites="1997.Barkai 1999.Morton-Firth"> [<a href="#ref-1997.Barkai"
+role="doc-biblioref">4</a>,<a href="#ref-1999.Morton-Firth"
+role="doc-biblioref">9</a>]</span>. This approach represents arguably
+the simplest way to model methylation with exact receptor
+adaptation.</p>
+<p>In an environment with ligand concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>,
+the probability of a receptor cluster with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+methylated sites to be active,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_a(c, m)</annotation></semantics></math>,
+is determined by the free-energy difference between the active and
+inactive receptor states </p>
+<div id="eq:prob_active">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">p_a(c, m) = \frac{1}{1 + e^{-f(c, m)}} \label{eq:prob_active}</annotation></semantics></math>
+</div>
+<p> where </p>
+<div id="eq:free_energy_active">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>N</mi><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>c</mi><mi>/</mi><msub><mi>K</mi><mi>i</mi></msub></mrow><mrow><mn>1</mn><mo>+</mo><mi>c</mi><mi>/</mi><msub><mi>K</mi><mi>a</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>δ</mi><msub><mi>f</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><msub><mi>m</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f(c, m) = N \ln{\left( \frac{1 + c/K_i}{1 + c/K_a} \right)} + \delta f_m (m - m_0) \,. \label{eq:free_energy_active}</annotation></semantics></math>
+</div>
+<p> Here, the number of methylated sites of a cluster (not receptor) is
+denoted by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>,
+ranging from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">NM</annotation></semantics></math>.
+The parameters are again taken from Shimizu et al. <span
+class="citation" data-cites="2010.Shimizu"> [<a href="#ref-2010.Shimizu"
+role="doc-biblioref">6</a>]</span>. Their experimental results indicate
+that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mspace width="-0.167em"></mspace><msub><mi>f</mi><mi>m</mi></msub><mo>=</mo><mi>−</mi><mn>2</mn><msub><mi>k</mi><mi mathvariant="normal">B</mi></msub><mi>T</mi><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>m</mi><mn>0</mn></msub><mo>=</mo><mi>−</mi><mi>N</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\delta\!f_m = -2 k_\mathrm{B}T,\ m_0=-N/2</annotation></semantics></math>.
+Kamino et al. <span class="citation" data-cites="2020.Kamino"> [<a
+href="#ref-2020.Kamino" role="doc-biblioref">7</a>]</span> report ligand
+dissociation constants of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>a</mi></msub><mo>=</mo><mn>2900</mn><mspace width="0.167em"></mspace><mi>μ</mi><mtext mathvariant="normal">M</mtext></mrow><annotation encoding="application/x-tex">K_a = 2900\,\mu\text{M}</annotation></semantics></math>
+for active receptors and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>=</mo><mn>18</mn><mspace width="0.167em"></mspace><mi>μ</mi><mtext mathvariant="normal">M</mtext></mrow><annotation encoding="application/x-tex">K_i = 18\,\mu\text{M}</annotation></semantics></math>
+for inactive Tar receptors (for MeASP). Note that in the equations we
+assume units such that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi mathvariant="normal">B</mi></msub><mi>T</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k_\mathrm{B} T=1</annotation></semantics></math>.</p>
+<p>The dynamics of methylation in our model are described by the
+following mean-field equation </p>
+<div id="eq:methylation_dynamics">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>m</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><msub><mi>k</mi><mi>R</mi></msub><mo>−</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>k</mi><mi>B</mi></msub><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{dm}{dt} = (1-p_a(c, m)) k_R - p_a(c, m) k_B \,.
+    \label{eq:methylation_dynamics}</annotation></semantics></math>
+</div>
+<p> The system reaches a steady state for the adapted activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">p_a(c, m)=a_0</annotation></semantics></math>
+where </p>
+<div id="eq:adapted_activity">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mfrac><msub><mi>k</mi><mi>R</mi></msub><mrow><msub><mi>k</mi><mi>R</mi></msub><mo>+</mo><msub><mi>k</mi><mi>B</mi></msub></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">a_0 = \frac{k_R}{k_R + k_B} \,.
+    \label{eq:adapted_activity}</annotation></semantics></math>
+</div>
+<p> Ṯhe steady-state methylation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>m</mi><mo>⋆</mo></msup><annotation encoding="application/x-tex">m^\star</annotation></semantics></math>
+can be obtained from <a href="#eq:prob_active">eq:prob_active</a> and <a
+href="#eq:free_energy_active">eq:free_energy_active</a> by solving
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><msup><mi>m</mi><mo>⋆</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">p_a(c, m^\star)=a_0</annotation></semantics></math>:
+</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>m</mi><mo>⋆</mo></msup><mo>=</mo><msub><mi>m</mi><mn>0</mn></msub><mo>+</mo><mfrac><mrow><mi>N</mi><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>1</mn><mo>+</mo><mi>c</mi><mi>/</mi><msub><mi>K</mi><mi>i</mi></msub></mrow><mrow><mn>1</mn><mo>+</mo><mi>c</mi><mi>/</mi><msub><mi>K</mi><mi>a</mi></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><msub><mi>a</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>−</mi><mi>δ</mi><msub><mi>f</mi><mi>m</mi></msub></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">m^\star = m_0 + \frac{N \ln{\left( \frac{1 + c/K_i}{1 + c/K_a} \right)}+ \ln{\left( \frac{1-a_0}{a_0} \right)}}{-\delta f_m}\,.</annotation></semantics></math>
+<p>Ṯo characterize the methylation timescale, we linearize the dynamics
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">m(t)</annotation></semantics></math>
+around the steady state (at constant ligand concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>c</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">c(t)=c_0</annotation></semantics></math>).
+To first order, we can write </p>
+<div id="eq:dmdt">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>m</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mrow><mi>m</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msup><mi>m</mi><mo>⋆</mo></msup></mrow><msub><mi>τ</mi><mi>m</mi></msub></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{d m}{d t} = -\frac{m(t) - m^\star}{\tau_m}\,. \label{eq:dmdt}</annotation></semantics></math>
+</div>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\tau_m</annotation></semantics></math>
+is the characteristic timescale of the methylation dynamics. We find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\tau_m</annotation></semantics></math>
+by expanding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi>a</mi></msub><annotation encoding="application/x-tex">p_a</annotation></semantics></math>
+[<a href="#eq:prob_active">eq:prob_active</a>] around
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><msup><mi>m</mi><mo>⋆</mo></msup></mrow><annotation encoding="application/x-tex">m=m^\star</annotation></semantics></math>:
+</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><msup><mi>m</mi><mo>⋆</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mrow><mi>∂</mi><msub><mi>p</mi><mi>a</mi></msub></mrow><mrow><mi>∂</mi><mi>m</mi></mrow></mfrac><msub><mo minsize="300%" maxsize="300%" stretchy="true" form="prefix">|</mo><msup><mi>m</mi><mo>⋆</mo></msup></msub><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><msup><mi>m</mi><mo>⋆</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>𝒪</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>m</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>−</mo><mi>δ</mi><msub><mi>f</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>a</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><msup><mi>m</mi><mo>⋆</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mi>𝒪</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>m</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+    p_a(c, m) &amp;= p_a(c, m^\star) + \frac{\partial p_a}{\partial m} \Bigg|_{m^\star} (m - m^\star) + \mathcal{O}(m^2) \\
+    &amp;= a_0 [1 - \delta f_m (1-a_0) (m-m^\star)] + \mathcal{O}(m^2)
+    \,,
+\end{aligned}</annotation></semantics></math>
+<p> and then plugging this first-order expansion into <a
+href="#eq:methylation_dynamics">eq:methylation_dynamics</a> to get </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>m</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>δ</mi><msub><mi>f</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>m</mi><mo>−</mo><msup><mi>m</mi><mo>⋆</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mrow><msubsup><mi>k</mi><mi>R</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>+</mo><msubsup><mi>k</mi><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{d m}{d t} =   
+     \frac{\delta f_m (m - m^\star)}{k_R^{-1} + k_B^{-1}} \,.</annotation></semantics></math>
+<p> By comparing with <a href="#eq:dmdt">eq:dmdt</a> we find that for
+small perturbations, the timescale for methylation to approach steady
+state is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mi>m</mi></msub><mo>=</mo><mfrac><mrow><msubsup><mi>k</mi><mi>R</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>+</mo><msubsup><mi>k</mi><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup></mrow><mrow><mi>−</mi><mi>δ</mi><msub><mi>f</mi><mi>m</mi></msub></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\tau_m = \frac{k^{-1}_R + k^{-1}_B}{-\delta f_m} \,.</annotation></semantics></math>
+<p> Thus, the parameters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>R</mi></msub><annotation encoding="application/x-tex">k_R</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>R</mi></msub><annotation encoding="application/x-tex">k_R</annotation></semantics></math>
+determine two important characteristics of the methylation system: the
+adapted activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>0</mn></msub><annotation encoding="application/x-tex">a_0</annotation></semantics></math>
+and the methylation time scale
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\tau_m</annotation></semantics></math>.
+Shimizu et al. <span class="citation" data-cites="2010.Shimizu"> [<a
+href="#ref-2010.Shimizu" role="doc-biblioref">6</a>]</span> report an
+adapted activity of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mn>1</mn><mi>/</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">a_0 = 1/3</annotation></semantics></math>
+and based on experimental data <span class="citation"
+data-cites="2021.Mattingly 2010.Shimizu"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>,<a href="#ref-2010.Shimizu"
+role="doc-biblioref">6</a>]</span> we assume a methylation time scale of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mi>m</mi></msub><mo>=</mo><mn>10</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">s</mtext></mrow><annotation encoding="application/x-tex">\tau_m = 10\,\text{s}</annotation></semantics></math>.
+Our parameter choice, which is consistent with both of these
+observations, is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>R</mi></msub><mo>=</mo><mn>0.075</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_R=0.075\,\text{s}^{-1}</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>B</mi></msub><mo>=</mo><mn>0.15</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_B=0.15\,\text{s}^{-1}</annotation></semantics></math>.</p>
+<p>CheY is phosphorylated by CheA, the receptor-associated kinase. The
+kinase activity is directly linked to the activity of a receptor
+cluster. Therefore, we assume that CheY is phosphorylated by active
+receptor clusters. Dephosphorylation of CheY-p is catalyzed by the
+phosphatase CheZ, which we assume to be present at a constant
+concentration. Ṯhe CheZ-catalyzed dephosphorylation rate was reported to
+be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2.2</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">2.2\,\text{s}^{-1}</annotation></semantics></math>
+for attractant response and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>22</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">22\,\text{s}^{-1}</annotation></semantics></math>
+for repellent response <span class="citation"
+data-cites="2002.Sourjikt5"> [<a href="#ref-2002.Sourjikt5"
+role="doc-biblioref">10</a>]</span>. Based on this data, we use the
+approximate dephosphorylation rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>Z</mi></msub><mo>=</mo><mn>10</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_Z = 10\,\text{s}^{-1}</annotation></semantics></math>
+in our model. In the fully adapted state the fraction of active
+receptors is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>0</mn></msub><annotation encoding="application/x-tex">a_0</annotation></semantics></math>
+and therefore the mean fraction of phosphorylated CheY,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mi>Y</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mtext mathvariant="normal">CheYp</mtext><mo stretchy="false" form="postfix">]</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mtext mathvariant="normal">CheY</mtext><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mo stretchy="false" form="prefix">[</mo><mtext mathvariant="normal">CheYp</mtext><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\phi_Y = [\text{CheYp}]/([\text{CheY}] + [\text{CheYp}])</annotation></semantics></math>,
+is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mi>Y</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>a</mi><mn>0</mn></msub><msub><mi>N</mi><mi>c</mi></msub><msub><mi>k</mi><mi>A</mi></msub></mrow><mrow><msub><mi>k</mi><mi>Z</mi></msub><mo>+</mo><msub><mi>a</mi><mn>0</mn></msub><msub><mi>N</mi><mi>c</mi></msub><msub><mi>k</mi><mi>A</mi></msub></mrow></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\phi_Y = \frac{a_0 N_c k_A}{k_Z + a_0 N_c k_A} \,.</annotation></semantics></math>
+<p> In the fully adapted state the phosphorylated fraction was found to
+be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϕ</mi><mi>Y</mi></msub><mo>≈</mo><mn>0.16</mn></mrow><annotation encoding="application/x-tex">\phi_Y \approx 0.16</annotation></semantics></math>
+<span class="citation" data-cites="2002.Sourjik"> [<a
+href="#ref-2002.Sourjik" role="doc-biblioref">11</a>]</span>. Hence, we
+infer a phosphorylation rate of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>A</mi></msub><mo>=</mo><msub><mi>k</mi><mi>Z</mi></msub><msub><mi>ϕ</mi><mi>Y</mi></msub><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>0</mn></msub><msub><mi>N</mi><mi>c</mi></msub><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>ϕ</mi><mi>Y</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0.015</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_A = k_Z \phi_Y / (a_0 N_c (1 - \phi_Y)) = 0.015\,\text{s}^{-1}</annotation></semantics></math>
+for the literature-based model. Accordingly, for the “fitted model”,
+based on fitting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+to those measured by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, we use a larger phosphorylation rate
+due to the smaller number of clusters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>.</p>
+<h3 id="reaction-kinetics">Reaction Kinetics</h3>
+<p>S̱ince the timescale of conformational switching of active and
+inactive receptors and ligand binding is much faster <span
+class="citation" data-cites="2013.Ortega"> [<a href="#ref-2013.Ortega"
+role="doc-biblioref">12</a>]</span> than the timescale of
+phosphorylation or methylation, we don’t explicitly model ligand
+(un)binding and conformational switching. Each cluster is characterized
+by its methylation state
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>.
+This ranges from 0 to the total number of methylation sites, which
+equals the number of sites per receptor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+times the number of receptors per cluster
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>.
+In our Gillespie simulation, each possible state of a cluster is its own
+species, i.e., we have species
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\mathrm{C}_m</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>0</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">m=0,\ldots,NM</annotation></semantics></math>.
+Overall, our chemotaxis model consists of four types of reactions that
+describe (a) the methylation of a receptor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>→</mo><msub><mi mathvariant="normal">C</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_m\to\mathrm{C}_{m+1}</annotation></semantics></math>,
+(b) the demethylation of a receptor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>→</mo><msub><mi mathvariant="normal">C</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_m\to\mathrm{C}_{m-1}</annotation></semantics></math>,
+(c) the phosphorylation of CheY
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>+</mo><mi mathvariant="normal">Y</mi><mo>→</mo><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>+</mo><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_m + \mathrm{Y} \to \mathrm{C}_m + \mathrm{Y_p}</annotation></semantics></math>,
+and (d) the single dephosphorylation reaction
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub><mo>→</mo><mi mathvariant="normal">Y</mi></mrow><annotation encoding="application/x-tex">\mathrm{Y_p} \to \mathrm{Y}</annotation></semantics></math>.
+Thus, due to the combinatorial explosion of receptor states, the system
+has a total number of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mi>N</mi><mi>M</mi><mo>+</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">3NM+2</annotation></semantics></math>
+elementary reactions (which amounts to 75 reactions in the
+literature-based model and 182 reactions in the fitted model).</p>
+<p>The ligand-concentration dependent methylation rate for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>→</mo><msub><mi mathvariant="normal">C</mi><mrow><mi>m</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_m\rightarrow \mathrm{C}_{m+1}</annotation></semantics></math>
+is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mrow><mi>m</mi><mo>+</mo></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><msub><mi>k</mi><mi>R</mi></msub><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">k_{m+}(c,m) = (1-p_a(c,m)) k_R \,.</annotation></semantics></math>
+<p> The term
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">1-p_a(c,m)</annotation></semantics></math>
+is needed because only inactive receptors can be methylated. The
+demethylation rate for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>→</mo><msub><mi mathvariant="normal">C</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_{m}\rightarrow \mathrm{C}_{m-1}</annotation></semantics></math>
+is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mrow><mi>m</mi><mo>−</mo></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>k</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">k_{m-}(c, m) = p_a(c,m) k_B</annotation></semantics></math>
+<p> where only active receptors can be demethylated. These zero-order
+dynamics of (de)methylation of receptors lead to the adaptive behavior
+of the chemotaxis system as described above.</p>
+<p>Only active receptors can phosphorylate the CheY protein using the
+receptor-associated kinase CheA. We therefore model phosphorylation as a
+reaction
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>+</mo><mi mathvariant="normal">Y</mi><mo>→</mo><msub><mi mathvariant="normal">C</mi><mi>m</mi></msub><mo>+</mo><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub></mrow><annotation encoding="application/x-tex">\mathrm{C}_{m} + \mathrm{Y} \rightarrow \mathrm{C}_{m} + \mathrm{Y_p}</annotation></semantics></math>
+with rate </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mrow><mi mathvariant="normal">Y</mi><mo>→</mo><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>k</mi><mi>A</mi></msub></mrow><annotation encoding="application/x-tex">k_{\mathrm{Y}\rightarrow\mathrm{Y_p}}(c,m) = p_a(c, m) k_A</annotation></semantics></math>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>A</mi></msub><annotation encoding="application/x-tex">k_A</annotation></semantics></math>
+is a constant that represents the phosphorylation rate of an active
+cluster. The dephosphorylation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub><mo>→</mo><mi mathvariant="normal">Y</mi></mrow><annotation encoding="application/x-tex">\mathrm{Y_p}\rightarrow \mathrm{Y}</annotation></semantics></math>
+is carried out by the phosphatase CheZ at a constant rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>Z</mi></msub><mo>=</mo><mn>10</mn><mspace width="0.167em"></mspace><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">k_Z=10\,\text{s}^{-1}</annotation></semantics></math>.</p>
+<h2 id="sec:lna"
+id="mutual-information-rate-for-the-chemotaxis-system-in-the-gaussian-approximation">Mutual
+Information Rate for the Chemotaxis System in the Gaussian Approximation
+</h2>
+<p>To test the validity of the Gaussian approach used by Mattingly et
+al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, we also
+compared the exact PWS results for our discrete, stochastic model to the
+prediction of the Gaussian approximation for this same model. In
+continuous time, the information transmission rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X})</annotation></semantics></math>
+of a Gaussian system in steady state can be computed exactly from the
+power spectral density functions of the system <span class="citation"
+data-cites="2009.Tostevin"> [<a href="#ref-2009.Tostevin"
+role="doc-biblioref">13</a>]</span>: </p>
+<div id="eq:info_rate_gaussian">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mrow><mn>4</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>P</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><mrow><msub><mi>P</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X}) = -\frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \ln{\left[1 - \frac{|P_{sx}(\omega)|^2}{P_{ss}(\omega)P_{xx}(\omega)}\right]} \,.
+    \label{eq:info_rate_gaussian}</annotation></semantics></math>
+</div>
+<p> Here, the power spectral density
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{\alpha\beta}(\omega)</annotation></semantics></math>
+is defined as </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>d</mi><mi>t</mi><mspace width="0.222em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><mi>i</mi><mi>ω</mi><mi>t</mi></mrow></msup><msub><mi>C</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{\alpha\beta}(\omega) = \int^\infty_{-\infty} dt\ e^{-i\omega t} C_{\alpha\beta}(t)</annotation></semantics></math>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo>−</mo><msub><mi>t</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>α</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>β</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">C_{\alpha\beta}(t_i - t_j) = \langle \alpha(t_i) \beta(t_j) \rangle</annotation></semantics></math>
+denote the stationary (cross-)correlation functions of the system.</p>
+<p>Thus, we need to obtain the correlation functions to compute the
+information rate in the Gaussian framework. In their experiments with
+<em>E. coli</em> bacteria, Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> don’t obtain these correlation
+functions directly, however. Instead, they obtain three kernels,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>,
+from which the correlation functions can be inferred. We follow this
+approach for calculating the Gaussian information transmission rate.</p>
+<h3
+id="computing-the-gaussian-information-rate-using-linear-response-kernels-vt-kt-and-nt">Computing
+the Gaussian information rate using linear response kernels <em>V(t),
+K(t),</em> and <em>N(t)</em></h3>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>
+denotes the autocorrelation function of the swimming velocity of
+bacteria, i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>v</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">V(t)=\langle v_x(\tau) v_x(\tau + t)\rangle</annotation></semantics></math>.
+As explained in <a href="#sec:chemotaxis_input">Sec.
+chemotaxis_input</a>, the swimming dynamics of the bacteria determine
+the statistics of the input signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mi>d</mi><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t) = \frac{d}{dt}\ln{c}(t)</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+is the ligand concentration as experienced by the bacterium and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+is the gradient steepness. The input signal correlation function,
+denoted by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">C_{ss}(t)</annotation></semantics></math>,
+can then be expressed as </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>g</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">C_{ss}(t) = g^2 V(t) \,.</annotation></semantics></math>
+<p>The response kernel, denoted by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>,
+represents the time evolution of the average activity of the receptors
+in response to an instantaneous step change in the input concentration.
+More precisely,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+is defined as </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>θ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">⟨</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>a</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">⟩</mo><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mfrac><msub><mi>c</mi><mi>s</mi></msub><msub><mi>c</mi><mn>0</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">K(t) = \theta(t)  \langle a(t) - a_0 \rangle \ln{\frac{c_s}{c_0}}</annotation></semantics></math>
+<p> where we assume the input concentration jumps instantaneously from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>c</mi><mn>0</mn></msub><annotation encoding="application/x-tex">c_0</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>c</mi><mi>s</mi></msub><annotation encoding="application/x-tex">c_s</annotation></semantics></math>
+at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\theta(t)</annotation></semantics></math>
+is the Heaviside step function. Note that because the signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+is defined as the time-derivative of the concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>,
+a step-change in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+corresponds to a delta impulse in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>.
+Thus,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+describes the deterministic dynamics of the system after being subjected
+to a delta stimulus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>δ</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t) = \delta(t)</annotation></semantics></math>,
+making
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+the Green’s function of the system. The activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>
+resulting from arbitrary time-dependent signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+can be written as a convolution of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>t</mi></msubsup><mi>d</mi><msup><mi>t</mi><mi>′</mi></msup><mspace width="0.222em"></mspace><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>−</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo><mi>s</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>η</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t) = a_0 + \int^t_{-\infty} dt^\prime\ K(t-t^\prime) s(t^\prime) + \eta_a(t)</annotation></semantics></math>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>η</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\eta_a(t)</annotation></semantics></math>
+is the receptor activity noise. We define the response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>a</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">x(t)=a(t) - a_0</annotation></semantics></math>.
+Assuming the input statistics are stationary and described by the
+correlation function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">C_{ss}(t)</annotation></semantics></math>,
+it is easy to show that the cross-correlation between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>
+is given by </p>
+<div id="eq:conv_correlation">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>t</mi></msubsup><mi>d</mi><msup><mi>t</mi><mi>′</mi></msup><mspace width="0.222em"></mspace><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>−</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo><msub><mi>C</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><msup><mi>t</mi><mi>′</mi></msup><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">C_{sx}(t) = \langle s(\tau) x(\tau + t) \rangle = \int^t_{-\infty} dt^\prime\ K(t-t^\prime) C_{ss}(t^\prime) \,.
+    \label{eq:conv_correlation}</annotation></semantics></math>
+</div>
+<p> In other words, the cross-correlation between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">s(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x(t)</annotation></semantics></math>
+is given by the convolution of the response kernel with the input
+correlation function.</p>
+<p>The noise kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+describes the autocorrelation of the activity fluctuations in the
+absence of an input stimulus. In particular,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>η</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>η</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">N(t) = \langle \eta_a(\tau) \eta_a(\tau + t) \rangle</annotation></semantics></math>.</p>
+<p>We now rewrite <a
+href="#eq:info_rate_gaussian">eq:info_rate_gaussian</a> for the mutual
+information rate in terms of the three kernels described above. We
+express the power spectra
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>α</mi><mi>β</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{\alpha\beta}(\omega)</annotation></semantics></math>
+in terms of the Fourier-transformed kernels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(\omega)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(\omega)</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>.
+In <a href="#sec:chemotaxis_input">Sec. chemotaxis_input</a> we already
+showed that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>g</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{ss}(\omega) = g^2 V(\omega)</annotation></semantics></math>.
+The cross power spectrum is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>s</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{sx}(\omega) = K(\omega) P_{ss}(\omega)</annotation></semantics></math>
+which follows from <a
+href="#eq:conv_correlation">eq:conv_correlation</a>. Finally, from
+Ref. <span class="citation" data-cites="2009.Tostevin"> [<a
+href="#ref-2009.Tostevin" role="doc-biblioref">13</a>]</span> we use the
+identity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>P</mi><mrow><mi>s</mi><mi>s</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>+</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P_{xx}(\omega) = P_{ss}(\omega) |K(\omega)|^2 + N(\omega)</annotation></semantics></math>
+to express the output power spectrum. We insert these expressions into
+<a href="#eq:info_rate_gaussian">eq:info_rate_gaussian</a> which yields
+</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>4</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><msup><mi>g</mi><mn>2</mn></msup><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X}) = \frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \ln{\left(1+\frac{g^2 V(\omega) |K(\omega)|^2}{N(\omega)}\right)}.</annotation></semantics></math>
+<p> Then, for shallow gradients, we can make a Taylor approximation in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+to obtain </p>
+<div id="eq:gauss_mi_approx">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msup><mi>g</mi><mn>2</mn></msup><mrow><mn>4</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>∞</mi></mrow><mi>∞</mi></msubsup><mi>d</mi><mi>ω</mi><mspace width="0.222em"></mspace><mfrac><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>+</mo><mi>𝒪</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mn>4</mn></msup><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \int^\infty_{-\infty} d\omega\ \frac{V(\omega)|K(\omega)|^2}{N(\omega)} + \mathcal{O}(g^4) \,.
+    \label{eq:gauss_mi_approx}</annotation></semantics></math>
+</div>
+<p> This result shows that the information rate in shallow gradients is
+proportional to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>g</mi><mn>2</mn></msup><annotation encoding="application/x-tex">g^2</annotation></semantics></math>
+and the proportionality constant is determined by the measured kernels.
+Mattingly et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> obtain the
+relevant kernels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(\omega)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(\omega)</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>
+from experiments by fitting phenomenological models to their single-cell
+data. We obtain the kernels from the simulation outputs of our
+stochastic chemotaxis model.</p>
+<h3 id="estimating-the-kernels-from-simulations">Estimating the kernels
+from simulations</h3>
+<h4 id="response-kernel-kt">Response Kernel <em>K(t)</em></h4>
+<p>To compute the response kernel from simulations of our model, we
+study how the system responds to a sudden increase in ligand
+concentration. First, we allow the system to reach steady state by
+adapting it to an initial ligand concentration of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>0</mn></msub><mo>=</mo><mn>100</mn><mspace width="0.167em"></mspace><mi>μ</mi><mtext mathvariant="normal">M</mtext></mrow><annotation encoding="application/x-tex">c_0=100\,\mu\text{M}</annotation></semantics></math>
+for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>=</mo><mn>50</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">s</mtext></mrow><annotation encoding="application/x-tex">t_0 = 50\,\text{s}</annotation></semantics></math>.
+At time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><msub><mi>t</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">t=t_0</annotation></semantics></math>,
+we instantaneously increase the concentration by 10% to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>s</mi></msub><mo>=</mo><msub><mi>c</mi><mn>0</mn></msub><mo>+</mo><mn>0.1</mn><msub><mi>c</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">c_s=c_0 + 0.1 c_0</annotation></semantics></math>.
+We then record the system’s response over the next 200 s, sampling at
+intervals of 0.01 s.</p>
+<p>Rather than directly obtaining the receptor activity from the
+simulations, we follow the experimental approach of inferring the
+receptor activity from the phosphorylated CheY levels. Specifically, we
+record the fraction
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">[</mo><msub><mi mathvariant="normal">Y</mi><mi mathvariant="normal">p</mi></msub><mo stretchy="false" form="postfix">]</mo><mi>/</mi><mo stretchy="false" form="prefix">[</mo><mi mathvariant="normal">Y</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">f(t)=[\mathrm{Y_p}]/[\mathrm{Y}]</annotation></semantics></math>
+between phosphorylated and unphosphorylated CheY. Since the copy number
+of CheY is relatively large, this fraction serves as a good proxy for
+the activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>.
+We relate the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(t)</annotation></semantics></math>
+to the activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>
+via the expression </p>
+<div id="eq:frac_to_act">
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msub><mi>k</mi><mi>Z</mi></msub><mrow><msub><mi>k</mi><mi>A</mi></msub><msub><mi>N</mi><mi>c</mi></msub></mrow></mfrac><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t) = \frac{k_Z}{k_A N_c} f(t) 
+    \label{eq:frac_to_act}</annotation></semantics></math>
+</div>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>A</mi></msub><annotation encoding="application/x-tex">k_A</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>Z</mi></msub><annotation encoding="application/x-tex">k_Z</annotation></semantics></math>
+are the phosphorylation and dephosphorylation rate, respectively, and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>
+is the number of receptor clusters.</p>
+<p>Finally, we estimate the response Kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+by averaging the changes in measured activity over
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>5</mn></msup><annotation encoding="application/x-tex">10^5</annotation></semantics></math>
+simulated trajectories </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi>ln</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>c</mi><mi>s</mi></msub><msub><mi>c</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="prefix">⟨</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>−</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">K(t) = \ln{\left( \frac{c_s}{c_0} \right)} \langle a(t-t_0)-a(t_0) \rangle\,.</annotation></semantics></math>
+<h4 id="output-noise-kernel-nt">Output Noise Kernel <em>N(t)</em></h4>
+<p>We can similarly obtain the noise statistics of the output from
+simulations of our chemotaxis model. In this case, we stochastically
+evolve the chemotaxis model at constant ligand concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mn>0</mn></msub><mo>=</mo><mn>100</mn><mspace width="0.167em"></mspace><mi>μ</mi><mtext mathvariant="normal">M</mtext></mrow><annotation encoding="application/x-tex">c_0=100\,\mu\text{M}</annotation></semantics></math>
+for a very long time of 1 × 10<sup>4</sup> s. The result is a time trace
+of the activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>,
+which we again obtain from the fraction
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(t)</annotation></semantics></math>
+using <a href="#eq:frac_to_act">eq:frac_to_act</a>. We discretize this
+time trace at a resolution of 0.01 s. This results in a time series
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒂</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>a</mi><mi>N</mi></msub><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\mathbfit{a}=(a_1,\ldots,a_N)^T</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a_i=a(t_i)</annotation></semantics></math>.
+To estimate the correlations in the time series we subtract the overall
+average activity from each data point and thus obtain the data vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒙</mi><annotation encoding="application/x-tex">\mathbfit{x}</annotation></semantics></math>
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mo>=</mo><msub><mi>a</mi><mi>i</mi></msub><mo>−</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><msub><mi>a</mi><mi>j</mi></msub><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">x_i=a_i - \sum^N_{j=1} a_j/N</annotation></semantics></math>.
+From
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝒙</mi><annotation encoding="application/x-tex">\mathbfit{x}</annotation></semantics></math>
+we estimate the auto-correlation function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>τ</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">C_{xx}(t) = \langle x(\tau) x(\tau + t) \rangle</annotation></semantics></math>
+of the activity. To obtain precise results we average the correlation
+function for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>10</mn><mn>5</mn></msup><annotation encoding="application/x-tex">10^5</annotation></semantics></math>
+trajectories.</p>
+<h4 id="obtaining-the-fourier-kernels-using-the-fft">Obtaining the
+Fourier Kernels using the FFT</h4>
+<p>Ṯo compute the Gaussian information rate, we need the frequency-space
+representations of the kernels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>.
+We already derived the analytical form of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(\omega)</annotation></semantics></math>
+in <a href="#sec:chemotaxis_input">Sec. chemotaxis_input</a>. We obtain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(\omega)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>
+numerically via a discrete Fourier transform of the corresponding
+time-domain kernel.</p>
+<p>As explained above, we compute time-discretized kernels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>i</mi></msub><mo>=</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K_i = K(t_i)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi>i</mi></msub><mo>=</mo><mi>N</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N_i = N(t_i)</annotation></semantics></math>
+from time traces obtained via stochastic simulations of our model. We
+sample these functions at the instants
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>0</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>t</mi><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">t_0,\ldots,t_{N-1}</annotation></semantics></math>,
+the sampling frequency being
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mi>s</mi></msub><mo>=</mo><mn>100</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">Hz</mtext></mrow><annotation encoding="application/x-tex">f_s = 100\,\text{Hz}</annotation></semantics></math>.
+Then, we use the discrete Fourier transform (DFT) to obtain
+approximations for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(\omega)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>
+as follows. The DFT coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>K</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><annotation encoding="application/x-tex">\tilde{K}_k</annotation></semantics></math>
+are given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>K</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><msub><mi>K</mi><mi>n</mi></msub><msup><mi>e</mi><mrow><mi>−</mi><mi>i</mi><mn>2</mn><mi>π</mi><mi>n</mi><mi>k</mi><mi>/</mi><mi>N</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\tilde{K}_k = \sum_{n=0}^{N-1} K_n e^{-i2\pi nk/N}</annotation></semantics></math>
+<p> where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>…</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=0,1,\ldots,N-1</annotation></semantics></math>.
+These DFT coefficients can be computed efficiently using the Fast
+Fourier Transform (FFT) algorithm. The DFT provides point estimates for
+the Fourier-domain kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(\omega)</annotation></semantics></math>
+at discrete frequencies </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>k</mi></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>π</mi><msub><mi>f</mi><mi>s</mi></msub><mi>k</mi></mrow><mi>N</mi></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mi>k</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mspace width="0.167em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\omega_k = \frac{2\pi f_s k}{N},\quad k=0,1,...,N-1 \,,</annotation></semantics></math>
+<p> i.e.,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>≈</mo><msub><mover><mi>K</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">K(\omega_k) \approx \tilde{K}_k</annotation></semantics></math>.
+This approximation introduces some level of error, known as spectral
+leakage, due to the finite duration and sampling of the signal. This
+error can be reduced by multiplying the time-domain kernel with a window
+function. Thus, before computing the DFT, we multiply the kernel with a
+Hanning window, which is a smooth function that tapers at the edges of
+the kernel, reducing the effect of discontinuities at the beginning and
+end of the time series. The Hanning window is defined as: </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>h</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">[</mo><mn>1</mn><mo>−</mo><mi>cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>n</mi></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">h_n = \frac{1}{2}\left[1 - \cos\left(\frac{2\pi n}{N-1}\right)\right],\quad n=0,1,...,N-1 \,.</annotation></semantics></math>
+<p> The windowed kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>k</mi><mi>n</mi></msub><annotation encoding="application/x-tex">k_n</annotation></semantics></math>
+is obtained by multiplying the time-domain kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>n</mi></msub><annotation encoding="application/x-tex">K_n</annotation></semantics></math>
+with the Hanning window
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>h</mi><mi>n</mi></msub><annotation encoding="application/x-tex">h_n</annotation></semantics></math>:
+</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>k</mi><mi>n</mi></msub><mo>=</mo><msub><mi>K</mi><mi>n</mi></msub><msub><mi>h</mi><mi>n</mi></msub><mo>,</mo><mspace width="1.0em"></mspace><mi>n</mi><mo>=</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mi>.</mi><mi>.</mi><mi>.</mi><mo>,</mo><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k_n = K_n h_n,\quad n=0,1,...,N-1</annotation></semantics></math>
+<p> Using the FFT algorithm we then compute the DFT coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>k</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><annotation encoding="application/x-tex">\tilde{k}_k</annotation></semantics></math>
+of the windowed kernel.</p>
+<p>The procedure described above to obtain the DFT coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>k</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><annotation encoding="application/x-tex">\tilde{k}_k</annotation></semantics></math>
+from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+is also applied to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+to obtain the coefficients
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>n</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><annotation encoding="application/x-tex">\tilde{n}_k</annotation></semantics></math>.</p>
+<p>We can then evaluate the information rate using <a
+href="#eq:gauss_mi_approx">eq:gauss_mi_approx</a> by discretizing the
+integral
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∫</mo><mi>d</mi><mi>ω</mi><mspace width="0.167em"></mspace><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><msub><mo>∑</mo><mi>k</mi></msub><mi mathvariant="normal">Δ</mi><mi>ω</mi><mspace width="0.167em"></mspace><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\int d\omega\,F(\omega) \to \sum_k \Delta\omega\,F(\omega_k)</annotation></semantics></math>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>ω</mi><mo>=</mo><mn>2</mn><mi>π</mi><msub><mi>f</mi><mi>s</mi></msub><mi>/</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">\Delta\omega = 2\pi f_s / N</annotation></semantics></math>.
+More precisely, we compute the Gaussian information rate as </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msup><mi>g</mi><mn>2</mn></msup><mrow><mn>4</mn><mi>π</mi></mrow></mfrac><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></munderover><mi mathvariant="normal">Δ</mi><mi>ω</mi><mspace width="0.222em"></mspace><mfrac><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>ω</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><msub><mover><mi>k</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><msub><mover><mi>n</mi><mo accent="true">̃</mo></mover><mi>k</mi></msub></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \sum^{N-1}_{k=0} \Delta\omega\ \frac{V(\omega_k)|\tilde{k}_k|^2}{\tilde{n}_k} \,.</annotation></semantics></math>
+<h2 id="sec:comparison" id="results"> Results</h2>
+<p>We first asked whether our chemotaxis model based on the current
+literature can reproduce the information transmission rate as recently
+measured by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>. In what follows, we call this model
+the “literature-based” model.</p>
+<h3
+id="discrepancy-between-experimental-results-and-literature-based-model">Discrepancy
+between experimental results and literature-based model</h3>
+<p>In our model, the output is the concentration of phosphorylated CheY,
+while in the experiments of Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> it is the average activity of the
+receptor clusters as obtained via FRET measurements. We argue that this
+difference does not significantly affect the obtained information rates,
+and thus, that it is valid to compare our results to the experiments. In
+particular, since the copy number of CheY is much larger than the number
+of receptor clusters, the fluctuations in CheY are dominated by the
+extrinsic fluctuations coming from the receptor activity noise rather
+than from the intrinsic fluctuations associated with CheY
+(de)phosphorylation. To a good approximation, the copy number of
+phosphorylated CheY,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Y</mi><mi>p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">{\mathrm Yp}(t)</annotation></semantics></math>,
+is thus a deterministic function of the average receptor activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>.
+Mathematically, the mutual information
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>;</mo><mi>Y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(X;Y)</annotation></semantics></math>
+between two stochastic variables
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>
+is the same as the mutual information
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>;</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>Y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(f(X);g(Y))</annotation></semantics></math>
+for deterministic and monotonic functions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>.
+It follows that the mutual information between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Y</mi><mi>p</mi></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">{\mathrm Yp}(t)</annotation></semantics></math>,
+is nearly the same as that between
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+and the receptor activity
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a(t)</annotation></semantics></math>.
+It is therefore meaningful to compare the information transmission rates
+as predicted by our PWS simulations to those measured by Mattingly et
+al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>.</p>
+<p>We use RR-PWS to compute the mutual information for the
+literature-based model. Specifically, we measure the mutual information
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo>;</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathbf{C}, \mathbf{Y_p}; T)</annotation></semantics></math>
+between the input trajectory of the ligand concentration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+and the output trajectory of phosphorylated CheY,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>p</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y_p(t)</annotation></semantics></math>,
+and where each trajectory is of duration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.
+With RR-PWS it is possible to compute
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo>;</mo><mi>τ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathbf{C}, \mathbf{Y_p}; \tau)</annotation></semantics></math>
+for all
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>τ</mi><mo>≤</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">\tau \leq T</annotation></semantics></math>
+within a single PWS simulation of duration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+by saving intermediate results after each sampled segment, see <a
+href="#sec:smc">Sec. smc</a>. The receptor states are considered hidden
+internal states, and we use the technique described in <a
+href="#sec:integrating-out">Sec. integrating-out</a> to integrate them
+out.</p>
+<figure id="fig:chemotaxis_info_and_rate">
+<img src="../images/chemotaxis_info_and_rate.svg"  />
+<figcaption>PWS simulations for the trajectory mutual information of
+chemotaxis in the shallow gradient regime. <strong>a</strong> Mutual
+information
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐂</mi><mi>T</mi></msub><mo>,</mo><msub><mi>𝐘</mi><mi>T</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathbf{C}_T, \mathbf{Y}_T)</annotation></semantics></math>
+between input trajectories
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
+and output trajectories
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>p</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y_p(t)</annotation></semantics></math>
+as a function of trajectory duration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.
+In each RR-PWS simulation,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>7200</mn></mrow><annotation encoding="application/x-tex">N = 7200</annotation></semantics></math>
+Monte Carlo samples were used
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>256</mn></mrow><annotation encoding="application/x-tex">M = 256</annotation></semantics></math>
+for the particle filter). <strong>b</strong> The information
+transmission rate is defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐂</mi><mi>T</mi></msub><mo>,</mo><msub><mi>𝐘</mi><mi>T</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">I(\mathbf{C}_T, \mathbf{Y}_T)/T</annotation></semantics></math>
+in the limit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">T\to\infty</annotation></semantics></math>.</figcaption>
+</figure>
+<p><a href="#fig:chemotaxis_info_and_rate">Figure
+chemotaxis_info_and_rate</a>a shows the PWS estimate of the information
+transmission rate for cells swimming in gradients of different
+steepnesses
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>.
+The information transmission rate is obtained from the PWS estimate of
+the trajectory mutual information
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo>;</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathbf{C}, \mathbf{Y_p}; T)</annotation></semantics></math>,
+different trajectory durations
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.
+As seen in <a href="#fig:chemotaxis_info_and_rate">Fig.
+chemotaxis_info_and_rate</a>b, for short trajectories the mutual
+information increases non-linearly with trajectory duration
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>,
+but in the long-duration limit the slope becomes constant. This
+asymptotic rate of increase of the mutual information with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+is the desired information transmission rate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">R(\mathbf{C}, \mathbf{Y_p})</annotation></semantics></math>.
+The precise definition is given by </p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><mi>lim</mi><mrow><mi>T</mi><mo>→</mo><mi>∞</mi></mrow></munder><mfrac><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝐂</mi><mo>,</mo><msub><mi>𝐘</mi><mi>𝐩</mi></msub><mo>;</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><mi>T</mi></mfrac><mspace width="0.167em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">R(\mathbf{C}, \mathbf{Y_p}) = \lim_{T\to\infty} \frac{I(\mathbf{C}, \mathbf{Y_p}; T)}{T} \,.</annotation></semantics></math>
+<figure id="fig:chemotaxis_comparison">
+<img src="../images/chemotaxis_comparison.svg"  />
+<figcaption>Comparison of theoretical models with experimental data for
+bacterial chemotaxis system. Panels <strong>a</strong> and
+<strong>b</strong> show the response and noise kernels, respectively,
+for the model based on literature parameters (green), parameters fitted
+to experiments (blue), and experiments from Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> (orange).
+In panel <strong>c</strong>, the information transmission rate is shown
+for each model as a function of gradient steepness, with results from
+the Gaussian approximation shown alongside exact PWS calculations. The
+fitted model closely matches the experiments, while the literature-based
+model over-estimates information transmission rate by a factor of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\approx 4</annotation></semantics></math>
+despite having a lower response amplitude (panel <strong>a</strong>).
+This is because the literature-based model has a large number of
+independents receptor clusters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>,
+resulting in much lower noise in the output (panel <strong>b</strong>).
+In all cases, the Gaussian approximation matches the exact PWS results,
+providing support for the accuracy of the measurements of Mattingly et
+al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>.</figcaption>
+</figure>
+<p>We then compared our results for the information transmission rate of
+the literature-based model to those of Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>. <a
+href="#fig:chemotaxis_comparison">Figure chemotaxis_comparison</a>c
+shows that the model predictions differ from the experiments by a factor
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\approx 4</annotation></semantics></math>.
+Despite this discrepancy, we believe that the agreement between
+experiment and theory is, in fact, remarkable, because these predictions
+were made <span><em>ab initio</em></span>: the model was developed based
+on the existing literature and we did not fit our model to the data of
+Mattingly et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span></p>
+<p>Yet, the question about the origin of the discrepancy remains. The
+difference between their measurements and our predictions could be
+attributed either to the inaccuracy of our model or to the approximation
+that Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> had to employ to compute the
+information transmission rate from experimental data. Concerning the
+latter hypothesis, due to the curse of dimensionality and experimental
+constraints, Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> could not directly obtain the
+information transmission rate from measured time traces of the input and
+output of the system. Instead, they measured three different kernels
+that describe the system in the linear regime. Specifically, they
+obtained the response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+of the kinase activity to a step-change in input signal, the
+autocorrelation function of the input signal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+and the autocorrelation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+of the kinase activity in a constant background concentration. Then they
+used a Gaussian model to compute the information transmission rate from
+these measured functions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+<span class="citation" data-cites="2009.Tostevin 2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>,<a
+href="#ref-2009.Tostevin" role="doc-biblioref">13</a>]</span> (see also
+<a href="#sec:lna">Sec. lna</a>). This Gaussian model is based on a
+linear noise assumption and cannot perfectly capture the true non-linear
+dynamics of the biochemical network. This could be the cause for the
+observed discrepancies in the information rate. We have indeed already
+seen in <a href="#ch:variants">Ch. variants</a> that there can be
+substantial differences between exact computations and the Gaussian
+approximation for the trajectory mutual information.</p>
+<h3 id="revising-the-literature-based-model">Revising the
+literature-based model</h3>
+<p>To uncover the reason for the discrepancy we first tested whether our
+literature-based model reproduces the experimentally measured kernels.
+If the kernels do not match, then, clearly, the discrepancy in the
+information rate may be caused by the difference between our model and
+the experimental system, as opposed to the inaccuracy of the Gaussian
+framework. Our input correlation function,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+is, by construction, the same as that of Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>. The
+simulation protocol we used for measuring the other kernels was directly
+modeled after the experimental protocol <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>.</p>
+<p>We find that the response kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+and the autocorrelation function of the noise
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+of our system are different. <a href="#fig:chemotaxis_comparison">Figure
+chemotaxis_comparison</a>a, b shows that our model reproduces the
+timescales of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+as measured experimentally. This is perhaps not surprising, because the
+decay of both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+is set by the (de)methylation rate, which has been well-characterized
+experimentally. Yet, the figure also shows that our model significantly
+underestimates the amplitudes of both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>.</p>
+<p>This raises the question of whether other parameter values would
+allow our model to better reproduce the measured kernels
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>,
+and, secondly, whether this would resolve the discrepancy in information
+rate between our simulations and the experiments.</p>
+<p>The amplitude
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>N</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_N</annotation></semantics></math>
+of the output noise correlation function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+is bounded by the number of receptor clusters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><annotation encoding="application/x-tex">N_{\mathrm c}</annotation></semantics></math>.
+In particular, the variance of the receptor activity is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>N</mi><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup><mi>/</mi><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>≤</mo><mn>1</mn><mi>/</mi><mn>4</mn><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub></mrow><annotation encoding="application/x-tex">\sigma^2_N = \sigma^2_a / N_{\mathrm c} \leq 1 / 4 N_{\mathrm c}</annotation></semantics></math>,
+where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>a</mi><mn>2</mn></msubsup><mo>≤</mo><mn>1</mn><mi>/</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">\sigma^2_a\leq 1/4</annotation></semantics></math>
+is the variance of the activity of a single receptor cluster. Comparing
+this bound to the measured receptor noise strength
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mi>N</mi><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma^2_N</annotation></semantics></math>
+reveals that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><annotation encoding="application/x-tex">N_{\mathrm c}</annotation></semantics></math>
+needs to be much smaller than our original model assumes: the number of
+clusters needs to be as small as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>≲</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c} \lesssim 10</annotation></semantics></math>.
+Indeed, <a href="#fig:chemotaxis_comparison">Fig.
+chemotaxis_comparison</a>b shows that with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>=</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c}=9</annotation></semantics></math>,
+our model quantitatively fits the correlation function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+of the receptor activity in a constant background concentration, as
+measured experimentally <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>.</p>
+<p>The amplitude of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>,
+i.e. the gain, depends on the ratio
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>K</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">A</mi></msubsup><mi>/</mi><msubsup><mi>K</mi><mi mathvariant="normal">D</mi><mi mathvariant="normal">I</mi></msubsup></mrow><annotation encoding="application/x-tex">K_{\mathrm D}^{\mathrm A}/ K_{\mathrm D}^{\mathrm I}</annotation></semantics></math>
+of the dissociation constants of the receptor for ligand binding in its
+active or inactive state, respectively, as well as on the number of
+receptors per cluster,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>.
+Both dissociation constants have been well characterized experimentally
+<span class="citation" data-cites="2011.Lazova 2010.Shimizu"> [<a
+href="#ref-2010.Shimizu" role="doc-biblioref">6</a>,<a
+href="#ref-2011.Lazova" role="doc-biblioref">14</a>]</span>, but the
+number of receptors per cluster has only been inferred indirectly from
+experiments <span class="citation"
+data-cites="2020.Kamino 2010.Shimizu"> [<a href="#ref-2010.Shimizu"
+role="doc-biblioref">6</a>,<a href="#ref-2020.Kamino"
+role="doc-biblioref">7</a>]</span>. The higher gain as measured
+experimentally by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> indicates that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+is larger than assumed in our model: with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N=15</annotation></semantics></math>
+our model can quantitatively fit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+(<a href="#fig:chemotaxis_comparison">Fig.
+chemotaxis_comparison</a>a).</p>
+<p>We thus find that by reducing the number of clusters from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>=</mo><mn>400</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c} = 400</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>=</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c}=9</annotation></semantics></math>
+while simultaneously increasing their size from
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">N=6</annotation></semantics></math>
+to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N=15</annotation></semantics></math>,
+our model is able to quantitatively fit both
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+<span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, see <a
+href="#fig:chemotaxis_comparison">Fig. chemotaxis_comparison</a> and <a
+href="#fig:fourier_kernels">Fig. fourier_kernels</a> for their Fourier
+representations. This suggests that the number of independent receptor
+clusters is smaller than hitherto believed, while their size is
+larger.</p>
+<figure id="fig:fourier_kernels">
+<img src="../images/fourier_comparison.svg"  />
+<figcaption>Fourier representation of the kernels for computing the
+information transmission rate in the Gaussian approximation, the
+velocity power spectrum
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(\omega)</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mrow><mtext mathvariant="normal">m</mtext><mtext mathvariant="normal">m</mtext><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[(\si{\milli\meter\text{s}^{-1}})^2]</annotation></semantics></math>,
+the squared frequency response
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|K(\omega)|^2</annotation></semantics></math>,
+and the noise power spectrum
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>.
+The top-left panel shows the individual Fourier kernels as a function of
+frequency
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
+for the different models. On the top-right the normalized kernels are
+shown with linear axis scales. In the bottom panels the integrand for
+computing the mutual information rate in the Gaussian approximation is
+shown. In the bottom right, the area under the curves represents the
+proportionality between the squared gradient steepness
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>g</mi><mn>2</mn></msup><annotation encoding="application/x-tex">g^2</annotation></semantics></math>
+and the information rate (units  s mm<sup>−−2</sup>). In the bottom left
+plot, the integrand is multiplied by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>,
+so that with log scaling of the axes the area under the curve is equal
+to the integral. </figcaption>
+</figure>
+<h3
+id="comparing-the-chemotaxis-information-rate-of-the-models-against-experiments">Comparing
+the chemotaxis information rate of the models against experiments</h3>
+<figure id="tab:fit_coefficients">
+<img src="../images/num-clusters.svg" style="width:75.0%"  />
+<figcaption>The information rate as a function of the number of receptor
+clusters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>.
+The cluster size is fixed at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N=15</annotation></semantics></math>.
+The left panel shows the increase of information rate as a function of
+gradient steepness for different values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>,
+including a line for the experimental data from Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>. The right
+panel shows the same data but highlights the increase of the information
+rate and when increasing the number of receptor clusters. A quadratic
+fit (shown as dotted lines) is used to extrapolate the information rate.
+All results were obtained using RR-PWS. </figcaption>
+</figure>
+<p>How accurately can our revised model reproduce the measured
+information rate, and how accurate is the Gaussian framework for the
+experimental system in the regime studied by Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>? In the
+revised model, called the “fitted model”, with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi mathvariant="normal">c</mi></msub><mo>=</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">N_{\mathrm c}=9</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N=15</annotation></semantics></math>,
+all key quantities for computing the information transmission rate
+within the Gaussian framework,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(t)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>,
+are nearly identical to the experiments of Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, see <a
+href="#fig:chemotaxis_comparison">Fig. chemotaxis_comparison</a>. Within
+the Gaussian framework (see <a href="#sec:lna">Sec. lna</a>), the
+information transmission rate in our model is thus expected to be very
+similar to the experimentally measured one, and <a
+href="#fig:chemotaxis_comparison">Fig. chemotaxis_comparison</a>c shows
+that this is indeed the case. To quantify the accuracy of the Gaussian
+framework, we then recomputed the information transmission rate for the
+revised model, using exact PWS. We found that the result matches the
+Gaussian prediction very well. For these shallow and static chemical
+gradients, the Gaussian model is thus highly accurate. Our analysis
+validates <em>a posteriori</em> the Gaussian framework adopted by
+Mattingly et al. <span class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>.</p>
+<h2 id="discussion">Discussion</h2>
+<p>The application of PWS to the bacterial chemotaxis system shows how
+crucial it is to have a simulation technique that is exact. Without the
+latter it would be impossible to determine whether the difference
+between our predictions and the Mattingly data <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> is due to the inaccuracy of the
+model, the inaccuracy of the numerical technique to simulate the model,
+or the approximations used by Mattingly and coworkers in analyzing the
+data. In contrast, because PWS is exact, we knew the difference between
+theory and experiment is either due to the inaccuracy of the model or
+the approximations used to analyze the data. By then employing the same
+Gaussian framework to analyze the behavior of the model and the
+experimental system, we were able to establish that the difference is
+due to the inaccuracy of our original model.</p>
+<p>Our analysis indicates that the size of the receptor clusters in the
+<em>E. coli</em> chemotaxis system,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≈</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N\approx 15</annotation></semantics></math>,
+is larger than that based on previous estimates,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>∼</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">N\sim 6</annotation></semantics></math>
+<span class="citation"
+data-cites="2007.Mello 2010.Shimizu 2020.Kamino"> [<a
+href="#ref-2010.Shimizu" role="doc-biblioref">6</a>,<a
+href="#ref-2020.Kamino" role="doc-biblioref">7</a>,<a
+href="#ref-2007.Mello" role="doc-biblioref">15</a>]</span>. The early
+estimates of the cluster size were based on bulk dose-response
+measurements with a relatively slow ligand exchange, yielding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≈</mo><mn>6</mn></mrow><annotation encoding="application/x-tex">N \approx 6</annotation></semantics></math>
+<span class="citation" data-cites="2007.Mello 2010.Shimizu"> [<a
+href="#ref-2010.Shimizu" role="doc-biblioref">6</a>,<a
+href="#ref-2007.Mello" role="doc-biblioref">15</a>]</span>. More recent
+dose-response measurements, at the single cell level and with faster
+ligand exchange, yield an average that is higher,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>N</mi><mo stretchy="false" form="postfix">⟩</mo><mo>≈</mo><mn>8</mn></mrow><annotation encoding="application/x-tex">\langle N\rangle\approx 8</annotation></semantics></math>,
+and with a broad distribution around it, arising from cell-to-cell
+variability <span class="citation" data-cites="2020.Kamino"> [<a
+href="#ref-2020.Kamino" role="doc-biblioref">7</a>]</span>. Our
+estimate,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>≈</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N\approx 15</annotation></semantics></math>,
+based on fitting the response kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(t)</annotation></semantics></math>
+to that measured by Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span>, therefore appears reasonable. At the
+same time, the number of clusters, obtained by fitting the noise
+correlation function
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(t)</annotation></semantics></math>
+to the data of Mattingly et al. <span class="citation"
+data-cites="2021.Mattingly"> [<a href="#ref-2021.Mattingly"
+role="doc-biblioref">1</a>]</span> is surprisingly low,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi>c</mi></msub><mo>∼</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">N_c \sim 10</annotation></semantics></math>,
+given the total number of receptors,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mi>r</mi></msub><mo>∼</mo><msup><mn>10</mn><mn>3</mn></msup><mtext mathvariant="normal">–</mtext><msup><mn>10</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">N_r \sim 10^3\text{--}10^4</annotation></semantics></math>
+<span class="citation" data-cites="2004.Li"> [<a href="#ref-2004.Li"
+role="doc-biblioref">8</a>]</span>. Interestingly, recent experiments
+indicate that the receptor array is poised near the critical point <span
+class="citation" data-cites="2023.Keegstra"> [<a
+href="#ref-2023.Keegstra" role="doc-biblioref">16</a>]</span>, where
+receptor switching becomes correlated over large distances. This
+effectively partitions receptors into a few large domains, which may
+explain our fitted values for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>.</p>
+<p>It has been suggested that information processing systems are
+positioned close to a critical point to maximize information
+transmission <span class="citation"
+data-cites="2015.Tkacik 2021.Meijers"> [<a href="#ref-2015.Tkacik"
+role="doc-biblioref">17</a>,<a href="#ref-2021.Meijers"
+role="doc-biblioref">18</a>]</span>, although it has been argued that
+the sensing error of the <em>E. coli</em> chemotaxis system is minimized
+for independent receptors <span class="citation"
+data-cites="2011.Skoge"> [<a href="#ref-2011.Skoge"
+role="doc-biblioref">19</a>]</span>. Mattingly et al. <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span> have
+demonstrated that the chemotactic drift speed in shallow exponential
+gradients is limited by the information transmission rate <span
+class="citation" data-cites="2021.Mattingly"> [<a
+href="#ref-2021.Mattingly" role="doc-biblioref">1</a>]</span>, but
+whether the system has been optimized for information transmission, and
+how the latter affects chemotactic performance in other spatio-temporal
+concentration profiles, remain interesting questions for future
+work.</p>
+<h1 class="unnumbered" id="bibliography">References</h1>
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
+role="list">
+<div id="ref-2021.Mattingly" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">H.
+H. Mattingly, K. Kamino, B. B. Machta, and T. Emonet, <a
+href="https://doi.org/10.1038/s41567-021-01380-3"><span
+class="nocase">Escherichia coli chemotaxis is information
+limited</span></a>, Nature Physics <strong>17</strong>, 1426
+(2021).</div>
+</div>
+<div id="ref-1977.Berg" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">H.
+C. Berg and E. M. Purcell, <a
+href="https://doi.org/10.1016/s0006-3495(77)85544-6"><span
+class="nocase">Physics of chemoreception</span></a>, Biophysical Journal
+<strong>20</strong>, 193 (1977).</div>
+</div>
+<div id="ref-1965.Monod" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">J.
+Monod, J. Wyman, and J.-P. Changeux, <a
+href="https://doi.org/10.1016/s0022-2836(65)80285-6"><span
+class="nocase">On the nature of allosteric transitions: A plausible
+model</span></a>, Journal of Molecular Biology <strong>12</strong>, 88
+(1965).</div>
+</div>
+<div id="ref-1997.Barkai" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">N.
+Barkai and S. Leibler, <a href="https://doi.org/10.1038/43199"><span
+class="nocase">Robustness in simple biochemical networks</span></a>,
+Nature <strong>387</strong>, 913 (1997).</div>
+</div>
+<div id="ref-2004.Sourjik" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">V.
+Sourjik and H. C. Berg, <a
+href="https://doi.org/10.1038/nature02406"><span
+class="nocase">Functional interactions between receptors in bacterial
+chemotaxis</span></a>, Nature <strong>428</strong>, 437 (2004).</div>
+</div>
+<div id="ref-2010.Shimizu" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">T.
+S. Shimizu, Y. Tu, and H. C. Berg, <a
+href="https://doi.org/10.1038/msb.2010.37"><span class="nocase">A
+modular gradient‐sensing network for chemotaxis in Escherichia coli
+revealed by responses to time‐varying stimuli</span></a>, Molecular
+Systems Biology <strong>6</strong>, 382 (2010).</div>
+</div>
+<div id="ref-2020.Kamino" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">K.
+Kamino, J. M. Keegstra, J. Long, T. Emonet, and T. S. Shimizu, <a
+href="https://doi.org/10.1126/sciadv.abc1087"><span
+class="nocase">Adaptive tuning of cell sensory diversity without changes
+in gene expression</span></a>, Science Advances <strong>6</strong>,
+eabc1087 (2020).</div>
+</div>
+<div id="ref-2004.Li" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">M.
+Li and G. L. Hazelbauer, <a
+href="https://doi.org/10.1128/jb.186.12.3687-3694.2004"><span
+class="nocase">Cellular Stoichiometry of the Components of the
+Chemotaxis Signaling Complex</span></a>, Journal of Bacteriology
+<strong>186</strong>, 3687 (2004).</div>
+</div>
+<div id="ref-1999.Morton-Firth" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">C.
+J. Morton-Firth, T. S. Shimizu, and D. Bray, <a
+href="https://doi.org/10.1006/jmbi.1999.2535"><span class="nocase">A
+free-energy-based stochastic simulation of the tar receptor
+complex</span></a>, Journal of Molecular Biology <strong>286</strong>,
+1059 (1999).</div>
+</div>
+<div id="ref-2002.Sourjikt5" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">V.
+Sourjik and H. C. Berg, <a
+href="https://doi.org/10.1073/pnas.192463199"><span
+class="nocase">Binding of the Escherichia coli response regulator CheY
+to its target measured in vivo by fluorescence resonance energy
+transfer</span></a>, Proceedings of the National Academy of Sciences
+<strong>99</strong>, 12669 (2002).</div>
+</div>
+<div id="ref-2002.Sourjik" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">V.
+Sourjik and H. C. Berg, <a
+href="https://doi.org/10.1073/pnas.011589998"><span
+class="nocase">Receptor sensitivity in bacterial chemotaxis</span></a>,
+Proceedings of the National Academy of Sciences <strong>99</strong>, 123
+(2002).</div>
+</div>
+<div id="ref-2013.Ortega" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">D.
+R. Ortega, C. Yang, P. Ames, J. Baudry, J. S. Parkinson, and I. B.
+Zhulin, <a href="https://doi.org/10.1038/ncomms3881"><span
+class="nocase">A phenylalanine rotameric switch for signal-state control
+in bacterial chemoreceptors</span></a>, Nature Communications
+<strong>4</strong>, 2881 (2013).</div>
+</div>
+<div id="ref-2009.Tostevin" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">F.
+Tostevin and P. R. ten Wolde, <a
+href="https://doi.org/10.1103/physrevlett.102.218101"><span
+class="nocase">Mutual Information between Input and Output Trajectories
+of Biochemical Networks</span></a>, Physical Review Letters
+<strong>102</strong>, 218101 (2009).</div>
+</div>
+<div id="ref-2011.Lazova" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">M.
+D. Lazova, T. Ahmed, D. Bellomo, R. Stocker, and T. S. Shimizu, <a
+href="https://doi.org/10.1073/pnas.1108608108"><span
+class="nocase">Response rescaling in bacterial chemotaxis</span></a>,
+Proceedings of the National Academy of Sciences <strong>108</strong>,
+13870 (2011).</div>
+</div>
+<div id="ref-2007.Mello" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">B.
+A. Mello and Y. Tu, <a
+href="https://doi.org/10.1529/biophysj.106.097808"><span
+class="nocase">Effects of Adaptation in Maintaining High Sensitivity
+over a Wide Range of Backgrounds for Escherichia coli
+Chemotaxis</span></a>, Biophysical Journal <strong>92</strong>, 2329
+(2007).</div>
+</div>
+<div id="ref-2023.Keegstra" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">J.
+M. Keegstra, F. Avgidis, Y. Mulla, J. S. Parkinson, and T. S. Shimizu,
+<a href="https://doi.org/10.1101/2022.12.04.518992"><span
+class="nocase">Near-critical tuning of cooperativity revealed by
+spontaneous switching in a protein signalling array</span></a>, bioRxiv
+2022.12.04.518992 (2023).</div>
+</div>
+<div id="ref-2015.Tkacik" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">G.
+Tkačik, T. Mora, O. Marre, D. Amodei, S. E. Palmer, M. J. Berry, and W.
+Bialek, <a href="https://doi.org/10.1073/pnas.1514188112"><span
+class="nocase">Thermodynamics and signatures of criticality in a network
+of neurons</span></a>, Proceedings of the National Academy of Sciences
+<strong>112</strong>, 11508 (2015).</div>
+</div>
+<div id="ref-2021.Meijers" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">M.
+Meijers, S. Ito, and P. R. ten Wolde, <a
+href="https://doi.org/10.1103/physreve.103.l010102"><span
+class="nocase">Behavior of information flow near criticality</span></a>,
+Physical Review E <strong>103</strong>, L010102 (2021).</div>
+</div>
+<div id="ref-2011.Skoge" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline">M.
+Skoge, Y. Meir, and N. S. Wingreen, <a
+href="https://doi.org/10.1103/physrevlett.107.178101"><span
+class="nocase">Dynamics of Cooperativity in Chemical Sensing among
+Cell-Surface Receptors</span></a>, Physical Review Letters
+<strong>107</strong>, 178101 (2011).</div>
+</div>
+</div>
+</body>
+</html>
