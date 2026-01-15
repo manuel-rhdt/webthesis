@@ -304,6 +304,15 @@ a[href^="#eq:"]:hover {
     }
 }
 
+@counter-style footnote-counter {
+    system: cyclic;
+    symbols: "*" "†" "‡" "§" "‖" "¶";
+    suffix: " ";
+}
+
+.special-footnotes-list {
+    list-style: footnote-counter;
+}
 
 /* Pandoc-generated styles */
 code { white-space: pre-wrap; }
