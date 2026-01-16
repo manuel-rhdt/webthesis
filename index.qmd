@@ -1,27 +1,44 @@
 # Preface {.unnumbered}
 
-This website contains the full text of my PhD Thesis
-*Quantifying the Flow of information*
-converted and adapted from the 
-original LaTeX source. In this form it is much easier to read, especially on mobile.
+This website contains the full text of my PhD Thesis *Quantifying the Flow of Information* converted and adapted from the original LaTeX source. In this form it is much easier to read, especially on mobile.
 
 Use the sidebar on the left to navigate the chapters.
+
+### About
+
+How do living cells information? Which parts of signals carry information? This thesis develops **Path Weight Sampling (PWS)**, a novel Monte Carlo technique that—for the first time—makes it possible to compute the mutual information between input and output trajectories *exactly* for any stochastic system.
+
+The key idea is to use the master equation or the Onsager-Machlup functional to evaluate the exact conditional probability of an individual output trajectory for a given input trajectory, and to average this via Monte Carlo sampling in trajectory space. By establishing connections between information theory and statistical physics (such as path probabilities and partition functions), we leverage techniques from soft condensed-matter physics to make this computation efficient.
+
+In the thesis, we also demonstrate the practical utility PWS by applying it to bacterial chemotaxis, one of the best-characterized signaling systems in biology.
+
+
+### Software
+
+The methods developed in this thesis are implemented in a Julia package: **[PathWeightSampling.jl](https://github.com/manuel-rhdt/PathWeightSampling.jl)**
+
+### Resources
+
+- [PDF version](Quantifying-the-Flow-of-Information.pdf) (9.5 MB)
+- [GitHub repository](https://github.com/manuel-rhdt/webthesis)
 
 The research was conducted between 2019 and 2025 at [AMOLF](https://amolf.nl),
 with funding from the Dutch Research Council [(NWO)](https://nwo.nl/).
 
-You can also find the [PDF version](https://ir.amolf.nl/pub/11167) of the thesis in the AMOLF institutional repository.
+### Acknowledgments
 
-#### License
+The research was conducted between 2019 and 2025 in the [Biochemical Networks group](https://amolf.nl/research-groups/biochemical-networks) of Pieter Rein ten Wolde at [AMOLF](https://amolf.nl), with funding from the Dutch Research Council [(NWO)](https://nwo.nl/) and the European Research Council (ERC).
 
-This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt the material for any purpose, even commercially, as long as you provide appropriate credit to the original author, provide a link to the license, and indicate if changes were made.
+### License
 
-#### Citation
+This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+
+### Citation
 
 If you use this thesis or parts of it in your own work, please cite it as:
 
-Reinhardt, M. J. (2025). *Quantifying the Flow of Information.* PhD-Thesis, Vrije Universiteit Amsterdam. [https://doi.org/10.5463/thesis.1092](https://doi.org/10.5463/thesis.1092).
+Reinhardt, M. J. (2025). *Quantifying the Flow of Information.* PhD Thesis, Vrije Universiteit Amsterdam. <https://doi.org/10.5463/thesis.1092>.
 
-#### Contact
+### Contact
 
 For any questions or feedback regarding this thesis, please contact me at [mail@manuel-rhdt.de](mailto:mail@manuel-rhdt.de).
