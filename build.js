@@ -3,6 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// Import DOM-based implementations
+const HeaderMapper = require('./lib/header-mapper');
+const ReferenceReplacer = require('./lib/reference-replacer');
+const CrossReferenceFixer = require('./lib/cross-reference-fixer');
+
 // Load manifest
 const manifestPath = path.join(__dirname, 'chapters-manifest.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -14,6 +19,7 @@ const distChaptersDir = path.join(distDir, 'chapters');
 
 const headerTemplate = fs.readFileSync(path.join(templatesDir, '_header.html'), 'utf8');
 const footerTemplate = fs.readFileSync(path.join(templatesDir, '_footer.html'), 'utf8');
+const indexTemplate = fs.readFileSync(path.join(templatesDir, '_index.html'), 'utf8');
 
 // Ensure dist directories exist
 if (!fs.existsSync(distDir)) {
@@ -114,9 +120,70 @@ function getDataChapterValue(chapterNumber) {
 }
 
 /**
+ * Create mapping of chapter IDs to filenames
+ * Maps both standard IDs and variants (with hyphens)
+ */
+function createChapterMapping() {
+  const mapping = {};
+  manifest.chapters.forEach(chapter => {
+    // Map the chapter ID to the filename
+    mapping[chapter.id] = chapter.id + '.html';
+    // Also map variations with hyphens/underscores
+    const idWithHyphens = chapter.id.replace(/_/g, '-');
+    if (idWithHyphens !== chapter.id) {
+      mapping[idWithHyphens] = chapter.id + '.html';
+    }
+  });
+  return mapping;
+}
+
+/**
+ * Build header mapping from all chapter files with section numbering
+ * Extracts all h2, h3, h4 headings with their IDs and assigns section numbers
+ * Returns: { chapterId: { 'heading-id': { text, level, chapterFile, sectionNumber, displayText, ... } }, ... }
+ */
+function buildHeaderMapping() {
+  // Use DOM-based implementation for more robust header extraction
+  const htmlMap = {};
+  manifest.chapters.forEach(chapter => {
+    const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
+    if (fs.existsSync(inputPath)) {
+      htmlMap[chapter.id] = fs.readFileSync(inputPath, 'utf8');
+    }
+  });
+
+  const mapper = new HeaderMapper();
+  return mapper.buildMapping(manifest.chapters, htmlMap);
+}
+
+/**
+ * Replace section name references with section numbers
+ * Converts any link text pointing to a section ID to use the section number
+ * Examples: "Sec. smc" → "Sec. 3", "see section" → "Sec. 2.1", etc.
+ * Also converts "Ch. chapter-id" to "Ch. 2" format in link text
+ */
+function replaceTextReferences(content, currentChapterId, headerMapping) {
+  // Use DOM-based implementation
+  const replacer = new ReferenceReplacer(manifest, headerMapping);
+  return replacer.replace(content, currentChapterId);
+}
+
+/**
+ * Fix cross-chapter references in content
+ * Converts #ch:chapter-id to chapters/chapter-id.html#ch:chapter-id
+ * Also converts heading references to cross-chapter links where needed
+ * (Text replacement is handled by replaceTextReferences, not here)
+ */
+function fixCrossReferences(content, currentChapterId, headerMapping) {
+  // Use DOM-based implementation
+  const fixer = new CrossReferenceFixer(manifest, headerMapping);
+  return fixer.fix(content, currentChapterId);
+}
+
+/**
  * Process a single chapter
  */
-function processChapter(chapter, index) {
+function processChapter(chapter, index, headerMapping) {
   const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
   const outputPath = path.join(distChaptersDir, `${chapter.id}.html`);
 
@@ -127,7 +194,14 @@ function processChapter(chapter, index) {
   }
 
   const originalHtml = fs.readFileSync(inputPath, 'utf8');
-  const content = extractContent(originalHtml);
+  let content = extractContent(originalHtml);
+
+  // Replace text references (Sec. xxx, Ch. xxx) with actual section/chapter numbers
+  content = replaceTextReferences(content, chapter.id, headerMapping);
+
+  // Fix cross-chapter references (including heading references)
+  content = fixCrossReferences(content, chapter.id, headerMapping);
+
   const navLinks = createNavLinks(index);
   const dataChapter = getDataChapterValue(chapter.number);
 
@@ -170,6 +244,122 @@ function copyRecursive(src, dest) {
 }
 
 /**
+ * Generate table of contents from manifest
+ */
+function generateTOC() {
+  let toc = '';
+  let currentSection = null;
+
+  manifest.chapters.forEach(chapter => {
+    // Add section header if section changed
+    if (chapter.section !== currentSection) {
+      if (currentSection !== null) {
+        toc += '        </ul>\n\n';
+      }
+
+      const sectionNames = {
+        'chapters': 'Chapters',
+        'appendix': 'Appendix',
+        'backmatter': 'Back Matter'
+      };
+
+      toc += `        <p class="section-header">${sectionNames[chapter.section]}</p>\n`;
+      toc += '        <ul class="chapter-list">\n';
+      currentSection = chapter.section;
+    }
+
+    // Format chapter number
+    const number = typeof chapter.number === 'string'
+      ? chapter.number + '.'
+      : chapter.number + '.';
+
+    const displayNumber = chapter.number ? `<span class="chapter-number">${number}</span> ` : '';
+    toc += `            <li><a href="chapters/${chapter.id}.html">${displayNumber}${chapter.title}</a></li>\n`;
+  });
+
+  // Close last section
+  if (currentSection !== null) {
+    toc += '        </ul>\n';
+  }
+
+  return toc;
+}
+
+/**
+ * Generate index.html from template
+ */
+function generateIndex() {
+  const toc = generateTOC();
+  const indexHtml = indexTemplate.replace('{{TOC}}', toc);
+  fs.writeFileSync(path.join(distDir, 'index.html'), indexHtml, 'utf8');
+  console.log('✓ index.html');
+}
+
+/**
+ * Save header mapping to JSON file for reference and debugging
+ */
+function saveHeaderMappingFile(headerMapping) {
+  const mappingFile = path.join(__dirname, 'header-mapping.json');
+
+  // Convert to a more readable format
+  const readable = {};
+  for (const chapterId in headerMapping) {
+    const chapter = manifest.chapters.find(ch => ch.id === chapterId);
+    readable[chapterId] = {
+      chapterTitle: chapter ? chapter.title : 'Unknown',
+      headers: headerMapping[chapterId]
+    };
+  }
+
+  fs.writeFileSync(mappingFile, JSON.stringify(readable, null, 2), 'utf8');
+}
+
+/**
+ * Save cross-reference report
+ */
+function saveCrossReferenceReport(headerMapping) {
+  const reportFile = path.join(__dirname, 'cross-reference-analysis.json');
+
+  const report = {
+    generatedAt: new Date().toISOString(),
+    summary: {
+      totalHeaders: 0,
+      totalChapters: Object.keys(headerMapping).length,
+      headersByLevel: { h2: 0, h3: 0, h4: 0 }
+    },
+    chapters: {}
+  };
+
+  // Analyze each chapter
+  for (const chapterId in headerMapping) {
+    const chapter = manifest.chapters.find(ch => ch.id === chapterId);
+    const headers = headerMapping[chapterId];
+    const headerIds = Object.keys(headers);
+
+    report.summary.totalHeaders += headerIds.length;
+
+    // Count by level
+    headerIds.forEach(headerId => {
+      const level = `h${headers[headerId].level}`;
+      report.summary.headersByLevel[level]++;
+    });
+
+    // Build chapter report
+    report.chapters[chapterId] = {
+      chapterTitle: chapter ? chapter.title : 'Unknown',
+      totalHeaders: headerIds.length,
+      headers: headerIds.map(id => ({
+        id: id,
+        text: headers[id].text,
+        level: headers[id].level
+      }))
+    };
+  }
+
+  fs.writeFileSync(reportFile, JSON.stringify(report, null, 2), 'utf8');
+}
+
+/**
  * Copy static assets to dist directory
  */
 function copyAssets() {
@@ -177,7 +367,6 @@ function copyAssets() {
   const jsSource = path.join(__dirname, 'js');
   const imagesSource = path.join(__dirname, 'images');
   const logosSource = path.join(__dirname, 'logos');
-  const indexSource = path.join(__dirname, 'index.html');
   const sitemapSource = path.join(__dirname, 'sitemap.xml');
 
   copyRecursive(cssSource, distCssDir);
@@ -185,10 +374,7 @@ function copyAssets() {
   copyRecursive(imagesSource, distImagesDir);
   copyRecursive(logosSource, distLogosDir);
 
-  // Copy index.html and sitemap
-  if (fs.existsSync(indexSource)) {
-    fs.copyFileSync(indexSource, path.join(distDir, 'index.html'));
-  }
+  // Copy sitemap
   if (fs.existsSync(sitemapSource)) {
     fs.copyFileSync(sitemapSource, path.join(distDir, 'sitemap.xml'));
   }
@@ -203,12 +389,28 @@ function build() {
   // Copy assets
   copyAssets();
 
+  // Build header mapping from all chapters
+  console.log('Building header mapping...');
+  const headerMapping = buildHeaderMapping();
+
+  // Count total headers mapped
+  let totalHeaders = 0;
+  for (const chapterId in headerMapping) {
+    totalHeaders += Object.keys(headerMapping[chapterId]).length;
+  }
+  console.log(`✓ Mapped ${totalHeaders} headers across ${Object.keys(headerMapping).length} chapters`);
+
+  // Save mapping files for reference
+  saveHeaderMappingFile(headerMapping);
+  saveCrossReferenceReport(headerMapping);
+  console.log('✓ Saved header-mapping.json and cross-reference-analysis.json\n');
+
   let successCount = 0;
   let errorCount = 0;
 
   manifest.chapters.forEach((chapter, index) => {
     try {
-      if (processChapter(chapter, index)) {
+      if (processChapter(chapter, index, headerMapping)) {
         successCount++;
       } else {
         errorCount++;
@@ -218,6 +420,14 @@ function build() {
       errorCount++;
     }
   });
+
+  // Generate index.html
+  try {
+    generateIndex();
+  } catch (error) {
+    console.error(`✗ Error generating index: ${error.message}`);
+    errorCount++;
+  }
 
   console.log(`\n${successCount} chapter(s) built successfully`);
   if (errorCount > 0) {

@@ -1,0 +1,750 @@
+{
+  "introduction": {
+    "chapterTitle": "Introduction",
+    "headers": {
+      "contributions-of-this-work": {
+        "text": "Contributions of This Work",
+        "level": 2,
+        "chapterFile": "introduction.html",
+        "chapterId": "introduction",
+        "chapterTitle": "Introduction",
+        "sectionNumber": "1"
+      },
+      "thesis-outline": {
+        "text": "Thesis Outline",
+        "level": 2,
+        "chapterFile": "introduction.html",
+        "chapterId": "introduction",
+        "chapterTitle": "Introduction",
+        "sectionNumber": "2"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "introduction.html",
+        "chapterId": "introduction",
+        "chapterTitle": "Introduction",
+        "sectionNumber": "3"
+      }
+    }
+  },
+  "dpws": {
+    "chapterTitle": "Path Weight Sampling",
+    "headers": {
+      "ch:dpws": {
+        "text": "Introduction",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "1"
+      },
+      "sec:sec2": {
+        "text": "Monte Carlo Estimate\nof the Mutual Information",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2"
+      },
+      "statement-of-the-problem": {
+        "text": "Statement of the Problem",
+        "level": 3,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.1"
+      },
+      "sec:algorithm": {
+        "text": "Direct PWS",
+        "level": 3,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.2"
+      },
+      "sec:mjp": {
+        "text": "Driven Markov Jump\nProcess",
+        "level": 4,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.2.1"
+      },
+      "sec:likelihood": {
+        "text": "Computing the Likelihood\n𝒫[x|s]\\mathcal{P}[x|s]",
+        "level": 4,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.2.2"
+      },
+      "sec:gillespie": {
+        "text": "Sampling from\n𝒫[x|s]\\mathcal{P}[x|s]",
+        "level": 4,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.2.3"
+      },
+      "sec:input-statistics": {
+        "text": "Input\nStatistics",
+        "level": 3,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "2.3"
+      },
+      "sec:integrating-out": {
+        "text": "Integrating Out Internal\nComponents",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "3"
+      },
+      "sec:feedback": {
+        "text": "Dealing with\nFeedback",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "4"
+      },
+      "sec:mi-feedback": {
+        "text": "Computing\nthe Mutual Information with Feedback between Input and Output",
+        "level": 3,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "4.1"
+      },
+      "sec:marginalization-feedback": {
+        "text": "Marginalization\nIntegrals for Systems with Feedback",
+        "level": 3,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "4.2"
+      },
+      "discussion": {
+        "text": "Discussion",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "5"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "dpws.html",
+        "chapterId": "dpws",
+        "chapterTitle": "Path Weight Sampling",
+        "sectionNumber": "6"
+      }
+    }
+  },
+  "variants": {
+    "chapterTitle": "More Efficient Variants of PWS",
+    "headers": {
+      "ch:variants": {
+        "text": "Introduction",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "1"
+      },
+      "sec:marginalization": {
+        "text": "Marginalizing in Trajectory\n    Space",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "2"
+      },
+      "sec:smc": {
+        "text": "RR-PWS",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3"
+      },
+      "bootstrap-particle-filter": {
+        "text": "Bootstrap Particle Filter",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.1"
+      },
+      "intuitive-justification-of-the-algorithm": {
+        "text": "Intuitive\n    Justification of the Algorithm",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.2"
+      },
+      "sec:smc-correctness": {
+        "text": "Detailed\n    Justification",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.3"
+      },
+      "sampling-and-resampling": {
+        "text": "Sampling and resampling",
+        "level": 4,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.3.1"
+      },
+      "particle-filter": {
+        "text": "Particle filter",
+        "level": 4,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.3.2"
+      },
+      "marginal-probability-estimate": {
+        "text": "Marginal probability\n    estimate",
+        "level": 4,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.3.3"
+      },
+      "tuning-the-particle-filter": {
+        "text": "Tuning the Particle Filter",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "3.4"
+      },
+      "sec:thermodynamic-integration": {
+        "text": "TI-PWS",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "4"
+      },
+      "sec:mcmc": {
+        "text": "MCMC Sampling\n    in Trajectory Space",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "4.1"
+      },
+      "sec:pws_variants_benchmark": {
+        "text": "Simple Application and\n    Benchmark",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "5"
+      },
+      "discussion": {
+        "text": "Discussion",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "6"
+      },
+      "supplementary-information": {
+        "text": "Supplementary Information",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "7"
+      },
+      "sec:gaussian-covariance": {
+        "text": "Gaussian Approximation\n    of the Linear System",
+        "level": 3,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "7.1"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "variants.html",
+        "chapterId": "variants",
+        "chapterTitle": "More Efficient Variants of PWS",
+        "sectionNumber": "8"
+      }
+    }
+  },
+  "chemotaxis": {
+    "chapterTitle": "Application—Bacterial Chemotaxis",
+    "headers": {
+      "ch:chemotaxis": {
+        "text": "Introduction",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "1"
+      },
+      "sec:chemotaxis_input": {
+        "text": "Stochastic\nDynamics of the Input Signal for Chemotaxis",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "2"
+      },
+      "sec:chemotaxis-model": {
+        "text": "Stochastic Chemotaxis Model",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "3"
+      },
+      "mwc-model": {
+        "text": "MWC Model",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "3.1"
+      },
+      "reaction-kinetics": {
+        "text": "Reaction Kinetics",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "3.2"
+      },
+      "sec:lna": {
+        "text": "Mutual\nInformation Rate for the Chemotaxis System in the Gaussian Approximation",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4"
+      },
+      "computing-the-gaussian-information-rate-using-linear-response-kernels-vt-kt-and-nt": {
+        "text": "Computing\nthe Gaussian information rate using linear response kernels V(t),\nK(t), and N(t)",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4.1"
+      },
+      "estimating-the-kernels-from-simulations": {
+        "text": "Estimating the kernels\nfrom simulations",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4.2"
+      },
+      "response-kernel-kt": {
+        "text": "Response Kernel K(t)",
+        "level": 4,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4.2.1"
+      },
+      "output-noise-kernel-nt": {
+        "text": "Output Noise Kernel N(t)",
+        "level": 4,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4.2.2"
+      },
+      "obtaining-the-fourier-kernels-using-the-fft": {
+        "text": "Obtaining the\nFourier Kernels using the FFT",
+        "level": 4,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "4.2.3"
+      },
+      "sec:comparison": {
+        "text": "Results",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "5"
+      },
+      "discrepancy-between-experimental-results-and-literature-based-model": {
+        "text": "Discrepancy\nbetween experimental results and literature-based model",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "5.1"
+      },
+      "revising-the-literature-based-model": {
+        "text": "Revising the\nliterature-based model",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "5.2"
+      },
+      "comparing-the-chemotaxis-information-rate-of-the-models-against-experiments": {
+        "text": "Comparing\nthe chemotaxis information rate of the models against experiments",
+        "level": 3,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "5.3"
+      },
+      "discussion": {
+        "text": "Discussion",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "6"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "chemotaxis.html",
+        "chapterId": "chemotaxis",
+        "chapterTitle": "Application—Bacterial Chemotaxis",
+        "sectionNumber": "7"
+      }
+    }
+  },
+  "lna_vs_pws": {
+    "chapterTitle": "The Accuracy of the Gaussian Approximation",
+    "headers": {
+      "ch:lna_vs_pws": {
+        "text": "Introduction",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "1"
+      },
+      "methods": {
+        "text": "Methods",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "2"
+      },
+      "the-mutual-information-rate": {
+        "text": "The mutual information rate",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "2.1"
+      },
+      "gaussian-approximation": {
+        "text": "Gaussian Approximation",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "2.2"
+      },
+      "path-weight-sampling-for-diffusive-systems": {
+        "text": "Path Weight Sampling\nfor diffusive systems",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "2.3"
+      },
+      "case-studies": {
+        "text": "Case Studies",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "3"
+      },
+      "sec:linsys": {
+        "text": "Discrete reaction system",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "3.1"
+      },
+      "sec:nonlinsys": {
+        "text": "Nonlinear continuous system",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "3.2"
+      },
+      "discussion": {
+        "text": "Discussion",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "4"
+      },
+      "supplementary-information": {
+        "text": "Supplementary Information",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5"
+      },
+      "app:gauss": {
+        "text": "Gaussian approximation",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.1"
+      },
+      "signal": {
+        "text": "Signal",
+        "level": 4,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.1.1"
+      },
+      "app:gauss:lna": {
+        "text": "Linear approximation",
+        "level": 4,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.1.2"
+      },
+      "sec:gaussian-info-rate": {
+        "text": "Information\nrate",
+        "level": 4,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.1.3"
+      },
+      "linear-network": {
+        "text": "Linear network",
+        "level": 4,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.1.4"
+      },
+      "sec:relative-deviation": {
+        "text": "Relative deviation of the Gaussian\napproximation for a nonlinear system",
+        "level": 3,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "5.2"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "lna_vs_pws.html",
+        "chapterId": "lna_vs_pws",
+        "chapterTitle": "The Accuracy of the Gaussian Approximation",
+        "sectionNumber": "6"
+      }
+    }
+  },
+  "mlpws": {
+    "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+    "headers": {
+      "ch:ml-pws": {
+        "text": "Introduction",
+        "level": 2,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "1"
+      },
+      "methods": {
+        "text": "Methods",
+        "level": 2,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2"
+      },
+      "the-mutual-information-rate-for-discrete-time-processes": {
+        "text": "The\nMutual Information Rate for Discrete-time Processes",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.1"
+      },
+      "path-weight-sampling": {
+        "text": "Path Weight Sampling",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.2"
+      },
+      "autoregressive-neural-networks-for-stochastic-sequence-modeling": {
+        "text": "Autoregressive\nneural networks for stochastic sequence modeling",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.3"
+      },
+      "gaussian-autoregressive-model": {
+        "text": "Gaussian autoregressive\nmodel",
+        "level": 4,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.3.1"
+      },
+      "network-architecture": {
+        "text": "Network architecture",
+        "level": 4,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.3.2"
+      },
+      "evaluating-and-training-the-network": {
+        "text": "Evaluating and training the\nnetwork",
+        "level": 4,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.3.3"
+      },
+      "sec:ml_variational": {
+        "text": "Efficient Marginalization Using Variational\nInference",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "2.4"
+      },
+      "sec:ml_application": {
+        "text": "Application to a Minimal Nonlinear\nModel",
+        "level": 2,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "3"
+      },
+      "nonlinear-model": {
+        "text": "Nonlinear Model",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "3.1"
+      },
+      "training-the-neural-networks": {
+        "text": "Training the Neural Networks",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "3.2"
+      },
+      "comparison-against-the-true-mutual-information": {
+        "text": "Comparison\nAgainst the True Mutual Information",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "3.3"
+      },
+      "comparison-against-the-gaussian-approximation": {
+        "text": "Comparison\nAgainst the Gaussian Approximation",
+        "level": 3,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "3.4"
+      },
+      "sec:ml_discussion": {
+        "text": "Discussion",
+        "level": 2,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "4"
+      },
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "mlpws.html",
+        "chapterId": "mlpws",
+        "chapterTitle": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
+        "sectionNumber": "5"
+      }
+    }
+  },
+  "appendix": {
+    "chapterTitle": "Notes on the Computation of the Gaussian Approximation",
+    "headers": {
+      "structure-of-covariance-matrices-in-the-gaussian-framework": {
+        "text": "Structure of Covariance\nMatrices in the Gaussian Framework",
+        "level": 2,
+        "chapterFile": "appendix.html",
+        "chapterId": "appendix",
+        "chapterTitle": "Notes on the Computation of the Gaussian Approximation",
+        "sectionNumber": "1"
+      },
+      "efficient-evaluation-of-determinants": {
+        "text": "Efficient Evaluation of\nDeterminants",
+        "level": 2,
+        "chapterFile": "appendix.html",
+        "chapterId": "appendix",
+        "chapterTitle": "Notes on the Computation of the Gaussian Approximation",
+        "sectionNumber": "2"
+      }
+    }
+  },
+  "summary": {
+    "chapterTitle": "Summary",
+    "headers": {
+      "bibliography": {
+        "text": "References",
+        "level": 2,
+        "chapterFile": "summary.html",
+        "chapterId": "summary",
+        "chapterTitle": "Summary",
+        "sectionNumber": "1"
+      }
+    }
+  },
+  "publications": {
+    "chapterTitle": "List of Publications",
+    "headers": {}
+  },
+  "acknowledgments": {
+    "chapterTitle": "Acknowledgments",
+    "headers": {}
+  },
+  "about-the-author": {
+    "chapterTitle": "About the Author",
+    "headers": {}
+  }
+}

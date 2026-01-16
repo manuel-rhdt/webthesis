@@ -5,6 +5,13 @@
   "author": "Manuel Reinhardt",
   "license": "CC-BY-4.0",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "cheerio": "^0.22.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

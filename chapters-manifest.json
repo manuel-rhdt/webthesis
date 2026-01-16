@@ -32,18 +32,21 @@
     },
     {
       "id": "lna_vs_pws",
+      "refId": "lna_vs_pws",
       "number": 5,
       "title": "The Accuracy of the Gaussian Approximation",
       "section": "chapters"
     },
     {
       "id": "mlpws",
+      "refId": "ml-pws",
       "number": 6,
       "title": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
       "section": "chapters"
     },
     {
       "id": "appendix",
+      "refId": "notes-gaussian",
       "number": "A",
       "title": "Notes on the Computation of the Gaussian Approximation",
       "section": "appendix"
