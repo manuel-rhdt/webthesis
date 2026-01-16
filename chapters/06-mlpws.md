@@ -1,6 +1,6 @@
 ---
 bibliography: /home/ubuntu/thesis/html-converter/../library.bib
-csl: /home/ubuntu/thesis/html-converter/american-physics-society.csl
+csl: american-physics-society.csl
 license: CC-BY-4.0
 link-citations: true
 reference-section-title: References
