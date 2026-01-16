@@ -1,5 +1,5 @@
 ---
-bibliography: /home/ubuntu/thesis/html-converter/../library.bib
+bibliography: references.bib
 csl: american-physics-society.csl
 license: CC-BY-4.0
 link-citations: true
