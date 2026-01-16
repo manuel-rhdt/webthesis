@@ -1,0 +1,72 @@
+{
+  "metadata": {
+    "title": "Quantifying the Flow of Information",
+    "author": "Manuel Reinhardt",
+    "year": "2025",
+    "institution": "Vrije Universiteit Amsterdam"
+  },
+  "chapters": [
+    {
+      "id": "introduction",
+      "number": 1,
+      "title": "Introduction",
+      "section": "chapters"
+    },
+    {
+      "id": "dpws",
+      "number": 2,
+      "title": "Path Weight Sampling",
+      "section": "chapters"
+    },
+    {
+      "id": "variants",
+      "number": 3,
+      "title": "Variants of PWS",
+      "section": "chapters"
+    },
+    {
+      "id": "chemotaxis",
+      "number": 4,
+      "title": "Chemotaxis",
+      "section": "chapters"
+    },
+    {
+      "id": "lna_vs_pws",
+      "number": 5,
+      "title": "LNA vs PWS",
+      "section": "chapters"
+    },
+    {
+      "id": "mlpws",
+      "number": 6,
+      "title": "ML-PWS",
+      "section": "chapters"
+    },
+    {
+      "id": "appendix",
+      "number": "A",
+      "title": "Notes on Gaussian Approximation Computation",
+      "section": "appendix"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "section": "backmatter"
+    },
+    {
+      "id": "publications",
+      "title": "List of Publications",
+      "section": "backmatter"
+    },
+    {
+      "id": "acknowledgments",
+      "title": "Acknowledgments",
+      "section": "backmatter"
+    },
+    {
+      "id": "about-the-author",
+      "title": "About the Author",
+      "section": "backmatter"
+    }
+  ]
+}

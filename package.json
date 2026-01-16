@@ -1,0 +1,10 @@
+{
+  "name": "webthesis",
+  "version": "1.0.0",
+  "description": "Quantifying the Flow of Information - PhD Thesis HTML Version",
+  "author": "Manuel Reinhardt",
+  "license": "CC-BY-4.0",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

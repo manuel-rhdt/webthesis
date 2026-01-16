@@ -28,5 +28,5 @@ I would like to thank my advisors Pieter ten Wolde and Gašper Tkačik for their
 
 
 ## Contact
-W
+
 For any questions or feedback regarding this thesis, please contact me at [mail@manuel-rhdt.de](mailto:mail@manuel-rhdt.de).
