@@ -1,39 +1,16 @@
 #!/usr/bin/env python3
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "beautifulsoup4>=4.14.3",
+# ]
+# ///
 
 import re
 import sys
-import argparse
 from pathlib import Path
-from typing import List, Tuple, Optional, Callable
-import logging
 
-from html.parser import HTMLParser
-
-
-class FigureParser(HTMLParser):
-    def __init__(self, *, convert_charrefs: bool = True) -> None:
-        super().__init__(convert_charrefs=convert_charrefs)
-        self.in_caption = False
-        self.img_src = ""
-        self.identifier = ""
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "figure":
-            self.identifier = dict(attrs).get("id")
-        if tag == "img":
-            self.img_src = dict(attrs)["src"]
-        if tag == "figcaption":
-            self.in_caption = True
-            self.caption = ""
-
-    def handle_endtag(self, tag):
-        if tag == "figcaption":
-            self.in_caption = False
-
-    def handle_data(self, data):
-        if self.in_caption:
-            self.caption += data
-
+from bs4 import BeautifulSoup
 
 def main():
     """Main entry point for processing markdown files."""
@@ -92,13 +69,14 @@ def main():
         pattern = r"<figure[^>]*>((.|\n)*?)</figure>"
 
         def replace_figure(match: re.Match):
-            parser = FigureParser()
-            parser.feed(match.group(0))
-            img_src = "figures/" + Path(parser.img_src).name
+            soup = BeautifulSoup(match.group(0), "html.parser")
+            identifier = soup.figure.get('id')
+            caption = soup.figcaption.decode_contents()
+            img_src = "figures/" + Path(soup.img['src']).name
 
-            md = f"![{parser.caption}]({img_src})"
-            if parser.identifier is not None:
-                md += f"{{#{parser.identifier}}}"
+            md = f"![{caption}]({img_src})"
+            if identifier is not None:
+                md += f"{{#{identifier}}}"
             return md
 
         new_content = re.sub(
