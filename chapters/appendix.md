@@ -12,11 +12,10 @@ the Gaussian framework is relatively simple. From Shannon's formula for
 the entropy of a multivariate Gaussian distribution it follows that the
 MI is given by
 
-::: {#eq:mi}
+::: {#eq-mi}
 $$I(S, X) = \frac{1}{2} \ln \left(
     \frac{|\Sigma_{ss}|\,|\Sigma_{xx}|}{|Z|}
-    \right)\quad \mathrm{[nats]}\,.
-    \label{eq:mi}$$
+    \right)\quad \mathrm{[nats]}\,.$$
 :::
 
 See @2009.Tostevin [@2010.Tostevin] for details. This is a
@@ -54,7 +53,7 @@ log-determinant of a matrix directly. This will be dramatically more
 accurate than first computing the determinant and then taking the
 logarithm.
 
-## []{#sec:level1 label="sec:level1"}Structure of Covariance Matrices in the Gaussian Framework
+## Structure of Covariance Matrices in the Gaussian Framework
 
 We consider a Gaussian system with stochastic input $\mathbfit{s}$ and
 output $\mathbfit{x}$. Both, input and output, are vectors representing
@@ -122,7 +121,7 @@ Note that unlike the matrices $\Sigma_{\alpha\beta}$, $Z$ itself does
 not have Toeplitz structure in general. This means the method described
 below is not directly applicable for the computation of $|Z|$. Yet, it
 seems we need to find $|Z|$ for computing the MI using
-[\[eq:mi\]](#eq:mi){reference-type="ref+label" reference="eq:mi"}. It
+@eq-mi. It
 turns out that this is not necessary. One can make use of the fact that
 $Z$ is composed of Toeplitz blocks to avoid computing its determinant.
 At the end of the following section we show how to adapt the formula
@@ -230,8 +229,7 @@ integral by a Riemann sum
 $$\lim_{n\to\infty} \frac{\ln |T_n|}{n} \approx \frac{1}{N}\sum^{N-1}_{m=0} \ln f\left( \omega_m \right)$$
 
 where $\omega_m = 2\pi m/N$ for some large $N$. Now, inserting
-[\[eq:fourier-series\]](#eq:fourier-series){reference-type="ref+label"
-reference="eq:fourier-series"} we find
+@eq-fourier-series we find
 
 ::: {#eq:logdet-toeplitz}
 $$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} \ln \sum^{\infty}_{k=-\infty} t_k 
@@ -254,8 +252,7 @@ $$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0}
     \ln \lambda_m\,.$$
 
 The DFT coefficients $\lambda_m$ represent the inner sum in
-[\[eq:logdet-toeplitz\]](#eq:logdet-toeplitz){reference-type="ref+label"
-reference="eq:logdet-toeplitz"}, when truncated to
+@eq:logdet-toeplitz, when truncated to
 $k=-\lfloor N/2 \rfloor,\ldots,0,\ldots,\lfloor N/2 \rfloor$. In
 principle we want to choose $N$ as large as possible. However, given a
 matrix $T_n$ we only know the values $t_{-n},\ldots,t_0,\ldots,t_n$.
@@ -267,8 +264,7 @@ $n$ can be written as
 $$\ln |T_n| \approx \frac{1}{2} \sum^{2n-1}_{m=0} \ln \lambda_{m} \,.$$
 
 It is easy to verify that this formula converges to
-[\[eq:logdet-toeplitz\]](#eq:logdet-toeplitz){reference-type="ref+label"
-reference="eq:logdet-toeplitz"} as $n\to\infty$. This formula is also
+@eq:logdet-toeplitz as $n\to\infty$. This formula is also
 very efficient to evaluate on modern computers. The sequence
 $\lambda_0,\ldots,\lambda_{2n-1}$ can be easily computed via the FFT
 algorithm from the sequence of $t_k$. Efficient implementations of the

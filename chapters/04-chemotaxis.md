@@ -14,7 +14,7 @@ reference-section-title: References
 > movement. The bacterium's ability to climb chemical gradients is
 > constrained by the mutual information rate between the sensed nutrient
 > concentration and the phosphorylated messenger protein CheYp. A recent
-> study by @2021.Mattingly ([-@2021.Mattingly]) used a Gaussian
+> study by @2021.Mattingly used a Gaussian
 > approximation to estimate this rate, based on the assumption that in
 > shallow gradients the chemotactic response is approximately linear.
 > However, the nonlinear nature of chemotaxis suggests that Gaussian
@@ -262,7 +262,7 @@ CheZ which drive (de)phosphorylation are not modeled explicitly.
 [@fig:chemotaxis_cartoon] shows a depiction of the bacterial chemotaxis
 network.
 
-Table `\ref{tab:chemotaxis-parameters}`{=latex} shows the parameter
+Table @tbl-chemotaxis-parameters shows the parameter
 values of our chemotaxis model, which are all based on values reported
 in the literature. For what follows below, the key parameters are the
 number of receptors per cluster, which is taken to be $N=6$ based on
@@ -275,41 +275,26 @@ their size, change in the "fitted model", which is based on fitting the
 response kernel and noise correlation function to the data of
 @2021.Mattingly.
 
-\begin{table*}
-    % \centering
-    % \renewcommand{\arraystretch}{1.25}
-    \begin{tabular}{rSlp{6.1cm}}
-    \hline
-    \textbf{parameter} & \multicolumn{2}{c}{\textbf{value}} & \textbf{description} \\
-    \hline\hline
-        $a_v$ & 157.1 & \si{\micro\meter\squared\per\second\squared} & variance of up-gradient velocity \cite{2021.Mattingly} \\
-        $\lambda$ & 0.86 & \si{\per\second} & velocity correlation decay constant \cite{2021.Mattingly} \\
-        $c_0$ & 100 & \si{\micro\Molar} & mean ligand concentration \cite{2021.Mattingly} \\
-    \hline
-        $N$ & 6 & & number of receptor units per cluster \cite{2010.Shimizu} \\
-        $N_c$ & 400 & & number of receptor clusters \cite{2004.Li} \\
-        $M$ & 4 & & number of methylation sites per receptor \cite{2010.Shimizu} \\
-        $N_Y$ & 10 000 & & total copy number of CheY proteins (phosphorylated and unphosphorylated) \cite{2004.Li} \\
-    \hline
-        $K_a$ & 2900 & \si{\micro\Molar} & ligand dissociation constant of active receptors \cite{2020.Kamino} \\
-        $K_i$ & 18 & \si{\micro\Molar} & ligand dissociation constant of inactive receptors \cite{2020.Kamino} \\
-    \hline
-        $k_R$ & 0.1 & \si{\per\second} & methylation rate \cite{2010.Shimizu,2021.Mattingly} \\
-        $k_B$ & 0.2 & \si{\per\second} & demethylation rate \cite{2010.Shimizu,2021.Mattingly} \\
-        $k_A$ & 0.015 & \si{\per\second} & phosphorylation rate \cite{2002.Sourjik,2002.Sourjikt5} \\
-        $k_Z$ & 10.0 & \si{\per\second} & dephosphorylation rate \cite{2002.Sourjik,2002.Sourjikt5} \\
-        $\phi_Y$ & 0.17 & & steady-state fraction of phosphorylated CheY \cite{2002.Sourjik} \\
-    \hline
-        $m_0 / N$ & 0.5 & & receptor methylation level without ligands \cite{2010.Shimizu} \\
-        $\dfm$ & -2.0 & $k_\mathrm{B}T$ & free energy change of active conformation from attachment of one methyl group \cite{2010.Shimizu} \\
-    \hline
-    \end{tabular}
-    \caption{\b{The parameters required for the chemotaxis model, based on literature values. 
-    These are the parameters used in the so-called literature-based model.
-    In the fitted model (see \cref{sec:comparison}) the same parameter values are chosen, except for $N=15$ and $N_c=9$, which were obtained by fitting to the data of \citet{2021.Mattingly};
-    we note that changing $N$ and $N_c$ also requires updating $k_A$ to keep the fraction $\phi_Y$ of phosphorylated CheY constant.}}
-    \label{tab:chemotaxis-parameters}
-\end{table*}
+| **parameter** | **value** |  | **description** |
+|---:|:--|:--|:--|
+| $a_v$ | 157.1 | μm²/s² | variance of up-gradient velocity [@2021.Mattingly] |
+| $\lambda$ | 0.86 | s⁻¹ | velocity correlation decay constant [@2021.Mattingly] |
+| $c_0$ | 100 | μM | mean ligand concentration [@2021.Mattingly] |
+| $N$ | 6 |  | number of receptor units per cluster [@2010.Shimizu] |
+| $N_c$ | 400 |  | number of receptor clusters [@2004.Li] |
+| $M$ | 4 |  | number of methylation sites per receptor [@2010.Shimizu] |
+| $N_Y$ | 10 000 |  | total copy number of CheY proteins (phosphorylated and unphosphorylated) [@2004.Li] |
+| $K_a$ | 2900 | μM | ligand dissociation constant of active receptors [@2020.Kamino] |
+| $K_i$ | 18 | μM | ligand dissociation constant of inactive receptors [@2020.Kamino] |
+| $k_R$ | 0.1 | s⁻¹ | methylation rate [@2010.Shimizu; @2021.Mattingly] |
+| $k_B$ | 0.2 | s⁻¹ | demethylation rate [@2010.Shimizu; @2021.Mattingly] |
+| $k_A$ | 0.015 | s⁻¹ | phosphorylation rate [@2002.Sourjik; @2002.Sourjikt5] |
+| $k_Z$ | 10.0 | s⁻¹ | dephosphorylation rate [@2002.Sourjik; @2002.Sourjikt5] |
+| $\phi_Y$ | 0.17 |  | steady-state fraction of phosphorylated CheY [@2002.Sourjik] |
+| $m_0 / N$ | 0.5 |  | receptor methylation level without ligands [@2010.Shimizu] |
+| $\delta\!f_m$ | -2.0 | $k_\mathrm{B}T$ | free energy change of active conformation from attachment of one methyl group [@2010.Shimizu] |
+
+: The parameters required for the chemotaxis model, based on literature values. These are the parameters used in the so-called literature-based model. In the fitted model (see @sec-comparison) the same parameter values are chosen, except for $N=15$ and $N_c=9$, which were obtained by fitting to the data of @2021.Mattingly; we note that changing $N$ and $N_c$ also requires updating $k_A$ to keep the fraction $\phi_Y$ of phosphorylated CheY constant. {#tab:chemotaxis-parameters}
 
 ### MWC Model
 
@@ -945,7 +930,7 @@ to the integral. </figcaption>
 
 ### Comparing the chemotaxis information rate of the models against experiments
 
-<figure id="tab:fit_coefficients">
+<figure id="fig:num_clusters">
 <embed src="num-clusters.pdf" style="width:75.0%" />
 <figcaption>The information rate as a function of the number of receptor
 clusters
