@@ -41,7 +41,7 @@ jobs:
         run: quarto render
 
       - name: Download PDF thesis
-        run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o _book/webthesis.pdf
+        run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o _book/Quantifying-the-Flow-of-Information.pdf
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
