@@ -21,31 +21,31 @@
     {
       "id": "variants",
       "number": 3,
-      "title": "Variants of PWS",
+      "title": "More Efficient Variants of PWS",
       "section": "chapters"
     },
     {
       "id": "chemotaxis",
       "number": 4,
-      "title": "Chemotaxis",
+      "title": "Application—Bacterial Chemotaxis",
       "section": "chapters"
     },
     {
       "id": "lna_vs_pws",
       "number": 5,
-      "title": "LNA vs PWS",
+      "title": "The Accuracy of the Gaussian Approximation",
       "section": "chapters"
     },
     {
       "id": "mlpws",
       "number": 6,
-      "title": "ML-PWS",
+      "title": "ML-PWS: Quantifying Information Transmission Using Neural Networks",
       "section": "chapters"
     },
     {
       "id": "appendix",
       "number": "A",
-      "title": "Notes on Gaussian Approximation Computation",
+      "title": "Notes on the Computation of the Gaussian Approximation",
       "section": "appendix"
     },
     {
