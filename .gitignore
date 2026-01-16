@@ -15,3 +15,5 @@ index.qmd
 /publications.md
 /acknowledgments.md
 /about-the-author.md
+/.quarto/
+**/*.quarto_ipynb
