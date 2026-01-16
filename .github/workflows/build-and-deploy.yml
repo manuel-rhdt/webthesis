@@ -40,6 +40,9 @@ jobs:
       - name: Render website with Quarto
         run: quarto render
 
+      - name: Download PDF thesis
+        run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o _book/webthesis.pdf
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
