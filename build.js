@@ -7,6 +7,9 @@ const path = require('path');
 const HeaderMapper = require('./lib/header-mapper');
 const ReferenceReplacer = require('./lib/reference-replacer');
 const CrossReferenceFixer = require('./lib/cross-reference-fixer');
+const EquationMapper = require('./lib/equation-mapper');
+const EquationReplacer = require('./lib/equation-replacer');
+const EquationNumberInjector = require('./lib/equation-number-injector');
 
 // Load manifest
 const manifestPath = path.join(__dirname, 'chapters-manifest.json');
@@ -181,9 +184,49 @@ function fixCrossReferences(content, currentChapterId, headerMapping) {
 }
 
 /**
+ * Build equation mapping from all chapter files
+ * Extracts all equations with IDs and assigns chapter-specific equation numbers
+ * Returns: { chapterId: { 'eq:id': { id, equationNumber, chapterId, chapterNumber } }, ... }
+ */
+function buildEquationMapping() {
+  // Use DOM-based implementation for equation extraction
+  const htmlMap = {};
+  manifest.chapters.forEach(chapter => {
+    const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
+    if (fs.existsSync(inputPath)) {
+      htmlMap[chapter.id] = fs.readFileSync(inputPath, 'utf8');
+    }
+  });
+
+  const mapper = new EquationMapper();
+  return mapper.buildMapping(manifest.chapters, htmlMap);
+}
+
+/**
+ * Replace equation references with equation numbers
+ * Converts eq:id references to actual equation numbers
+ * Examples: "eq:random_walk" → "Eq. 4.1"
+ */
+function replaceEquationReferences(content, currentChapterId, equationMapping) {
+  // Use DOM-based implementation
+  const replacer = new EquationReplacer(manifest, equationMapping);
+  return replacer.replace(content, currentChapterId);
+}
+
+/**
+ * Inject equation numbers into equation elements
+ * Adds labels like "4.2" next to each equation
+ */
+function injectEquationNumbers(content, currentChapterId, equationMapping) {
+  // Use DOM-based implementation
+  const injector = new EquationNumberInjector(equationMapping);
+  return injector.inject(content, currentChapterId);
+}
+
+/**
  * Process a single chapter
  */
-function processChapter(chapter, index, headerMapping) {
+function processChapter(chapter, index, headerMapping, equationMapping) {
   const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
   const outputPath = path.join(distChaptersDir, `${chapter.id}.html`);
 
@@ -198,6 +241,12 @@ function processChapter(chapter, index, headerMapping) {
 
   // Replace text references (Sec. xxx, Ch. xxx) with actual section/chapter numbers
   content = replaceTextReferences(content, chapter.id, headerMapping);
+
+  // Inject equation numbers into equation elements
+  content = injectEquationNumbers(content, chapter.id, equationMapping);
+
+  // Replace equation references (eq:xxx) with actual equation numbers
+  content = replaceEquationReferences(content, chapter.id, equationMapping);
 
   // Fix cross-chapter references (including heading references)
   content = fixCrossReferences(content, chapter.id, headerMapping);
@@ -400,6 +449,17 @@ function build() {
   }
   console.log(`✓ Mapped ${totalHeaders} headers across ${Object.keys(headerMapping).length} chapters`);
 
+  // Build equation mapping from all chapters
+  console.log('Building equation mapping...');
+  const equationMapping = buildEquationMapping();
+
+  // Count total equations mapped
+  let totalEquations = 0;
+  for (const chapterId in equationMapping) {
+    totalEquations += Object.keys(equationMapping[chapterId]).length;
+  }
+  console.log(`✓ Mapped ${totalEquations} equations across ${Object.keys(equationMapping).length} chapters`);
+
   // Save mapping files for reference
   saveHeaderMappingFile(headerMapping);
   saveCrossReferenceReport(headerMapping);
@@ -410,7 +470,7 @@ function build() {
 
   manifest.chapters.forEach((chapter, index) => {
     try {
-      if (processChapter(chapter, index, headerMapping)) {
+      if (processChapter(chapter, index, headerMapping, equationMapping)) {
         successCount++;
       } else {
         errorCount++;
