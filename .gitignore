@@ -3,7 +3,6 @@ _book
 
 *.pdf
 
-index.qmd
 /01-introduction.md
 /02-path-weight-sampling.md
 /03-variants.md

@@ -1,0 +1,27 @@
+# Preface {.unnumbered}
+
+This website contains the full text of my PhD Thesis
+*Quantifying the Flow of information*
+converted and adapted from the 
+original LaTeX source. In this form it is much easier to read, especially on mobile.
+
+Use the sidebar on the left to navigate the chapters.
+
+The research was conducted between 2019 and 2025 at [AMOLF](https://amolf.nl),
+with funding from the Dutch Research Council [(NWO)](https://nwo.nl/).
+
+You can also find the [PDF version](https://ir.amolf.nl/pub/11167) of the thesis in the AMOLF institutional repository.
+
+#### License
+
+This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). You are free to share and adapt the material for any purpose, even commercially, as long as you provide appropriate credit to the original author, provide a link to the license, and indicate if changes were made.
+
+#### Citation
+
+If you use this thesis or parts of it in your own work, please cite it as:
+
+Reinhardt, M. J. (2025). *Quantifying the Flow of Information.* PhD-Thesis, Vrije Universiteit Amsterdam. [https://doi.org/10.5463/thesis.1092](https://doi.org/10.5463/thesis.1092).
+
+#### Contact
+
+For any questions or feedback regarding this thesis, please contact me at [mail@manuel-rhdt.de](mailto:mail@manuel-rhdt.de).
