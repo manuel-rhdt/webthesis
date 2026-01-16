@@ -30,5 +30,8 @@ format:
     theme:
       - cosmo
       - brand
+    html-math-method: mathml
 
-
+filters:
+  - quarto
+  - author-numeric.lua
