@@ -203,30 +203,42 @@ function buildEquationMapping() {
 }
 
 /**
- * Replace equation references with equation numbers
- * Converts eq:id references to actual equation numbers
+ * Replace equation references with sequential equation numbers
+ * Matches the numbering from EquationNumberInjector
  * Examples: "eq:random_walk" → "Eq. 4.1"
  */
-function replaceEquationReferences(content, currentChapterId, equationMapping) {
+function replaceEquationReferences(content, currentChapterId) {
+  // Create chapter info mapping for replacer
+  const chapterInfo = {};
+  manifest.chapters.forEach(ch => {
+    chapterInfo[ch.id] = { number: ch.number };
+  });
+
   // Use DOM-based implementation
-  const replacer = new EquationReplacer(manifest, equationMapping);
+  const replacer = new EquationReplacer(manifest, chapterInfo);
   return replacer.replace(content, currentChapterId);
 }
 
 /**
- * Inject equation numbers into equation elements
- * Adds labels like "4.2" next to each equation
+ * Inject equation numbers into all display equations
+ * Adds numbered labels like "(4.2)" next to each equation
  */
-function injectEquationNumbers(content, currentChapterId, equationMapping) {
+function injectEquationNumbers(content, currentChapterId) {
+  // Create chapter info mapping for injector
+  const chapterInfo = {};
+  manifest.chapters.forEach(ch => {
+    chapterInfo[ch.id] = { number: ch.number };
+  });
+
   // Use DOM-based implementation
-  const injector = new EquationNumberInjector(equationMapping);
+  const injector = new EquationNumberInjector(manifest, chapterInfo);
   return injector.inject(content, currentChapterId);
 }
 
 /**
  * Process a single chapter
  */
-function processChapter(chapter, index, headerMapping, equationMapping) {
+function processChapter(chapter, index, headerMapping) {
   const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
   const outputPath = path.join(distChaptersDir, `${chapter.id}.html`);
 
@@ -242,11 +254,11 @@ function processChapter(chapter, index, headerMapping, equationMapping) {
   // Replace text references (Sec. xxx, Ch. xxx) with actual section/chapter numbers
   content = replaceTextReferences(content, chapter.id, headerMapping);
 
-  // Inject equation numbers into equation elements
-  content = injectEquationNumbers(content, chapter.id, equationMapping);
+  // Inject equation numbers into all display equations
+  content = injectEquationNumbers(content, chapter.id);
 
   // Replace equation references (eq:xxx) with actual equation numbers
-  content = replaceEquationReferences(content, chapter.id, equationMapping);
+  content = replaceEquationReferences(content, chapter.id);
 
   // Fix cross-chapter references (including heading references)
   content = fixCrossReferences(content, chapter.id, headerMapping);
@@ -470,7 +482,7 @@ function build() {
 
   manifest.chapters.forEach((chapter, index) => {
     try {
-      if (processChapter(chapter, index, headerMapping, equationMapping)) {
+      if (processChapter(chapter, index, headerMapping)) {
         successCount++;
       } else {
         errorCount++;

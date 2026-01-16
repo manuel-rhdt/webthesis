@@ -1,95 +1,96 @@
 /**
  * Tests for EquationNumberInjector class
- * Tests DOM-based equation number injection
+ * Tests DOM-based equation number injection for all display equations
  */
 
 const EquationNumberInjector = require('../lib/equation-number-injector');
 
 describe('EquationNumberInjector', () => {
-  const mockEquationMapping = {
-    'dpws': {
-      'eq:mutual_information': {
-        id: 'eq:mutual_information',
-        equationNumber: '2.1',
-        chapterId: 'dpws',
-        chapterNumber: 2
-      },
-      'eq:marginal-entropy': {
-        id: 'eq:marginal-entropy',
-        equationNumber: '2.3',
-        chapterId: 'dpws',
-        chapterNumber: 2
-      }
-    },
-    'chemotaxis': {
-      'eq:concentration_dynamics': {
-        id: 'eq:concentration_dynamics',
-        equationNumber: '4.2',
-        chapterId: 'chemotaxis',
-        chapterNumber: 4
-      }
-    }
+  const mockManifest = {
+    chapters: [
+      { id: 'dpws', number: 2, title: 'Path Weight Sampling' },
+      { id: 'chemotaxis', number: 4, title: 'Application—Bacterial Chemotaxis' },
+      { id: 'appendix', number: 'A', title: 'Appendix' }
+    ]
+  };
+
+  const chapterInfo = {
+    dpws: { number: 2 },
+    chemotaxis: { number: 4 },
+    appendix: { number: 'A' }
   };
 
   let injector;
 
   beforeEach(() => {
-    injector = new EquationNumberInjector(mockEquationMapping);
+    injector = new EquationNumberInjector(mockManifest, chapterInfo);
   });
 
-  test('injects equation number after equation element', () => {
-    const html = '<div id="eq:mutual_information"><math>formula</math></div>';
+  test('injects equation numbers for all display math elements', () => {
+    const html = '<math display="block"><mrow>E=mc^2</mrow></math>';
     const result = injector.inject(html, 'dpws');
 
-    expect(result).toContain('<span class="equation-number" id="eqn:eq:mutual_information">2.1</span>');
+    expect(result).toContain('equation-display');
+    expect(result).toContain('equation-number');
+    expect(result).toContain('(2.1)');
   });
 
-  test('injects correct equation number for chapter', () => {
-    const html = '<div id="eq:concentration_dynamics"><math>formula</math></div>';
-    const result = injector.inject(html, 'chemotaxis');
-
-    expect(result).toContain('4.2');
-  });
-
-  test('handles multiple equations in same content', () => {
+  test('numbers equations sequentially per chapter', () => {
     const html = `
-      <div id="eq:mutual_information"><math>formula1</math></div>
-      <div id="eq:marginal-entropy"><math>formula2</math></div>
+      <math display="block"><mrow>x</mrow></math>
+      <p>Some text</p>
+      <math display="block"><mrow>y</mrow></math>
+      <math display="block"><mrow>z</mrow></math>
     `;
     const result = injector.inject(html, 'dpws');
 
-    expect(result).toContain('2.1');
-    expect(result).toContain('2.3');
+    expect(result).toContain('(2.1)');
+    expect(result).toContain('(2.2)');
+    expect(result).toContain('(2.3)');
   });
 
-  test('skips equations not in mapping', () => {
-    const html = '<div id="eq:unknown"><math>formula</math></div>';
-    const result = injector.inject(html, 'dpws');
+  test('uses chapter number prefix in equation numbering', () => {
+    const html = '<math display="block"><mrow>formula</mrow></math>';
+    const result = injector.inject(html, 'chemotaxis');
 
-    // Should not add any equation number span
-    expect(result).not.toContain('equation-number');
+    expect(result).toContain('(4.1)');
   });
 
-  test('finds equations from other chapters', () => {
-    const html = '<div id="eq:concentration_dynamics"><math>formula</math></div>';
-    const result = injector.inject(html, 'dpws');
+  test('handles letter chapter numbers for appendix', () => {
+    const html = '<math display="block"><mrow>formula</mrow></math>';
+    const result = injector.inject(html, 'appendix');
 
-    // Should find equation from chemotaxis chapter
-    expect(result).toContain('4.2');
+    expect(result).toContain('(A.1)');
   });
 
-  test('preserves equation element structure', () => {
-    const html = '<div id="eq:mutual_information" class="math-block"><math>formula</math></div>';
+  test('wraps equations in flexbox container for styling', () => {
+    const html = '<math display="block"><mrow>x^2</mrow></math>';
     const result = injector.inject(html, 'dpws');
 
-    expect(result).toContain('class="math-block"');
-    expect(result).toContain('id="eq:mutual_information"');
+    expect(result).toContain('class="equation-display"');
+    expect(result).toContain('class="equation-content"');
+    expect(result).toContain('class="equation-number"');
   });
 
-  test('creates unique ID for equation number span', () => {
-    const html = '<div id="eq:mutual_information"><math>formula</math></div>';
+  test('preserves display="block" attribute', () => {
+    const html = '<math display="block"><mrow>formula</mrow></math>';
     const result = injector.inject(html, 'dpws');
 
-    expect(result).toContain('id="eqn:eq:mutual_information"');
+    expect(result).toContain('display="block"');
+  });
+
+  test('ignores inline math elements', () => {
+    const html = '<math display="inline"><mrow>x</mrow></math>';
+    const result = injector.inject(html, 'dpws');
+
+    expect(result).not.toContain('equation-display');
+  });
+
+  test('returns unchanged content if chapter not found', () => {
+    const html = '<math display="block"><mrow>formula</mrow></math>';
+    const result = injector.inject(html, 'unknown-chapter');
+
+    expect(result).toBe(html);
+    expect(result).not.toContain('equation-display');
   });
 });
