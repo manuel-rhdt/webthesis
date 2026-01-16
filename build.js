@@ -207,15 +207,9 @@ function buildEquationMapping() {
  * Matches the numbering from EquationNumberInjector
  * Examples: "eq:random_walk" → "Eq. 4.1"
  */
-function replaceEquationReferences(content, currentChapterId) {
-  // Create chapter info mapping for replacer
-  const chapterInfo = {};
-  manifest.chapters.forEach(ch => {
-    chapterInfo[ch.id] = { number: ch.number };
-  });
-
-  // Use DOM-based implementation
-  const replacer = new EquationReplacer(manifest, chapterInfo);
+function replaceEquationReferences(content, currentChapterId, equationMapping) {
+  // Use DOM-based implementation with full cross-chapter equation mapping
+  const replacer = new EquationReplacer(manifest, equationMapping);
   return replacer.replace(content, currentChapterId);
 }
 
@@ -238,7 +232,7 @@ function injectEquationNumbers(content, currentChapterId) {
 /**
  * Process a single chapter
  */
-function processChapter(chapter, index, headerMapping) {
+function processChapter(chapter, index, headerMapping, equationMapping) {
   const inputPath = path.join(chaptersDir, `${chapter.id}.html`);
   const outputPath = path.join(distChaptersDir, `${chapter.id}.html`);
 
@@ -258,7 +252,7 @@ function processChapter(chapter, index, headerMapping) {
   content = injectEquationNumbers(content, chapter.id);
 
   // Replace equation references (eq:xxx) with actual equation numbers
-  content = replaceEquationReferences(content, chapter.id);
+  content = replaceEquationReferences(content, chapter.id, equationMapping);
 
   // Fix cross-chapter references (including heading references)
   content = fixCrossReferences(content, chapter.id, headerMapping);
@@ -482,7 +476,7 @@ function build() {
 
   manifest.chapters.forEach((chapter, index) => {
     try {
-      if (processChapter(chapter, index, headerMapping)) {
+      if (processChapter(chapter, index, headerMapping, equationMapping)) {
         successCount++;
       } else {
         errorCount++;
