@@ -8,8 +8,6 @@ book:
   date: "2025-06-13"
   repo-url: https://github.com/manuel-rhdt/webthesis
   downloads: [pdf]
-  repo-actions: [source]
-  repo-subdir: "chapters"
   chapters:
     - index.qmd
     - 01-introduction.md
