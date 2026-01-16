@@ -1,18 +1,17 @@
-# Build output
-dist/
+.quarto
+_book
 
-# Node dependencies
-node_modules/
-npm-debug.log
-yarn-error.log
+*.pdf
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
+index.qmd
+/01-introduction.md
+/02-path-weight-sampling.md
+/03-variants.md
+/04-chemotaxis.md
+/05-gaussian.md
+/06-mlpws.md
+/appendix.md
+/summary.md
+/publications.md
+/acknowledgments.md
+/about-the-author.md
