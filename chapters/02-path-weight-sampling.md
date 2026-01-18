@@ -31,7 +31,6 @@ reference-section-title: References
 
 
 ## Introduction
-[^1]
 
 Quantifying information transmission is vital for understanding and
 designing natural and engineered information-processing systems, ranging
