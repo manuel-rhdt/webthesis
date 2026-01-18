@@ -9,7 +9,7 @@ subject: Information Theory
 **M. Reinhardt**, G. Tkačik, and P. R. ten Wolde, *Path Weight Sampling:
 Exact Monte Carlo Computation of the Mutual Information between
 Stochastic Trajectories*, Physical Review X **13**, 041017 (2023).\
-A. Tjalma[^1], **M. Reinhardt**, A.-L. Moor, and P. R. ten Wolde,
+A. Tjalma[^1], **M. Reinhardt**[^1], A.-L. Moor, and P. R. ten Wolde,
 *Mutual Information Rate---Linear Noise Approximation and Exact
 Computation*, in preparation.\
 **M. Reinhardt**, G. Tkačik, and P. R. ten Wolde, *ML-PWS: Computing the

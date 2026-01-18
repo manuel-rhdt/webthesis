@@ -25,7 +25,6 @@ book:
       - chapters/about-the-author.md
 
 bibliography: references.bib
-csl: american-physics-society.csl
 
 numbering: true
 
