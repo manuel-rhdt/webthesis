@@ -36,5 +36,6 @@ format:
     html-math-method: mathml
 
 filters:
+  - auto-eq.lua
   - quarto
   - author-numeric.lua
