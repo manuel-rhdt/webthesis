@@ -178,14 +178,7 @@ dynamics of the cell's swimming velocity $v_x(t)$ in the absence of a
 gradient and by the shape of the concentration gradient $c(x)$. The
 resulting stochastic dynamics are visualized in [@fig-trajectories].
 
-![Input dynamics. *Left column:* two example time traces of the
-up-gradient velocity $v_x(t)$ and the observed concentration $c(t)$
-obtained by integrating [@eq-concentration_dynamics]. *Right column:*
-averages of velocity and concentration traces obtained from 1000
-simulated trajectories. The solid lines show the mean as a function of
-time and boundaries of the shaded regions indicate the 5% and 95%
-quantiles.](input_trajectories.pdf){#fig-trajectories
-width="\\textwidth"}
+![Input dynamics. *Left column:* two example time traces of the up-gradient velocity $v_x(t)$ and the observed concentration $c(t)$ obtained by integrating [@eq-concentration_dynamics]. *Right column:* averages of velocity and concentration traces obtained from 1000 simulated trajectories. The solid lines show the mean as a function of time and boundaries of the shaded regions indicate the 5% and 95% quantiles.](figures/input_trajectories.svg){#fig-trajectories}
 
 In the PWS simulations we use $c(t)$ directly as the input to our
 system. Yet, for the Gaussian approximation, to which we will compare
