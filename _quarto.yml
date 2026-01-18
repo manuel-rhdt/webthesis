@@ -10,19 +10,19 @@ book:
   downloads: [pdf]
   chapters:
     - index.qmd
-    - 01-introduction.md
-    - 02-path-weight-sampling.md
-    - 03-variants.md
-    - 04-chemotaxis.md
-    - 05-gaussian.md
-    - 06-mlpws.md
-    - appendix.md
+    - chapters/01-introduction.md
+    - chapters/02-path-weight-sampling.md
+    - chapters/03-variants.md
+    - chapters/04-chemotaxis.md
+    - chapters/05-gaussian.md
+    - chapters/06-mlpws.md
+    - chapters/appendix.md
     - part: "Endmatter"
       chapters:
-      - summary.md
-      - publications.md
-      - acknowledgments.md
-      - about-the-author.md
+      - chapters/summary.md
+      - chapters/publications.md
+      - chapters/acknowledgments.md
+      - chapters/about-the-author.md
 
 bibliography: references.bib
 

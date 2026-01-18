@@ -16,12 +16,12 @@ In the thesis, we also demonstrate the practical utility PWS by applying it to b
 
 | Chapter | Title | Summary |
 |---------|-------|---------|
-| 1 | [Introduction](https://manuel-rhdt.github.io/webthesis/01-introduction.html) | Background on information theory and the challenge of computing mutual information for time-varying signals. |
-| 2 | [Path Weight Sampling](https://manuel-rhdt.github.io/webthesis/02-path-weight-sampling.html) | The core PWS algorithm: using master equations to compute exact trajectory probabilities via Monte Carlo sampling. |
-| 3 | [More Efficient Variants of PWS](https://manuel-rhdt.github.io/webthesis/03-variants.html) | Rosenbluth-Rosenbluth PWS and thermodynamic integration PWS for improved computational efficiency. |
-| 4 | [Application—Bacterial Chemotaxis](https://manuel-rhdt.github.io/webthesis/04-chemotaxis.html) | Applying PWS to *E. coli* chemotaxis, a system of 182 coupled reactions, and resolving discrepancies with experimental data. |
-| 5 | [The Accuracy of the Gaussian Approximation](https://manuel-rhdt.github.io/webthesis/05-gaussian.html) | Assessing when the widely-used linear noise approximation breaks down for non-Gaussian systems. |
-| 6 | [ML-PWS](https://manuel-rhdt.github.io/webthesis/06-mlpws.html) | Combining PWS with neural networks to estimate information rates from empirical data. |
+| 1 | [Introduction](https://manuel-rhdt.github.io/webthesis/chapters/01-introduction.html) | Background on information theory and the challenge of computing mutual information for time-varying signals. |
+| 2 | [Path Weight Sampling](https://manuel-rhdt.github.io/webthesis/chapters/02-path-weight-sampling.html) | The core PWS algorithm: using master equations to compute exact trajectory probabilities via Monte Carlo sampling. |
+| 3 | [More Efficient Variants of PWS](https://manuel-rhdt.github.io/webthesis/chapters/03-variants.html) | Rosenbluth-Rosenbluth PWS and thermodynamic integration PWS for improved computational efficiency. |
+| 4 | [Application—Bacterial Chemotaxis](https://manuel-rhdt.github.io/webthesis/chapters/04-chemotaxis.html) | Applying PWS to *E. coli* chemotaxis, a system of 182 coupled reactions, and resolving discrepancies with experimental data. |
+| 5 | [The Accuracy of the Gaussian Approximation](https://manuel-rhdt.github.io/webthesis/chapters/05-gaussian.html) | Assessing when the widely-used linear noise approximation breaks down for non-Gaussian systems. |
+| 6 | [ML-PWS](https://manuel-rhdt.github.io/webthesis/chapters/06-mlpws.html) | Combining PWS with neural networks to estimate information rates from empirical data. |
 
 ## Software
 
