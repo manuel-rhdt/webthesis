@@ -7,8 +7,7 @@ reference-section-title: References
 
 # More Efficient Variants of PWS {#sec-variants}
 
-*The contents of this chapter have been published in *Phys. Rev. X*
-    **13**, 041017 (2023) [@2023.Reinhardt].*
+*The contents of this chapter have been published in Phys. Rev. X **13**, 041017 (2023) [@2023.Reinhardt].*
 
 > In the previous chapter, we introduced Path Weight Sampling (PWS), a
 > computational approach capable of providing exact information rate

@@ -7,7 +7,7 @@ reference-section-title: References
 
 # Path Weight Sampling {#sec-dpws}
 
-*The contents of this chapter have been published in *Phys. Rev. X* **13**, 041017 (2023) [@2023.Reinhardt].*
+*The contents of this chapter have been published in Phys. Rev. X **13**, 041017 (2023) [@2023.Reinhardt].*
 
 > Most natural and engineered information-processing systems transmit
 > information via signals that vary in time. Computing the information

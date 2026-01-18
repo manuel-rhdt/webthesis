@@ -7,9 +7,7 @@ reference-section-title: References
 
 # The Accuracy of the Gaussian Approximation {#sec-lna_vs_pws}
 
-*This chapter was written by Age Tjalma and Manuel Reinhardt as
-    shared first authors, in collaboration with Anne-Lena Moor (MPI-CBG
-    Dresden), and Pieter Rein ten Wolde.*
+*This chapter was written by Age Tjalma and Manuel Reinhardt as shared first authors, in collaboration with Anne-Lena Moor (MPI-CBG Dresden), and Pieter Rein ten Wolde.*
 
 > Efficient information processing is crucial for both living organisms
 > and engineered systems. The mutual information rate, a core concept of

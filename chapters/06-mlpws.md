@@ -7,8 +7,7 @@ reference-section-title: References
 
 # ML-PWS: Quantifying Information Transmission Using Neural Networks {#sec-ml-pws}
 
-*This chapter is co-authored by Manuel Reinhardt, Gašper Tkačik
-    (IST Austria), and Pieter Rein ten Wolde.*
+*This chapter is co-authored by Manuel Reinhardt, Gašper Tkačik (IST Austria), and Pieter Rein ten Wolde.*
 
 > Understanding the flow of information in natural and engineered
 > systems is crucial for their design and analysis. The mutual
@@ -33,8 +32,6 @@ reference-section-title: References
 > nonlinear and non-Gaussian systems.
 
 ## Introduction
-
-[^1]
 
 Information theory is the most general framework for studying signal
 processing systems and quantifying their performance. @1948.Shannon

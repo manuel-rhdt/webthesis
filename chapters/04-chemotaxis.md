@@ -7,8 +7,7 @@ reference-section-title: References
 
 # Application---Bacterial Chemotaxis {#sec-chemotaxis}
 
-*The contents of this chapter have been published in *Phys. Rev. X*
-**13**, 041017 (2023) [@2023.Reinhardt].*
+*The contents of this chapter have been published in Phys. Rev. X **13**, 041017 (2023) [@2023.Reinhardt].*
 
 > The chemotaxis signaling network of the bacterium *Escherichia coli*
 > is a sophisticated information processing system, enabling the
