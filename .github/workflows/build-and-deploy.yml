@@ -12,7 +12,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      CHECKSUM: d3a516e8d818e022b25ec514eaebb3737d6e36cd3c1e7c70e82a1b2d075862b
+      CHECKSUM: 3d3a516e8d818e022b25ec514eaebb3737d6e36cd3c1e7c70e82a1b2d075862b
       FILENAME: _book/Quantifying-the-Flow-of-Information.pdf
 
     permissions:
