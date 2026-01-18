@@ -1,5 +1,6 @@
 ---
 license: CC-BY-4.0
+csl: ../american-physics-society.csl
 link-citations: true
 reference-section-title: References
 title: Introduction
