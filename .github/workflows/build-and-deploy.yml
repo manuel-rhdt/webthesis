@@ -30,7 +30,15 @@ jobs:
       - name: Render website with Quarto
         run: quarto render
 
+      - name: Cache PDF thesis
+        id: cache-pdf
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.FILENAME }}
+          key: pdf-${{ env.CHECKSUM }}
+
       - name: Download PDF thesis
+        if: steps.cache-pdf.outputs.cache-hit != 'true'
         run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o $FILENAME
 
       - name: Verify checksum
