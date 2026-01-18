@@ -7,6 +7,9 @@ reference-section-title: References
 
 # More Efficient Variants of PWS {#sec-variants}
 
+*The contents of this chapter have been published in *Phys. Rev. X*
+    **13**, 041017 (2023) [@2023.Reinhardt].*
+
 > In the previous chapter, we introduced Path Weight Sampling (PWS), a
 > computational approach capable of providing exact information rate
 > estimates for any stochastic system. However, the direct
@@ -25,8 +28,6 @@ reference-section-title: References
 > the Gaussian approximation.
 
 ## Introduction
-
-[^1]
 
 To quantify information transmission, be it in a natural or engineered
 information processing system, we need to be able to compute the mutual
@@ -1153,9 +1154,6 @@ rate deviates from the mutual information rate of the exact model that
 is described by the chemical master equation, even in the limit of large
 copy numbers [@2023.Moor]. This finding is also further discussed in
 [@sec-lna_vs_pws] ([@sec-linsys]).
-
-[^1]: The contents of this chapter have been published in *Phys. Rev. X*
-    **13**, 041017 (2023) [@2023.Reinhardt].
 
 [^2]: Indeed, the mutual information
     $\mathrm{I}(\mathcal{S}, \mathcal{X})$ precisely quantifies how

@@ -7,6 +7,10 @@ reference-section-title: References
 
 # The Accuracy of the Gaussian Approximation {#sec-lna_vs_pws}
 
+*This chapter was written by Age Tjalma and Manuel Reinhardt as
+    shared first authors, in collaboration with Anne-Lena Moor (MPI-CBG
+    Dresden), and Pieter Rein ten Wolde.*
+
 > Efficient information processing is crucial for both living organisms
 > and engineered systems. The mutual information rate, a core concept of
 > information theory, quantifies the amount of information shared
@@ -32,8 +36,6 @@ reference-section-title: References
 > computationally intensive methods, such as PWS, are necessary.
 
 ## Introduction
-
-[^1]
 
 For the functioning of both living and engineered systems it is
 paramount that they collect and process information effectively.
@@ -1037,10 +1039,6 @@ timescales, and thus better approximated by the Gaussian model. The fact
 that this is not the case for the LNA approximation is intriguing,
 indicating the need for further investigation into the interplay between
 timescales, system nonlinearity, and the LNA.
-
-[^1]: This chapter was written by Age Tjalma and Manuel Reinhardt as
-    shared first authors, in collaboration with Anne-Lena Moor (MPI-CBG
-    Dresden), and Pieter Rein ten Wolde.
 
 [^2]: In still unpublished work together with Anne-Lena Moor and
     Christoph Zechner [@2024.Moor], we found that the root cause for the

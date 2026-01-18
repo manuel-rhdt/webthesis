@@ -7,6 +7,9 @@ reference-section-title: References
 
 # ML-PWS: Quantifying Information Transmission Using Neural Networks {#sec-ml-pws}
 
+*This chapter is co-authored by Manuel Reinhardt, Gašper Tkačik
+    (IST Austria), and Pieter Rein ten Wolde.*
+
 > Understanding the flow of information in natural and engineered
 > systems is crucial for their design and analysis. The mutual
 > information rate is the fundamental measure to describe the
@@ -1157,11 +1160,6 @@ the mutual information rate, we anticipate that ML-PWS could contribute
 to a deeper understanding of complex dynamical systems, with potential
 applications spanning neuroscience, biology, physics, and machine
 learning.
-
-\cleardoubleevenemptypage
-
-[^1]: This chapter is co-authored by Manuel Reinhardt, Gašper Tkačik
-    (IST Austria), and Pieter Rein ten Wolde.
 
 [^2]: See also [@sec-lna_vs_pws], where we extensively discuss the
     limitations of the Gaussian approximation for nonlinear systems.

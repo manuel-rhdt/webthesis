@@ -7,6 +7,9 @@ reference-section-title: References
 
 # Application---Bacterial Chemotaxis {#sec-chemotaxis}
 
+*The contents of this chapter have been published in *Phys. Rev. X*
+**13**, 041017 (2023) [@2023.Reinhardt].*
+
 > The chemotaxis signaling network of the bacterium *Escherichia coli*
 > is a sophisticated information processing system, enabling the
 > bacterium to sense nutrient gradients and dynamically adjust its
@@ -40,8 +43,6 @@ reference-section-title: References
 > validating its use by @2021.Mattingly a posteriori.
 
 ## Introduction
-
-[^1]
 
 The chemotaxis system of the bacterium *Escherichia coli* is a complex
 information processing system. It is responsible for detecting nutrient
@@ -891,6 +892,3 @@ limited by the information transmission rate [@2021.Mattingly], but
 whether the system has been optimized for information transmission, and
 how the latter affects chemotactic performance in other spatio-temporal
 concentration profiles, remain interesting questions for future work.
-
-[^1]: The contents of this chapter have been published in *Phys. Rev. X*
-    **13**, 041017 (2023) [@2023.Reinhardt].

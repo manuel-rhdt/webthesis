@@ -7,6 +7,8 @@ reference-section-title: References
 
 # Path Weight Sampling {#sec-dpws}
 
+*The contents of this chapter have been published in *Phys. Rev. X* **13**, 041017 (2023) [@2023.Reinhardt].*
+
 > Most natural and engineered information-processing systems transmit
 > information via signals that vary in time. Computing the information
 > transmission rate or the information encoded in the temporal
@@ -1086,6 +1088,3 @@ Overall, PWS is a general framework for computing the mutual information
 between trajectories. Because of its flexibility and simplicity, we
 envision that it will become an important and reliable tool for studying
 information transmission in dynamic stochastic systems.
-
-[^1]: The contents of this chapter have been published in *Phys. Rev. X*
-    **13**, 041017 (2023) [@2023.Reinhardt].
