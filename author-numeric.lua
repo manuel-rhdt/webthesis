@@ -11,7 +11,7 @@ local template
 local templates = {
    -- Max. two names, otherwise first name + et al.
    default = [[$~$
-${names/first}${if(names/rest/rest)} ${etal}
+${names/first}${if(names/rest/rest)} _${etal}_
 ${elseif(names/rest)} ${et} ${names/rest/first}${endif}
 $~$]],
 
