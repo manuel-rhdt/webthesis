@@ -35,7 +35,7 @@ jobs:
 
       - name: Verify checksum
         run: | 
-            echo "$CHECKSUM  $FILENAME" > checksum.sha256
+            echo "$CHECKSUM  $FILENAME" | tee checksum.sha256
             sha256sum -c checksum.sha256
             rm checksum.sha256
 
