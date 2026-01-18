@@ -11,7 +11,6 @@ the Gaussian framework is relatively simple. From Shannon's formula for
 the entropy of a multivariate Gaussian distribution it follows that the
 MI is given by
 
-
 $$I(S, X) = \frac{1}{2} \ln \left(
     \frac{|\Sigma_{ss}|\,|\Sigma_{xx}|}{|Z|}
     \right)\quad \mathrm{[nats]}\,.$$ {#eq-mi}
@@ -64,7 +63,7 @@ $$\mathrm{P}(\mathbfit{s}, \mathbfit{x}) = \frac{1}{(2\pi |Z|)^{d}} \exp\left[
     -\frac{1}{2}
     \left(
     \begin{array}{cc}
-        \mathbfit{s} & \mathbfit{x} 
+        \mathbfit{s} & \mathbfit{x}
     \end{array}
     \right)
     Z^{-1}
@@ -189,7 +188,6 @@ Under some light conditions there exists a continuous $2\pi$-periodic
 function $f(\lambda)$ that is defined through the discrete-time Fourier
 transform
 
-
 $$f(\omega) = \sum^\infty_{k=-\infty} t_k e^{-i\omega k} \,.
     \label{eq-fourier-series}$$ {#eq-fourier-series}
 
@@ -228,8 +226,7 @@ $$\lim_{n\to\infty} \frac{\ln |T_n|}{n} \approx \frac{1}{N}\sum^{N-1}_{m=0} \ln 
 where $\omega_m = 2\pi m/N$ for some large $N$. Now, inserting
 @eq-fourier-series we find
 
-
-$$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} \ln \sum^{\infty}_{k=-\infty} t_k 
+$$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} \ln \sum^{\infty}_{k=-\infty} t_k
     \exp\left(-\frac{i 2\pi k m}{N} \right)\,.
     \label{eq-logdet-toeplitz}$$ {#eq-logdet-toeplitz}
 
@@ -244,7 +241,7 @@ $$\lambda_m = \sum^{\lfloor N/2 \rfloor}_{k=-\lfloor N/2 \rfloor} t_k \exp\left(
 
 for $m=0,\ldots,N-1$. Hence, we have derived the approximation
 
-$$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} 
+$$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0}
     \ln \lambda_m\,.$$
 
 The DFT coefficients $\lambda_m$ represent the inner sum in
@@ -286,7 +283,7 @@ information rate
 
 $$R(S, X) \approx
     -\frac{1}{2} \sum^{2n-1}_{m=0} \ln
-    \left( 
+    \left(
     1 - \frac{|\lambda_{sx,m}|^2}{\lambda_{ss,m} \lambda_{xx,m}}
     \right) \,.$$
 

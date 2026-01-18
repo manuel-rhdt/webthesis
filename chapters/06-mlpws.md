@@ -163,7 +163,7 @@ $$I(S, X) = \iint \mathrm{P}(s, x) \ln \frac{\mathrm{P}(s, x)}{\mathrm{P}(s)\mat
 or, equivalently, using Shannon entropies
 
 $$\begin{aligned}
-I(S, X) 
+I(S, X)
 &= H(S) + H(X) - H(S, X) \\
 &= H(S) - H(S|X) \\
 &= H(X) - H(X|S)\,.
@@ -182,7 +182,6 @@ For systems that repeatedly transmit information, this concept must be
 extended to sequences of messages $S_{1:n}=(S_1,\ldots,S_n)$ and
 $X_{1:n}=(X_1,\ldots,X_n)$. The mutual information between random
 sequences is defined analogously as
-
 
 $$I(S_{1:n},X_{1:n}) = \left\langle \ln\frac{\mathrm{P}(s_{1:n}, x_{1:n})}{\mathrm{P}(s_{1:n}) \mathrm{P}(x_{1:n})} \right\rangle_{\mathrm{P}(s_{1:n}, x_{1:n})}
 \label{eq-trajectory_mi_sequence}$$ {#eq-trajectory_mi_sequence}
@@ -261,7 +260,6 @@ $\mathrm{P}(x_{1:n}|s_{1:n})$, but not for the input.
 Given these models for input and output, the mutual information is
 computed using a Monte Carlo estimate of [@eq-trajectory_mi_sequence]
 
-
 $$I_{MC}(S_{1:n}, X_{1:n}) = \frac{1}{N} \sum^N_{i=1} \ln \frac{\mathrm{P}(x^i_{1:n} | s^i_{1:n})}{\mathrm{P}(x^i_{1:n})}
 \label{eq-monte_carlo_information}$$ {#eq-monte_carlo_information}
 
@@ -291,7 +289,6 @@ numbers $\epsilon_1,\ldots,\epsilon_{n-1}\sim\mathcal{N}(0, 1)$ that
 were used to generate the path with a stochastic integration scheme. The
 conditional probability density of the path can then be written as
 
-
 $$\mathrm{P}(x_{1:n}|s_{1:n}) = \mathrm{P}(x_1|s_1) \prod^{n-1}_{i=1} \frac{1}{\sqrt{2\pi}\sigma} \exp\left(- \epsilon_{i}^2 / 2 \right) \,.
     \label{eq-tractable_conditional}$$ {#eq-tractable_conditional}
 
@@ -314,7 +311,6 @@ mutual information. The only way of computing $\mathrm{P}(x_{1:n})$
 exactly from the conditional probability density
 $\mathrm{P}(x_{1:n} | s_{1:n})$ is via marginalization over the input
 paths:
-
 
 $$\mathrm{P}(x_{1:n}) = \int \mathrm{P}(x_{1:n} | s_{1:n}) \mathrm{P}(s_{1:n}) ds_{1:n} \,.
     \label{eq-marginalization}$$ {#eq-marginalization}
@@ -372,7 +368,6 @@ experimental data that meets the requirements for using PWS.
 
 We can factorize the joint probability of a sequence $x_{1:n}$ as
 
-
 $$\mathrm{P}(x_{1:n} \mid s_{1:n}) = \prod_{i=1}^n \mathrm{P}(x_i \mid x_{1:i-1}, s_{1:n}) \,,
     \label{eq-sequence_factorization}$$ {#eq-sequence_factorization}
 
@@ -380,7 +375,6 @@ i.e., the stochastic dynamics are fully specified by the conditional
 stepping probabilities. Note that in a physical system obeying
 causality, the output $x_i$ cannot depend on future inputs. Thus, we can
 simplify [@eq-sequence_factorization] to
-
 
 $$\mathrm{P}(x_{1:n} \mid s_{1:n}) = \prod_{i=1}^n \mathrm{P}(x_i \mid x_{1:i-1}, s_{1:i}) \,.
     \label{eq-causal_sequence_factorization}$$ {#eq-causal_sequence_factorization}
@@ -494,7 +488,6 @@ Given the sequences $s_{1:n}$ and $x_{1:n}$ the RNN takes an initial
 state $h_0\in\mathbb{R}^d$ and generates a sequence
 $h_{1:n}=(h_1,\ldots,h_n)$ from a recursive relation
 
-
 $$h_i = f_\theta(s_i, x_{i-1}, h_{i-1})
     \label{eq-recursion}$$ {#eq-recursion}
 
@@ -513,7 +506,6 @@ often allow the model to better learn long-term dependencies.
 From the RNN we can obtain a stochastic representation of the output
 sequence $x_{1:n}$. We extend the recursive relation above by adding a
 sampling step to obtain $x_i$ from $h_i$
-
 
 $$\begin{aligned}
         % h_i &= f_\theta(s_i, x_{i-1}, h_{i-1}) \\
@@ -613,7 +605,6 @@ $x_i \sim \mathcal{N}(\hat{\mu}_i, \hat{\sigma}_i)$.
 
 The conditional probability of the resulting output sequence is given by
 
-
 $$\begin{aligned}
     \rho_{\symbf\theta}(x_{1:n}|s_{1:n}) &= \prod^n_{i=1} \mathrm{P}(x_i|x_{1:t-1}, s_{1:t}, \mathbfit{\theta})\\
     &= \prod^n_{i=1} \frac{1}{\sqrt{2\pi}\hat{\sigma}_i} \exp\left(-\frac{(x_i-\hat{\mu}_i)^2}{2\hat{\sigma}^2_i}\right)\,.
@@ -642,7 +633,6 @@ that the training data consists of $N$ pairs of sequences
 $(s^k_{1:n}, x^k_{1:n})$ for $k=1,\ldots,N$. The loss function to be
 minimized is then given by the sum of the individual negative log
 likelihoods for the trajectory pairs:
-
 
 $$\mathcal{L}(\mathbfit{\theta}) = -\sum^N_{k=1} \ln \rho_{\symbf\theta}(x_{1:n}|s_{1:n}) \,.
     \label{eq-loss_function}$$ {#eq-loss_function}
@@ -701,14 +691,13 @@ To compute the marginal probability with help of the inference model, we
 write $\mathrm{P}(x_{1:n})$ as the expectation with respect to a
 probability density $q(s_{1:n}|x_{1:n})$, i.e.,
 
-
 $$\begin{aligned}
-    \mathrm{P}(x_{1:n}) 
+    \mathrm{P}(x_{1:n})
     &= \int \mathrm{P}(x_{1:n}|s_{1:n})\mathrm{P}(s_{1:n})\,ds_{1:n}\\
     &=\mathbb{E}_{\mathrm{P}(s_{1:n})} \left[\mathrm{P}(x_{1:n}|s_{1:n})\right]\\
-    &= \mathbb{E}_{\mathrm{P}(s_{1:n})} \left[ \frac{\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} 
+    &= \mathbb{E}_{\mathrm{P}(s_{1:n})} \left[ \frac{\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})}
  q(s_{1:n}|x_{1:n})\right]\\
-    &= \mathbb{E}_{q(s_{1:n}|x_{1:n})} \left[ \frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] 
+    &= \mathbb{E}_{q(s_{1:n}|x_{1:n})} \left[ \frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right]
 \end{aligned}
     \label{eq-ml_importance_sampling}$$ {#eq-ml_importance_sampling}
 
@@ -722,7 +711,6 @@ $w_k = w(s^k_{1:n}, x_{1:n})$ where
 $$w(s_{1:n}, x_{1:n}) = \frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \,.$$
 
 The marginal probability is then estimated by
-
 
 $$\mathrm{P}(x_{1:n}) \approx \frac{1}{M} \sum^M_{k=1} w_k \,.
     \label{eq-ml_importance_sample_mc}$$ {#eq-ml_importance_sample_mc}
@@ -768,9 +756,8 @@ approximation closer to the true posterior. The ELBO can be derived by
 applying Jensen's inequality to the last line of
 [@eq-ml_importance_sampling]:
 
-
-$$\ln \mathrm{P}(x_{1:n}) \geq 
-\mathbb{E}_{q(s_{1:n}|x_{1:n})}  \left[ 
+$$\ln \mathrm{P}(x_{1:n}) \geq
+\mathbb{E}_{q(s_{1:n}|x_{1:n})}  \left[
 \ln\frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] = \mathcal{L}_\text{ELBO}
 \label{eq-ml_elbo}$$ {#eq-ml_elbo}
 
@@ -860,7 +847,6 @@ autocovariance of this process is given by
 $$\langle S_{\tau} S_{\tau + t} \rangle = \frac{\phi^{|t|}}{1 - \phi^2} \,.$$
 
 The output $X_t$ is governed by the equation
-
 
 $$X_t = \sigma(\gamma S_t) + \rho X_{t-1} + \vartheta \eta_t \label{eq-nonlinear_model}$$ {#eq-nonlinear_model}
 

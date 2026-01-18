@@ -93,7 +93,6 @@ For instance, we obtain the marginal probability distribution
 $\mathcal{P}[\mathbfit{x}]$ from
 $\mathcal{P}[\mathbfit{s},\mathbfit{x}]$ by computing the integral
 
-
 $$\mathcal{P}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\mathcal{P}[\mathbfit{x}|\mathbfit{s}]\,.
     \label{eq-generic-marginalization}$$ {#eq-generic-marginalization}
 
@@ -144,7 +143,6 @@ $\mathcal{P}[\mathbfit{x}]$ corresponds to the normalization constant,
 or partition function, of the Boltzmann distribution for the
 potential[^3]
 
-
 $$\label{eq-h1} \mathcal{U}[\mathbfit{s},\mathbfit{x}] = -\ln\mathcal{P}[\mathbfit{s},\mathbfit{x}] \,.$$ {#eq-h1}
 
 In [@eq-h1], $\mathbfit{s}$ is interpreted as a variable in the
@@ -152,7 +150,6 @@ configuration space, while $\mathbfit{x}$ acts as an auxiliary variable,
 i.e., a parameter. Note that both $\mathbfit{s}$ and $\mathbfit{x}$
 still represent trajectories. For this potential, the partition function
 is given by
-
 
 $$\mathcal{Z}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\; e^{-\mathcal{U}[\mathbfit{s},\mathbfit{x}]} \,.
     \label{eq-partition-function}$$ {#eq-partition-function}
@@ -164,14 +161,12 @@ function is exactly equal to the marginal probability of the output,
 i.e. $\mathcal{Z}[\mathbfit{x}] = \mathcal{P}[\mathbfit{x}]$. The free
 energy is given by
 
-
 $$\mathcal{F}[\mathbfit{x}] = -\ln \mathcal{Z}[\mathbfit{x}] = -\ln \mathcal{P}[\mathbfit{x}]\,.
     \label{eq-free-energy}$$ {#eq-free-energy}
 
 In statistical physics it is well known that the free energy cannot be
 directly measured from a simulation. Instead, one estimates the
 free-energy difference
-
 
 $$\Delta\mathcal{F}[\mathbfit{x}] = \mathcal{F}[\mathbfit{x}] - \mathcal{F}_0[\mathbfit{x}] = -\ln \frac{\mathcal{Z}[\mathbfit{x}]}{\mathcal{Z}_0[\mathbfit{x}]}
     \label{eq-free-energy-difference}$$ {#eq-free-energy-difference}
@@ -182,7 +177,6 @@ and is usually defined using a Boltzmann distribution for a convenient
 reference potential $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]$. In our
 case, a natural choice of reference potential is
 
-
 $$\label{eq-h0} \mathcal{U}_0[\mathbfit{s},\mathbfit{x}]=-\ln\mathcal{P}[\mathbfit{s}]$$ {#eq-h0}
 
 with the corresponding partition function being simply
@@ -192,7 +186,6 @@ $$\mathcal{Z}_0[\mathbfit{x}]=\int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbf
 The reference free energy therefore is zero
 ($\mathcal{F}_0[\mathbfit{x}]=-\ln\mathcal{Z}_0[\mathbfit{x}]=0$).
 Hence, the free-energy difference is
-
 
 $$\Delta\mathcal{F}[\mathbfit{x}]= \mathcal{F}[\mathbfit{x}] = -\ln\mathcal{P}[\mathbfit{x}]\,.
     \label{eq-free-energy-difference-equals-lnp}$$ {#eq-free-energy-difference-equals-lnp}
@@ -209,7 +202,6 @@ What is the interaction between the output $\mathbfit{x}$ and the input
 trajectory ensemble? We define the interaction potential
 $\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]$ through
 
-
 $$\mathcal{U}[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_0[\mathbfit{s}] + \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}] \,.
     \label{eq-interaction-potential}$$ {#eq-interaction-potential}
 
@@ -221,7 +213,6 @@ potential $\mathcal{U}_0[\mathbfit{s}]$. By inserting the expressions
 for $\mathcal{U}_0[\mathbfit{s}]$ and
 $\mathcal{U}[\mathbfit{s}, \mathbfit{x}]$ into
 [@eq-interaction-potential] we see that
-
 
 $$\begin{aligned}
     \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}] &= -\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\
@@ -247,9 +238,8 @@ $\exp(-\mathcal{U}[\mathbfit{s},\mathbfit{x}])\propto\mathcal{P}[\mathbfit{s}|\m
 With these notions we can rewrite the brute force estimate in Direct PWS
 ([@sec-dpws]) as
 
-
 $$\begin{aligned}
-     \mathcal{P}[\mathbfit{x}] = \frac{\mathcal{Z}[\mathbfit{x}]}{\mathcal{Z}_0[\mathbfit{x}]} &= \langle e^{-\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]} \rangle_0 
+     \mathcal{P}[\mathbfit{x}] = \frac{\mathcal{Z}[\mathbfit{x}]}{\mathcal{Z}_0[\mathbfit{x}]} &= \langle e^{-\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]} \rangle_0
      \label{eq-boltzmann-average}
 \end{aligned}$$ {#eq-boltzmann-average}
 
@@ -356,7 +346,6 @@ trajectories segment by segment:
 
 The normalized Rosenbluth factor of the final ensemble is then given by
 
-
 $$\mathcal{W} = \prod^n_{i=1} \frac{w_i}{M} \,.
     \label{eq-normalized-rosenbluth-factor}$$ {#eq-normalized-rosenbluth-factor}
 
@@ -364,7 +353,6 @@ As shown in [@sec-smc-correctness], we can derive an *unbiased* estimate
 for the desired ratio
 $\mathcal{Z}[\mathbfit{x}]/\mathcal{Z}_0[\mathbfit{x}] = \mathcal{P}[\mathbfit{x}]$
 based on the Rosenbluth factor:
-
 
 $$\hat{\mathcal{P}}[\mathbfit{x}] = \mathrm{P}(x_0)\ \mathcal{W}
     \label{eq-smc-marginal}$$ {#eq-smc-marginal}
@@ -443,7 +431,6 @@ $\hat{h}[\mathbfit{s}]=h[\mathbfit{s}]/\int\mathcal{D}[\mathbfit{s}]h[\mathbfit{
 To generate samples from $\hat{h}[\mathbfit{s}]$, we assign each of the
 existing samples from $f[\mathbfit{s}]$ a normalized weight
 
-
 $$W^k = \frac{g[\mathbfit{s}^k]}{\sum^M_{j=1}g[\mathbfit{s}^j]}\,.
     \label{eq-weights-appendix}$$ {#eq-weights-appendix}
 
@@ -498,7 +485,6 @@ according to the target distribution. By choosing
 $g[\mathbfit{s}_{[0,i]}] = \exp\left\{ -\Delta\mathcal{U}[\mathbfit{s}_{[i-1,i]}, \mathbfit{x}_{[i-1,i]}] \right\} = \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}_{[0,i]}]$,
 we generate normalized weights
 
-
 $$W^k_i = \frac{\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^k_{[0,i]}]}{\sum^M_{j=1} \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^j_{[0,i]}]}\,,
     \label{eq-normalized-weights}$$ {#eq-normalized-weights}
 
@@ -513,7 +499,6 @@ $$W^k_i = \frac{e^{-U^k_i}}{w_i} \,.$$
 Why is this choice of weighting function the correct one? First, observe
 that resampling with the normalized weights of [@eq-normalized-weights]
 produces samples approximately distributed according to
-
 
 $$\begin{aligned}
     h[\mathbfit{s}_{[0,i]}] &= f[\mathbfit{s}_{[0,i]}] g[\mathbfit{s}_{[0,i]}] \\
@@ -561,10 +546,10 @@ by
 
 $$\begin{aligned}
     &\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}] \\
-    &=\int\mathcal{D}[\mathbfit{s}_{[0,i]}]\ 
+    &=\int\mathcal{D}[\mathbfit{s}_{[0,i]}]\
     \mathcal{P}[\mathbfit{x}_{[i-1,i]},\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]\\
-    &=\int\mathcal{D}[\mathbfit{s}_{[0,i]}]\ 
-    \mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]\ 
+    &=\int\mathcal{D}[\mathbfit{s}_{[0,i]}]\
+    \mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]\
     g[\mathbfit{s}_{[0,i]}]\,.
     \end{aligned}$$
 
@@ -573,7 +558,6 @@ $g[\mathbfit{s}_{[0,i]}]=\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1
 Hence, we find that the probability
 $\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}]$ can be
 expressed as the average
-
 
 $$\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}] = \left\langle
     g[\mathbfit{s}_{[0,i]}]
@@ -654,7 +638,6 @@ $$\mathcal{Z}_\theta[\mathbfit{x}]=\int\mathcal{D}[\mathbfit{s}]\ e^{-\mathcal{U
 
 For instance, for $0\leq\theta\leq 1$, we can define our potential as
 
-
 $$\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]=\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]+\theta\,\Delta\mathcal{U}[\mathbfit{s},\mathbfit{x}]\,,
     \label{eq-ti-hamiltonian}$$ {#eq-ti-hamiltonian}
 
@@ -671,7 +654,6 @@ estimate for the potential given in [@eq-ti-hamiltonian].
 To derive the thermodynamic integration estimate for the free-energy
 difference, we first compute the derivative of
 $\ln\mathcal{Z}_\theta[\mathbfit{x}]$ with respect to $\theta$:
-
 
 $$\begin{aligned}
     \frac{\partial}{\partial \theta} \ln\mathcal{Z}_\theta[\mathbfit{x}] &= \frac{1}{\mathcal{Z}_\theta[\mathbfit{x}]} \frac{\partial}{\partial \theta} \int\mathcal{D}[\mathbfit{s}]\  e^{-\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]} \\
@@ -692,8 +674,7 @@ $$\mathcal{P}_\theta[\mathbfit{s}|\mathbfit{x}] = \frac{1}{\mathcal{Z}_\theta[\m
 Integrating [@eq-z-derivative] with respect to $\theta$ leads to the
 formula for the free-energy difference
 
-
-$$\Delta\mathcal{F}[\mathbfit{x}] = -\int^1_0 d\theta\ \left\langle 
+$$\Delta\mathcal{F}[\mathbfit{x}] = -\int^1_0 d\theta\ \left\langle
     \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]
     \right\rangle_\theta
     \label{eq-ti-estimate}$$ {#eq-ti-estimate}
@@ -732,7 +713,6 @@ trajectory $\mathbfit{s}^\prime$ from a given trajectory $\mathbfit{s}$
 with probability $T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)$. We
 accept the proposal using the Metropolis criterion with probability
 
-
 $$A(\mathbfit{s}^\prime,\mathbfit{s})=\min\left( 1, e^{\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}] - \mathcal{U}_\theta[\mathbfit{s}^\prime, \mathbfit{x}]}\frac{T(\mathbfit{s}^\prime\rightarrow\mathbfit{s})}{T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)} \right)
     \label{eq-metropolis-acceptance}$$ {#eq-metropolis-acceptance}
 
@@ -759,7 +739,6 @@ the transition kernel is given by
 $T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)=\mathcal{P}[\mathbfit{s}^\prime]$
 and a proposal $\mathbfit{s}\rightarrow\mathbfit{s}^\prime$ is accepted
 with probability
-
 
 $$\begin{aligned}
     A(\mathbfit{s}^\prime,\mathbfit{s}) &= \min\left( 1, e^{\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}] - \mathcal{U}_\theta[\mathbfit{s}^\prime, \mathbfit{x}]}\frac{\mathcal{P}[\mathbfit{s}]}{\mathcal{P}[\mathbfit{s}^\prime]} \right) \\
@@ -1038,7 +1017,6 @@ We derive the Gaussian approximation of the simple reaction system used
 in [@sec-pws_variants_benchmark]. We recall the elementary biochemical
 reaction motif consisting of four reactions
 
-
 $$\text{0  →  S}, \quad
     \text{S  →  0}, \quad
     \text{S  →  S + X}, \quad
@@ -1073,7 +1051,6 @@ $$\mathrm{P}(\mathbfit{Z}=\mathbfit{z}) = \frac{1}{\sqrt{(2\pi)^{2n}|\Sigma|}} e
 where the covariance Matrix $\Sigma\in\mathbb{R}^{2n\times 2n}$ has the
 following block structure
 
-
 $$\Sigma = \left( \begin{array}{cc}
         \Sigma_{SS} & \Sigma_{XS} \\
         \Sigma_{SX} & \Sigma_{XX}
@@ -1094,7 +1071,6 @@ first-order reactions, the covariance functions can be calculated
 explicitly using the regression theorem [@2006.Warren; @2009.Gardiner].
 For $t\geq 0$, we obtain the following expressions for the covariance
 functions:
-
 
 $$\begin{aligned}
     \label{eq-c_ss} C_{SS}(t) &= \sigma^2_{SS} \exp(-\lambda t) \\
@@ -1140,7 +1116,6 @@ the mutual information.
 Using spectral analysis, @2010.Tostevin were able to derive an
 analytical expression for the Gaussian mutual information rate of this
 model in the continuous-time limit, given by
-
 
 $$R(\mathcal{S}, \mathcal{X}) = \frac{\lambda}{2}\left[ \sqrt{1 + \frac{\rho}{\lambda}} - 1 \right] \,.
     \label{eq-spectral_tostevin_gaussian}$$ {#eq-spectral_tostevin_gaussian}

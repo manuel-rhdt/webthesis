@@ -153,7 +153,7 @@ $$I(S, X) = \iint \mathrm{P}(s, x) \ln \frac{\mathrm{P}(s, x)}{\mathrm{P}(s)\mat
 or, equivalently, using Shannon entropies
 
 $$\begin{aligned}
-I(S, X) 
+I(S, X)
 &= H(S) + H(X) - H(S, X) \\
 &= H(S) - H(S|X) \\
 &= H(X) - H(X|S)\,.
@@ -174,8 +174,7 @@ $\mathbfit{S}_T=\{S(t) \mid t \in [0, T]\}$ and
 $\mathbfit{X}_T=\{X(t) \mid t \in [0, T]\}$. The mutual information
 between trajectories is defined analogously as
 
-
-$$I(\mathbfit{S}_T,\mathbfit{X}_T) = \left\langle \ln\frac{\mathrm{P}(\mathbfit{s}_T, \mathbfit{x}_T)}{\mathrm{P}(\mathbfit{s}_T) \mathrm{P}(\mathbfit{x}_T)} \right\rangle 
+$$I(\mathbfit{S}_T,\mathbfit{X}_T) = \left\langle \ln\frac{\mathrm{P}(\mathbfit{s}_T, \mathbfit{x}_T)}{\mathrm{P}(\mathbfit{s}_T) \mathrm{P}(\mathbfit{x}_T)} \right\rangle
 \label{eq-trajectory_mi}$$ {#eq-trajectory_mi}
 
 where the expected value is taken with respect to the full joint
@@ -203,7 +202,6 @@ given by two continuous-time stochastic processes
 $\mathcal{S}=\{S(t)\mid t\in\mathbb{R}\}$ and
 $\mathcal{X}=\{X(t)\mid t\in\mathbb{R}\}$. Then, the mutual information
 rate between $\mathcal{S}$ and $\mathcal{X}$ is
-
 
 $$\label{eq-ratedef}
 R(\mathcal{S}, \mathcal{X}) = \lim_{T\to\infty} \frac{1}{T} I(\mathbfit{S}_T, \mathbfit{X}_T)\,,$$ {#eq-ratedef}
@@ -245,7 +243,6 @@ continuous ($\Delta \to 0$), the information rate as defined in
 [@eq-ratedef] can be expressed in terms of the power spectral densities,
 or power spectra, of the processes $\mathcal S$ and $\mathcal X$
 [@2009.Tostevin; @2010.Tostevin]:
-
 
 $$\label{eq-gaussdef}
     R(\mathcal{S}, \mathcal{X}) = -\frac{1}{4\pi}\int_{-\infty}^{\infty} d\omega \ln\left(1-\frac{|S_{sx}|^2}{S_{ss}S_{xx}}\right).$$ {#eq-gaussdef}
@@ -302,7 +299,6 @@ to systems governed by master equations.
 Briefly, PWS computes the trajectory Mutual Information using a Monte
 Carlo estimate of [@eq-trajectory_mi]
 
-
 $$\frac{\sum^N_{i=1}\left[ \ln \mathrm{P}\left(\mathbfit{x}^i_T \middle| \mathbfit{s}^i_T\right) - \ln\mathrm{P}\left(\mathbfit{x}^i_T\right) \right] }{N}
     \label{eq-pws_monte_carlo}$$ {#eq-pws_monte_carlo}
 
@@ -317,7 +313,7 @@ $\mathrm{P}(\mathbfit{x}_T)$ has to computed in separately for each
 output trajectory $\mathbfit{x}^i_T$. Typically, this has to be done
 numerically via marginalization, i.e., by computing the path integral
 
-$$\mathrm{P}(\mathbfit{x}_T) = \int d\mathbfit{s}_T\ \mathrm{P}(\mathbfit{s}_T) 
+$$\mathrm{P}(\mathbfit{x}_T) = \int d\mathbfit{s}_T\ \mathrm{P}(\mathbfit{s}_T)
     \mathrm{P}(\mathbfit{x}_T \mid \mathbfit{s}_T)$$
 
 using Monte Carlo techniques. Evaluating the marginalization integral
@@ -343,8 +339,8 @@ Gaussian normalization constant---given by the Onsager-Machlup action
 [@1953.Onsager]
 
 $$\ln\mathrm{P}(\mathbfit{x} \mid \mathbfit{s}) =
-    -\sum^{n-1}_{i=1} 
-    \frac{1}{2\Delta t} 
+    -\sum^{n-1}_{i=1}
+    \frac{1}{2\Delta t}
     \left( \frac{\Delta x_i - v_i \Delta t}{\sigma(x_i)} \right)^2 + \text{const}$$
 
 where we used $\Delta x_i = x_{i+1} - x_i$, and $v_i = f(x_i, s_i)$ is
@@ -367,12 +363,11 @@ motifs of cellular signaling.
 We consider a simple linear reaction system of two species, $S$ and $X$,
 whose dynamics are governed by 4 reactions
 
-
 $$\begin{aligned}
-    \label{eq-reac1}\text{∅ & →  S} \\ 
-    \label{eq-reac2}\text{S & →  ∅} \\ 
-    \label{eq-reac3}\text{S & →  S + X} \\ 
-    \label{eq-reac4}\text{X & →  ∅}\,. 
+    \label{eq-reac1}\text{∅ & →  S} \\
+    \label{eq-reac2}\text{S & →  ∅} \\
+    \label{eq-reac3}\text{S & →  S + X} \\
+    \label{eq-reac4}\text{X & →  ∅}\,.
 \end{aligned}$$ {#eq-reac1}
 
 The reaction system is linear because each reaction has at most one
@@ -398,9 +393,8 @@ well-approximated by a linearized model around the steady state. The
 resulting Langevin equations can be systematically derived from the
 master equation using the LNA which yields
 
-
 $$\begin{aligned}
-    \label{eq-input-dynamics}\dot{s}(t) &= \kappa - \lambda  s(t) + \eta_s(t) \\ 
+    \label{eq-input-dynamics}\dot{s}(t) &= \kappa - \lambda  s(t) + \eta_s(t) \\
     \dot {x}(t) &= \rho s(t) - \mu x(t) + \eta_x(t)
     \label{eq-output-dynamics}
 \end{aligned}$$ {#eq-input-dynamics}
@@ -414,7 +408,6 @@ The Gaussian approximation of the mutual information rate is derived
 from the LNA description. Using this framework, @2009.Tostevin computed
 an analytical expression for the mutual information rate of the motif in
 units of nats $s^{-1}$:
-
 
 $$R_\text{Gaussian} = \frac{\lambda}{2} \left( \sqrt{1 + \frac{\rho}{\lambda}} - 1 \right) \,.
     \label{eq-tostevin}$$ {#eq-tostevin}
@@ -434,7 +427,6 @@ approximation that is only accurate for large copy numbers. The
 expression for the mutual information rate in the discrete approximation
 appears remarkably similar to the expression obtained using the Gaussian
 framework:
-
 
 $$R_\text{discrete} = \frac{\lambda}{2} \left( \sqrt{1 + 2\ \frac{\rho}{\lambda}} - 1 \right)\,.
     \label{eq-moor}$$ {#eq-moor}
@@ -512,11 +504,9 @@ describes the input, and one that describes the output. The stochastic
 dynamics of the input $s(t)$ are given by [@eq-input-dynamics]. The
 output dynamics of $x(t)$ are given by
 
-
 $$\dot {x}(t) = \rho a(s) - \mu x(t) + \eta_x(t) \label{eq-nonlinear_x}$$ {#eq-nonlinear_x}
 
 with the Hill function
-
 
 $$a(s) =
     \begin{cases}
@@ -535,8 +525,7 @@ the mean output $\bar{x}(s)$ for a given input signal $s$ and is given
 by $\bar{x}(s) = \rho a(s) / \mu$. The gain of this system is then
 defined as the slope of this relation at $s=\bar{s}$, i.e.,
 
-
-$$g= \frac{\partial \bar{x}(s)}{\partial s} \bigg|_{\bar{s}} = 
+$$g= \frac{\partial \bar{x}(s)}{\partial s} \bigg|_{\bar{s}} =
 \frac{n a(\bar{s}) [1 - a(\bar{s})] \rho}{\mu\bar{s}} \,,
 \label{eq-definition-gain}$$ {#eq-definition-gain}
 
@@ -785,7 +774,6 @@ Gaussian information rate of the nonlinear network.
 
 The input signal is generated by a birth-death process,
 
-
 $$\label{eq-SBD}
 \begin{aligned}
     \text{∅ & ⇌  S},\\
@@ -793,14 +781,12 @@ $$\label{eq-SBD}
 
 Its dynamics in Langevin form are,
 
-
 $$\dot{s} = \kappa -  \lambda s(t)+ \eta_s(t), \label{eq-sigdyn}$$ {#eq-sigdyn}
 
 yielding the steady state signal concentration $\bar s=\kappa/\lambda$.
 The independent Gaussian white noise process $\eta_s(t)$ summarizes all
 reactions that contribute to fluctuations in $S$. The strength of the
 noise term in steady state is
-
 
 $$\langle \eta_s^2 \rangle = \kappa+ \lambda\bar s=2\lambda \bar s. \label{eq-etas}$$ {#eq-etas}
 
@@ -810,19 +796,17 @@ $S_{xx} = \lim_{T \to \infty}\frac{1}{T} |\tilde{x_T}|^2$, where
 $\tilde{x}$ denotes the Fourier transform of $x(t)$. The power spectrum
 of a signal obeying [@eq-sigdyn] is thus given by
 
-
 $$\label{eq-specss}
 \begin{aligned}
-    S_{ss} 
+    S_{ss}
     %&= \lim_{T\to \infty} \frac{\kappa^2\delta(-\omega) \delta(\omega)/T + \f[-]{\eta_s}\tilde{\eta_s}/T}{\omega^2+\lambda^2}, \\
-    &= \frac{\langle \eta_s^2 \rangle}{\omega^2+\lambda^2}=\frac{2 \lambda \bar s}{\omega^2+\lambda^2}. 
+    &= \frac{\langle \eta_s^2 \rangle}{\omega^2+\lambda^2}=\frac{2 \lambda \bar s}{\omega^2+\lambda^2}.
 \end{aligned}$$ {#eq-specss}
 
 #### Linear approximation {#app:gauss:lna}
 
 We now consider the readout $X$, which is produced via a nonlinear
 activation function $a(s)$:
-
 
 $$\label{eq-StoV}
 \begin{aligned}
@@ -831,7 +815,6 @@ $$\label{eq-StoV}
 \end{aligned}$$ {#eq-StoV}
 
 We define the activation level $a(s)$ to be a Hill function,
-
 
 $$\label{eq-as}
     a(s) = \frac{s(t)^n}{K^n + s(t)^n}.$$ {#eq-as}
@@ -852,15 +835,13 @@ the static gain of the network, which is defined as the change in the
 steady state of the output upon a change in the steady state of the
 signal:
 
-
 $$\label{eq-g}
 \begin{aligned}
-    g &= \partial_{\bar s} \bar x = r/\mu, \\ 
+    g &= \partial_{\bar s} \bar x = r/\mu, \\
     & = n(1-\bar a) \bar x/\bar s,
 \end{aligned}$$ {#eq-g}
 
 where we have defined the approximate linear activation rate
-
 
 $$\label{eq-r}
     r =  n \bar a(1-\bar a)\rho/\bar s,$$ {#eq-r}
@@ -877,7 +858,6 @@ $X$ to first order around $\bar x$ via the classical linear noise
 approximation [@2007.vanKampen]. Within this approximation the dynamics
 of the deviation $\delta x(t) = x(t) -\bar x$ are,
 
-
 $$\label{eq-xlindyn}
     \delta\dot{ x} = r\,  \delta s(t)- \mu \, \delta x(t) + \eta_x(t),$$ {#eq-xlindyn}
 
@@ -886,7 +866,6 @@ with the synthesis rate $r$ given by [@eq-r].
 In the linear noise approximation the noise strength is a constant given
 by the noise strength at steady state,
 
-
 $$\label{eq-etax}
     \langle \eta_x^2 \rangle = \rho \bar a + \mu \bar x = 2 \mu \bar x.$$ {#eq-etax}
 
@@ -894,7 +873,6 @@ $$\label{eq-etax}
 
 Following Tostevin & Ten Wolde [@2009.Tostevin; @2010.Tostevin], we can
 express the Gaussian information rate as follows,
-
 
 $$\label{eq-infratedef}
     R(\mathcal S; \mathcal X) =  \frac{1}{4\pi}\int_{-\infty}^{\infty} d\omega \log \left(1+ \frac{|K(\omega)|^2}{|N(\omega)|^2}S_{ss}\right),$$ {#eq-infratedef}
@@ -908,12 +886,10 @@ case the frequency dependent gain and noise can be identified directly
 from the power spectrum of the output, because it takes the following
 form:
 
-
 $$\label{eq-specxx}
     S_{xx} = |K(\omega)|^2 S_{ss} + |N(\omega)|^2.$$ {#eq-specxx}
 
 For a species $X$ obeying [@eq-xlindyn], we have
-
 
 $$\label{eq-fgfn}
     \begin{aligned}
@@ -928,7 +904,6 @@ substituting the frequency dependent gain and noise \[[@eq-fgfn]\] and
 the power spectrum of the signal \[[@eq-specss]\] in [@eq-specxx] and
 taking the inverse Fourier transform at $t=0$,
 
-
 $$\label{eq-varx}
     \sigma_x^2 = g\tilde{g}\sigma_s^2 + \sigma^2_{x|s}=\frac{g^2 \bar s}{1+\lambda/\mu} + \bar x,$$ {#eq-varx}
 
@@ -936,7 +911,6 @@ where the signal variance equals its mean $\sigma_s^2=\bar s$, and the
 mean readout concentration sets the intrinsic noise
 $\sigma^2_{x|s}=\bar x$. We further have the static gain $g$ given by
 [@eq-g], and have defined the dynamical gain
-
 
 $$\label{eq-dg}
     \tilde{g} \equiv \frac{\langle \delta x(t) \delta s(t) \rangle}{\sigma_s^2}= \frac{g}{1+\lambda/\mu},$$ {#eq-dg}
@@ -948,14 +922,12 @@ $\langle x(t)|s(t) \rangle = \tilde{g} s(t)$
 
 To solve the integral in [@eq-infratedef] we exploit that
 
-
 $$\label{eq-infrate1root}
     \int^\infty_{-\infty} d\omega \log\left( \frac{\omega^2 + a^2}{\omega^2 + b^2}\right) = 2\pi(a-b).$$ {#eq-infrate1root}
 
 Substituting the frequency dependent gain and noise given in [@eq-fgfn]
 and the signal power spectrum of [@eq-specss] in [@eq-infratedef] and
 using [@eq-infrate1root] we obtain the information rate,
-
 
 $$\label{eq-Rnl}
     \begin{aligned}
@@ -992,7 +964,6 @@ For this linear readout, the static gain is simply set by the ratio of
 steady states of the input and the output, $g=\rho/\mu=\bar x/\bar s$.
 We can then obtain the information rate of this linear system by
 substitution of its static gain in [@eq-Rnl], which yields
-
 
 $$\begin{aligned}
 \label{eq-Rlin}

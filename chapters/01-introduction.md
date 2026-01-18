@@ -162,7 +162,6 @@ the trajectories in the long-time limit. Let $\mathbfit{S}_T$ and
 $\mathbfit{X}_T$ be trajectories of duration $T$, then the mutual
 information rate is given by
 
-
 $$R = \lim_{T\to\infty} \frac{I(\mathbfit{S}_T, \mathbfit{X}_T)}{T} \,.
     \label{eq-intro-info-rate}$$ {#eq-intro-info-rate}
 
@@ -264,7 +263,6 @@ statistical physics.
 
 The crux of PWS lies in the efficient computation of
 $\mathrm{P}(\mathbfit{x})$ via the marginalization integral
-
 
 $$\mathrm{P}(\mathbfit{x}) = \int \mathrm{P}(\mathbfit{x}|\mathbfit{s}) \mathrm{P}(\mathbfit{s})\,d\mathbfit{s}\,.
     \label{eq-intro-marginaliztion}$$ {#eq-intro-marginaliztion}

@@ -158,17 +158,15 @@ i.e., $x(t)=\int^t_0d\tau\, v_x(\tau)$. Thus, when projected onto the
 gradient axis, the bacterium performs a 1D random walk described by the
 Langevin equation
 
-
 $$\frac{d^2 x}{dt^2} = -\lambda \frac{dx}{dt} + \sigma \xi(t) \,.
     \label{eq-random_walk}$$ {#eq-random_walk}
 
 Since the bacterium moves in a static concentration gradient described
 by $c(x)$, the concentration dynamics that the cell observes are
-generated directly from its own movement dynamics, see Fig. 
+generated directly from its own movement dynamics, see Fig.
 `\ref{fig-ecoli_swimming}`{=latex}. At time $t$ the cell is at position
 $x(t)$ and thus measures the concentration $c(t)=c(x(t))$. We find the
 stochastic dynamics of $c$ by differentiating using the chain rule
-
 
 $$\frac{dc}{dt} = \frac{\partial c}{\partial x} \frac{\partial x}{\partial t} = g c(t)\,v_x(t)\,.
     \label{eq-concentration_dynamics}$$ {#eq-concentration_dynamics}
@@ -291,11 +289,9 @@ receptor cluster with $m$ methylated sites to be active, $p_a(c, m)$, is
 determined by the free-energy difference between the active and inactive
 receptor states
 
-
 $$p_a(c, m) = \frac{1}{1 + e^{-f(c, m)}} \label{eq-prob_active}$$ {#eq-prob_active}
 
 where
-
 
 $$f(c, m) = N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right) + \delta f_m (m - m_0) \,. \label{eq-free_energy_active}$$ {#eq-free_energy_active}
 
@@ -310,13 +306,11 @@ that in the equations we assume units such that $k_\mathrm{B} T=1$.
 The dynamics of methylation in our model are described by the following
 mean-field equation
 
-
 $$\frac{dm}{dt} = (1-p_a(c, m)) k_R - p_a(c, m) k_B \,.
     \label{eq-methylation_dynamics}$$ {#eq-methylation_dynamics}
 
 The system reaches a steady state for the adapted activity
 $p_a(c, m)=a_0$ where
-
 
 $$a_0 = \frac{k_R}{k_R + k_B} \,.
     \label{eq-adapted_activity}$$ {#eq-adapted_activity}
@@ -330,7 +324,6 @@ $$m^\star = m_0 + \frac{N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right)+ \ln\lef
 To characterize the methylation timescale, we linearize the dynamics of
 $m(t)$ around the steady state (at constant ligand concentration
 $c(t)=c_0$). To first order, we can write
-
 
 $$\frac{d m}{d t} = -\frac{m(t) - m^\star}{\tau_m}\,. \label{eq-dmdt}$$ {#eq-dmdt}
 
@@ -347,7 +340,7 @@ $$\begin{aligned}
 and then plugging this first-order expansion into
 [@eq-methylation_dynamics] to get
 
-$$\frac{d m}{d t} =   
+$$\frac{d m}{d t} =
      \frac{\delta f_m (m - m^\star)}{k_R^{-1} + k_B^{-1}} \,.$$
 
 By comparing with [@eq-dmdt] we find that for small perturbations, the
@@ -448,7 +441,6 @@ $R(\mathcal{S}, \mathcal{X})$ of a Gaussian system in steady state can
 be computed exactly from the power spectral density functions of the
 system [@2009.Tostevin]:
 
-
 $$R(\mathcal{S}, \mathcal{X}) = -\frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \ln\left[1 - \frac{|P_{sx}(\omega)|^2}{P_{ss}(\omega)P_{xx}(\omega)}\right] \,.
     \label{eq-info_rate_gaussian}$$ {#eq-info_rate_gaussian}
 
@@ -505,7 +497,6 @@ $x(t)=a(t) - a_0$. Assuming the input statistics are stationary and
 described by the correlation function $C_{ss}(t)$, it is easy to show
 that the cross-correlation between $s(t)$ and $x(t)$ is given by
 
-
 $$C_{sx}(t) = \langle s(\tau) x(\tau + t) \rangle = \int^t_{-\infty} dt^\prime\ K(t-t^\prime) C_{ss}(t^\prime) \,.
     \label{eq-conv_correlation}$$ {#eq-conv_correlation}
 
@@ -533,7 +524,6 @@ $$R(\mathcal{S}, \mathcal{X}) = \frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \l
 
 Then, for shallow gradients, we can make a Taylor approximation in $g$
 to obtain
-
 
 $$R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \int^\infty_{-\infty} d\omega\ \frac{V(\omega)|K(\omega)|^2}{N(\omega)} + \mathcal{O}(g^4) \,.
     \label{eq-gauss_mi_approx}$$ {#eq-gauss_mi_approx}
@@ -566,8 +556,7 @@ is relatively large, this fraction serves as a good proxy for the
 activity $a(t)$. We relate the $f(t)$ to the activity $a(t)$ via the
 expression
 
-
-$$a(t) = \frac{k_Z}{k_A N_c} f(t) 
+$$a(t) = \frac{k_Z}{k_A N_c} f(t)
     \label{eq-frac_to_act}$$ {#eq-frac_to_act}
 
 where $k_A$ and $k_Z$ are the phosphorylation and dephosphorylation
@@ -809,11 +798,11 @@ larger.
 In the main text, we described that a chemotaxis model with $N_c = 9$ receptor clusters, each containing $N=15$ receptors, matches the experimental kernels of \citet{2021.Mattingly}. We then computed the information rate for this model using both the exact PWS method and a Gaussian approximation. How the rate in the Gaussian model is computed is described in \cref{sec-lna}. Here, we describe briefly how we compute the exact rate using PWS.
 
 While in principle the rate could be computed directly via PWS for the model with $N_c=9$ and $N=15$, the receptor activity noise was so large that obtaining this estimate directly in a single PWS simulation proved to be inefficient.
-Instead, we computed the rate via an extrapolation procedure. 
+Instead, we computed the rate via an extrapolation procedure.
 In particular, we computed the rate for a series of models with $N=15$, yet with $N_c$ going down from 400 to 50.
 The rate for the model of interest, with $N=15$ and $N_c=9$, was then obtained by fitting this data to a simple polynomial and then extrapolating to $N_c=9$.
 
-In \cref{fig-num_clusters} we show the information rate for a range of values of $N_c$, and for different gradient steepnesses $g$. 
+In \cref{fig-num_clusters} we show the information rate for a range of values of $N_c$, and for different gradient steepnesses $g$.
 We see that the information rate increases non-linearly with the number $N_c$ of independent clusters.
 Based on the assumption that the information rate is zero in the limit $N_c\to 0$, we fit a quadratic function $R(N_c) = a N_c - b N^2_c$ with positive coefficients $a, b$ to the data.
 We provide the fit coefficients for different gradient steepnesses $g$ in \cref{tbl-fit_coefficients}. From these fits we can obtain the extrapolated information rates for $N_c=9$ that are shown in the main text.

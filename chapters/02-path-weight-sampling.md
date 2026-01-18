@@ -29,7 +29,6 @@ reference-section-title: References
 > for systems with hidden internal states as well as systems with
 > feedback from output to input.
 
-
 ## Introduction
 
 Quantifying information transmission is vital for understanding and
@@ -198,7 +197,6 @@ Mathematically, the mutual information between a random variable
 $\mathcal{S}$, representing the input, and a second random variable
 $\mathcal{X}$, representing the output, is defined as
 
-
 $$\mathrm I(\mathcal{S}, \mathcal{X}) = \iint ds\,dx\  \mathrm{P}(s, x) \ln \frac{\mathrm{P}(s, x)}{\mathrm{P}(s) \mathrm{P}(x)}\,,
     \label{eq-mutual_information}$$ {#eq-mutual_information}
 
@@ -215,7 +213,6 @@ In general, the mutual information can be decomposed into two terms, a
 conditional and marginal entropy. Due to the symmetry of
 [@eq-mutual_information] with respect to exchange of $\mathcal{S}$ and
 $\mathcal{X}$, this decomposition can be written as
-
 
 $$\mathrm I(\mathcal{S}, \mathcal{X}) = \mathrm{H}(\mathcal{S}) - \mathrm{H}(\mathcal{S}|\mathcal{X}) = \mathrm{H}(\mathcal{X}) - \mathrm{H}(\mathcal{X}|\mathcal{S})\,.
     \label{eq-mutual_information_entropies}$$ {#eq-mutual_information_entropies}
@@ -237,7 +234,6 @@ information about the distribution of outputs for a given input, rather
 than vice versa. The accessible entropies are thus the marginal output
 entropy $\mathrm{H}(\mathcal{X})$ and the conditional output entropy
 $\mathrm{H}(\mathcal{X}|\mathcal{S})$, which are defined as
-
 
 $$\begin{aligned}
     \mathrm{H}(\mathcal{X}) &= -\int dx\ \mathrm{P}(x) \ln \mathrm{P}(x)
@@ -316,9 +312,8 @@ $\mathbfit{x}_{i,1},\ldots,\mathbfit{x}_{i,K}$ from
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}_i]$. Then, the Monte Carlo
 estimate for the conditional entropy is
 
-
 $$\begin{aligned}
-    \mathrm{H}(\mathcal{X}|\mathcal{S}) &= -\int \mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\int \mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\ 
+    \mathrm{H}(\mathcal{X}|\mathcal{S}) &= -\int \mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\int \mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\
     &=-\left\langle \left\langle \ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{x}|\mathbfit{s}]} \right\rangle_{\mathcal{P}[\mathbfit{s}]} \\
     &\approx -\frac{1}{N}\sum^{N}_{i=1}\frac{1}{K}\sum^{K}_{j=1} \ln\mathcal{P}[\mathbfit{x}_{i,j}|\mathbfit{s}_i] \,.
 \end{aligned}
@@ -330,7 +325,6 @@ $\mathcal{P}[\mathbfit{s}]$, then we can obtain a Monte Carlo estimate
 for the marginal probability of the output trajectory
 $\mathcal{P}[\mathbfit{x}]$:
 
-
 $$\begin{aligned}
     \mathcal{P}[\mathbfit{x}] &= \int\mathcal{D}[\mathbfit{s}]\  \mathcal{P}[\mathbfit{s}]  \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\
     &= \left\langle \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{s}]} \\
@@ -339,7 +333,6 @@ $$\begin{aligned}
     \label{eq-marginal-naive}$$ {#eq-marginal-naive}
 
 The estimate for the marginal entropy is then given by
-
 
 $$\begin{aligned}
     \mathrm{H}(\mathcal{X}) &= -\int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{x}]\ln\mathcal{P}[\mathbfit{x}] \\
@@ -362,7 +355,6 @@ advantageous to change the order of operations in the estimate.
 Specifically, computing the difference of two averages, leads to large
 statistical errors. We can obtain an improved estimate by reformulating
 the mutual information as a single average of differences:
-
 
 $$\begin{aligned}
     \mathrm{I}(\mathcal{S},\mathcal{X}) &= \int\mathcal{D}[\mathbfit{s}]\int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}] \ln\frac{\mathcal{P}[\mathbfit{x}|\mathbfit{s}]}{\mathcal{P}[\mathbfit{x}]} \\
@@ -422,7 +414,6 @@ $$Q_t(x, x) = -\sum_{x^\prime\in\Omega\smallsetminus\{x\}} w_t(x^\prime, x)$$
 
 the master equation simplifies to
 
-
 $$\frac{\partial\mathrm{P}(x,t)}{\partial t} = \sum_{x^\prime\in\Omega} Q_t(x, x^\prime) \mathrm{P}(x^\prime,t)\,. \label{eq-master-equation}$$ {#eq-master-equation}
 
 Note that by definition the diagonal matrix element $Q_t(x,x)$ is the
@@ -438,11 +429,10 @@ $T=t_n-t_0$. At each time $t_i$ (for $i=1,\ldots,n-1$) the trajectory
 describes an instantaneous jump $x_{i-1}\rightarrow x_{i}$. The
 probability density of $\mathbfit{x}$ is
 
-
 $$\begin{aligned}
-    \mathcal{P}[\mathbfit{x}] &= 
+    \mathcal{P}[\mathbfit{x}] &=
     \mathrm{P}(x_0)\times \left(
-    \prod^{n-1}_{i=1} Q_{t_i}\left(x_i, x_{i-1}\right) 
+    \prod^{n-1}_{i=1} Q_{t_i}\left(x_i, x_{i-1}\right)
     \right) \\
     &\quad\times\left(
     \prod^{n}_{i=1}
@@ -473,11 +463,10 @@ unique transition rate matrix $Q_t(x^\prime,x;\mathbfit{s})$, i.e. the
 map $\mathbfit{s}\mapsto Q_t(\cdot,\cdot;\mathbfit{s})$ is injective,
 the likelihood is directly given by [@eq-traj-prob-master-eq]:
 
-
 $$\begin{aligned}
-    \mathcal{P}[\mathbfit{x}|\mathbfit{s}] &= 
+    \mathcal{P}[\mathbfit{x}|\mathbfit{s}] &=
     \mathrm{P}(x_0|s_0)\times \left(
-    \prod^{n-1}_{i=1} Q_{t_i}\left(x_i, x_{i-1} ;\mathbfit{s}\right) 
+    \prod^{n-1}_{i=1} Q_{t_i}\left(x_i, x_{i-1} ;\mathbfit{s}\right)
     \right) \\
     &\quad\times\left(
     \prod^{n}_{i=1}
@@ -497,12 +486,10 @@ zero to be representable as a floating point number. Thus, to avoid
 numerical issues, it is vital to perform the computations in log-space,
 i.e. to compute
 
-
 $$\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] = \ln \mathrm{P}(x_0|s_0) + \int^T_{t_0}dt\ \mathcal{L}_t[\mathbfit{s},\mathbfit{x}]
     \label{eq-log_traj_prob}$$ {#eq-log_traj_prob}
 
 where
-
 
 $$\mathcal{L}_t[\mathbfit{s},\mathbfit{x}] = Q_t(x(t),x(t);\mathbfit{s}) +
     \sum^{n-1}_{i=1} \delta(t-t_i) \ln Q_t(x_i,x_{i-1};\mathbfit{s})\,.
@@ -582,7 +569,6 @@ by generating a uniformly distributed random number $u\in[0,1]$ and
 computing the waiting time using the inverse survival function
 $\Delta t_i = S^{-1}_i(u)$. Numerically, computing the inverse of the
 survival function requires solving the equation
-
 
 $$\ln u = \int^{t_i+\Delta t_i}_{t_i} dt\ Q_t(x_i, x_i;\mathbfit{s})
     \label{eq-inverse-transform-sampling}$$ {#eq-inverse-transform-sampling}
@@ -676,7 +662,6 @@ components. To compute the value of
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$, we must perform the
 marginalization integral
 
-
 $$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] = \int\mathcal{D}[\mathbfit{x}^1] \cdots \int\mathcal{D}[\mathbfit{x}^{n-1}]\; \mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^n|\mathbfit{s}]\,.
     \label{eq-marginalization_integral}$$ {#eq-marginalization_integral}
 
@@ -712,8 +697,7 @@ to represent the conditional probability
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$ as an average over the
 readout component's trajectory probability
 
-
-$$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] = 
+$$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] =
     \left\langle \mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1}|\mathbfit{s}]} \,.
     \label{eq-marginalization_average}$$ {#eq-marginalization_average}
 
@@ -722,8 +706,7 @@ readout given all the other components,
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]$,
 we arrive at the estimate
 
-
-$$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] 
+$$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]
     \approx \frac{1}{M}\sum^M_{i=1} \mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]
 \label{eq-marginalization_mc}$$ {#eq-marginalization_mc}
 
@@ -849,7 +832,6 @@ $$\mathrm{I}(\mathcal{S}, \mathcal{X}) = \int\mathcal{D}[\mathbfit{s}]\int\mathc
 
 Thus, the PWS scheme with feedback consists of the computation of
 
-
 $$\mathrm{I}(\mathcal{S}, \mathcal{X}) = \left\langle
     \ln\frac{\mathcal{P}[\mathbfit{s}, \mathbfit{x}]}{\mathcal{P}[\mathbfit{s}]\,\mathcal{P}[\mathbfit{x}]}
     \right\rangle_{\mathcal{P}[\mathbfit{s},\mathbfit{x}]}
@@ -870,12 +852,10 @@ Carlo estimate.
 Specifically, for PWS with feedback, we need to compute *two*
 marginalization integrals per Monte Carlo sample:
 
-
 $$\mathcal{P}[\mathbfit{s}] = \int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{s}, \mathbfit{x}]\,,
     \label{eq-marg1}$$ {#eq-marg1}
 
 and
-
 
 $$\mathcal{P}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}, \mathbfit{x}] \,.
     \label{eq-marg2}$$ {#eq-marg2}
@@ -904,7 +884,6 @@ steps that are necessary in order to compute marginalization integrals
 for systems with feedback using such a decomposition.
 
 For concreteness, we discuss how to compute
-
 
 $$\mathcal{P}[\mathbfit{x}]=\int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}]
     \label{eq-feedback-marginalization-integral}$$ {#eq-feedback-marginalization-integral}
@@ -946,7 +925,6 @@ $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]$. To construct a suitable
 reference potential, we can use a decomposition of the full potential
 into three parts
 
-
 $$\mathcal{U}[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_S[\mathbfit{s}] + \mathcal{U}_X[\mathbfit{x}] + \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]
     \label{eq-hamiltonian-decomposition}$$ {#eq-hamiltonian-decomposition}
 
@@ -961,7 +939,6 @@ $\mathcal{U}_0$, i.e.
 $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_S[\mathbfit{s}] + \mathcal{U}_X[\mathbfit{x}]$.
 To be able to do so, we require that the partition function
 (normalization constant)
-
 
 $$\mathcal{Z}_0[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ e^{-\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]}
     \label{eq-z0}$$ {#eq-z0}
