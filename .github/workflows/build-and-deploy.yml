@@ -11,6 +11,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      CHECKSUM: d3a516e8d818e022b25ec514eaebb3737d6e36cd3c1e7c70e82a1b2d075862b
+      FILENAME: _book/Quantifying-the-Flow-of-Information.pdf
 
     permissions:
       contents: read
@@ -28,7 +31,13 @@ jobs:
         run: quarto render
 
       - name: Download PDF thesis
-        run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o _book/Quantifying-the-Flow-of-Information.pdf
+        run: curl -L https://ir.amolf.nl/pub/11167/2025-PhD-Thesis-Manuel-Reinhardt.pdf -o $FILENAME
+
+      - name: Verify checksum
+        run: | 
+            echo "$CHECKSUM $FILENAME" > checksum.sha256
+            sha256sum -c checksum.sha256
+            rm checksum.sha256
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
