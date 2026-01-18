@@ -12,11 +12,10 @@ the Gaussian framework is relatively simple. From Shannon's formula for
 the entropy of a multivariate Gaussian distribution it follows that the
 MI is given by
 
-::: {#eq-mi}
+
 $$I(S, X) = \frac{1}{2} \ln \left(
     \frac{|\Sigma_{ss}|\,|\Sigma_{xx}|}{|Z|}
-    \right)\quad \mathrm{[nats]}\,.$$
-:::
+    \right)\quad \mathrm{[nats]}\,.$$ {#eq-mi}
 
 See @2009.Tostevin [@2010.Tostevin] for details. This is a
 straightforward formula involving the logarithm of determinants of
@@ -191,10 +190,9 @@ Under some light conditions there exists a continuous $2\pi$-periodic
 function $f(\lambda)$ that is defined through the discrete-time Fourier
 transform
 
-::: {#eq:fourier-series}
+
 $$f(\omega) = \sum^\infty_{k=-\infty} t_k e^{-i\omega k} \,.
-    \label{eq:fourier-series}$$
-:::
+    \label{eq-fourier-series}$$ {#eq-fourier-series}
 
 Conversely, the $t_k$ can be recovered from $f$ using inverse transform
 
@@ -231,11 +229,10 @@ $$\lim_{n\to\infty} \frac{\ln |T_n|}{n} \approx \frac{1}{N}\sum^{N-1}_{m=0} \ln 
 where $\omega_m = 2\pi m/N$ for some large $N$. Now, inserting
 @eq-fourier-series we find
 
-::: {#eq:logdet-toeplitz}
+
 $$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0} \ln \sum^{\infty}_{k=-\infty} t_k 
     \exp\left(-\frac{i 2\pi k m}{N} \right)\,.
-    \label{eq:logdet-toeplitz}$$
-:::
+    \label{eq-logdet-toeplitz}$$ {#eq-logdet-toeplitz}
 
 In practice we cannot perform the infinite sum over $k$. Thus, we must
 truncate the series. We truncate the series such that $t_k=0$ for
@@ -252,7 +249,7 @@ $$\lim_{n\to\infty} \frac{\ln |T_n|}{n}  \approx \frac{1}{N} \sum^{N-1}_{m=0}
     \ln \lambda_m\,.$$
 
 The DFT coefficients $\lambda_m$ represent the inner sum in
-@eq:logdet-toeplitz, when truncated to
+@eq-logdet-toeplitz, when truncated to
 $k=-\lfloor N/2 \rfloor,\ldots,0,\ldots,\lfloor N/2 \rfloor$. In
 principle we want to choose $N$ as large as possible. However, given a
 matrix $T_n$ we only know the values $t_{-n},\ldots,t_0,\ldots,t_n$.
@@ -264,7 +261,7 @@ $n$ can be written as
 $$\ln |T_n| \approx \frac{1}{2} \sum^{2n-1}_{m=0} \ln \lambda_{m} \,.$$
 
 It is easy to verify that this formula converges to
-@eq:logdet-toeplitz as $n\to\infty$. This formula is also
+@eq-logdet-toeplitz as $n\to\infty$. This formula is also
 very efficient to evaluate on modern computers. The sequence
 $\lambda_0,\ldots,\lambda_{2n-1}$ can be easily computed via the FFT
 algorithm from the sequence of $t_k$. Efficient implementations of the

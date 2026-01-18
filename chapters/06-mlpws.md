@@ -6,7 +6,7 @@ link-citations: true
 reference-section-title: References
 ---
 
-# ML-PWS: Quantifying Information Transmission Using Neural Networks {#ch:ml-pws}
+# ML-PWS: Quantifying Information Transmission Using Neural Networks {#sec-ml-pws}
 
 > Understanding the flow of information in natural and engineered
 > systems is crucial for their design and analysis. The mutual
@@ -114,7 +114,7 @@ leading to significant underestimation of the mutual information. The
 Difference-of-Entropies (DoE) estimator by @2018.McAllester neither
 provides an upper nor a lower bound on the mutual information, but often
 results in more accurate mutual information estimates. As discussed in
-[@sec:ml_discussion], this estimator shares some similarities with PWS.
+[@sec-ml_discussion], this estimator shares some similarities with PWS.
 Given the effectiveness of neural networks for modeling sequential data,
 we thus asked whether machine learning could be combined with PWS to
 create a robust, data-driven estimator for the mutual information rate.
@@ -184,10 +184,9 @@ extended to sequences of messages $S_{1:n}=(S_1,\ldots,S_n)$ and
 $X_{1:n}=(X_1,\ldots,X_n)$. The mutual information between random
 sequences is defined analogously as
 
-::: {#eq:trajectory_mi_sequence}
+
 $$I(S_{1:n},X_{1:n}) = \left\langle \ln\frac{\mathrm{P}(s_{1:n}, x_{1:n})}{\mathrm{P}(s_{1:n}) \mathrm{P}(x_{1:n})} \right\rangle_{\mathrm{P}(s_{1:n}, x_{1:n})}
-\label{eq:trajectory_mi_sequence}$$
-:::
+\label{eq-trajectory_mi_sequence}$$ {#eq-trajectory_mi_sequence}
 
 where the expected value is taken with respect to the full joint
 probability of both sequences. This quantity can be interpreted as the
@@ -261,12 +260,11 @@ need an estimate of the probability density for the output
 $\mathrm{P}(x_{1:n}|s_{1:n})$, but not for the input.
 
 Given these models for input and output, the mutual information is
-computed using a Monte Carlo estimate of [@eq:trajectory_mi_sequence]
+computed using a Monte Carlo estimate of [@eq-trajectory_mi_sequence]
 
-::: {#eq:monte_carlo_information}
+
 $$I_{MC}(S_{1:n}, X_{1:n}) = \frac{1}{N} \sum^N_{i=1} \ln \frac{\mathrm{P}(x^i_{1:n} | s^i_{1:n})}{\mathrm{P}(x^i_{1:n})}
-\label{eq:monte_carlo_information}$$
-:::
+\label{eq-monte_carlo_information}$$ {#eq-monte_carlo_information}
 
 where $(s^1_{1:n}, x^1_{1:n}), \ldots, (s^N_{1:n}, x^N_{1:n})$ are pairs
 of input-output trajectories that need to be drawn independently from
@@ -277,7 +275,7 @@ $s_{1:n} \sim \mathrm{P}(s_{1:n})$, and subsequently generating an
 output from the conditional model
 $x_{1:n}\sim \mathrm{P}(x_{1:n}|s_{1:n})$. As $N\to\infty$ this estimate
 converges to the true mutual information $I(S_{1:n}, X_{1:n})$, making
-PWS an exact Monte Carlo scheme. [@eq:monte_carlo_information] requires
+PWS an exact Monte Carlo scheme. [@eq-monte_carlo_information] requires
 evaluating the conditional probability density
 $\mathrm{P}(x_{1:n} | s_{1:n})$, as well as the marginal probability
 density $\mathrm{P}(x_{1:n})$ for a potentially large set of Monte Carlo
@@ -294,10 +292,9 @@ numbers $\epsilon_1,\ldots,\epsilon_{n-1}\sim\mathcal{N}(0, 1)$ that
 were used to generate the path with a stochastic integration scheme. The
 conditional probability density of the path can then be written as
 
-::: {#eq:tractable_conditional}
+
 $$\mathrm{P}(x_{1:n}|s_{1:n}) = \mathrm{P}(x_1|s_1) \prod^{n-1}_{i=1} \frac{1}{\sqrt{2\pi}\sigma} \exp\left(- \epsilon_{i}^2 / 2 \right) \,.
-    \label{eq:tractable_conditional}$$
-:::
+    \label{eq-tractable_conditional}$$ {#eq-tractable_conditional}
 
 A similar formula exists if the model is given by a master equation
 [@2019.Cepeda-Humerez; @2023.Reinhardt], which is based on the random
@@ -308,24 +305,23 @@ probability density $\mathrm{P}(x_{1:n} | s_{1:n})$ of sequences is
 tractable for any autoregressive sequence model without latent
 (unobserved) variables [@1998.Frey]. In this chapter we will exclusively
 deal with tractable conditional distributions, allowing us to evaluate
-the numerator in [@eq:monte_carlo_information].
+the numerator in [@eq-monte_carlo_information].
 
-Unfortunately, the for denominator of [@eq:monte_carlo_information],
+Unfortunately, the for denominator of [@eq-monte_carlo_information],
 i.e., the marginal probability $\mathrm{P}(x_{1:n})$, no simple formulae
-like [@eq:tractable_conditional] typically exist. Yet,
+like [@eq-tractable_conditional] typically exist. Yet,
 $\mathrm{P}(x_{1:n})$ is required for the Monte Carlo estimate of the
 mutual information. The only way of computing $\mathrm{P}(x_{1:n})$
 exactly from the conditional probability density
 $\mathrm{P}(x_{1:n} | s_{1:n})$ is via marginalization over the input
 paths:
 
-::: {#eq:marginalization}
+
 $$\mathrm{P}(x_{1:n}) = \int \mathrm{P}(x_{1:n} | s_{1:n}) \mathrm{P}(s_{1:n}) ds_{1:n} \,.
-    \label{eq:marginalization}$$
-:::
+    \label{eq-marginalization}$$ {#eq-marginalization}
 
 In practice, directly evaluating this integral is typically infeasible.
-A simple "brute force" Monte Carlo estimate of [@eq:marginalization] can
+A simple "brute force" Monte Carlo estimate of [@eq-marginalization] can
 be obtained by sampling $s^1_{1:n}, \ldots, s^M_{1:n}$ from
 $\mathrm{P}(s_{1:n})$ and computing
 
@@ -342,7 +338,7 @@ most of the density $\mathrm{P}(x_{1:n} | s_{1:n})$ will typically be
 concentrated in a very small region of $s_{1:n}$-space. Therefore, for
 longer trajectories more sophisticated Monte Carlo samplers must be used
 to achieve good results. Two more powerful variants of PWS were
-introduced in [@ch:variants].
+introduced in [@sec-variants].
 
 While PWS is a powerful exact method to compute the mutual information
 between trajectories, it cannot be applied directly to experimental
@@ -377,20 +373,18 @@ experimental data that meets the requirements for using PWS.
 
 We can factorize the joint probability of a sequence $x_{1:n}$ as
 
-::: {#eq:sequence_factorization}
+
 $$\mathrm{P}(x_{1:n} \mid s_{1:n}) = \prod_{i=1}^n \mathrm{P}(x_i \mid x_{1:i-1}, s_{1:n}) \,,
-    \label{eq:sequence_factorization}$$
-:::
+    \label{eq-sequence_factorization}$$ {#eq-sequence_factorization}
 
 i.e., the stochastic dynamics are fully specified by the conditional
 stepping probabilities. Note that in a physical system obeying
 causality, the output $x_i$ cannot depend on future inputs. Thus, we can
-simplify [@eq:sequence_factorization] to
+simplify [@eq-sequence_factorization] to
 
-::: {#eq:causal_sequence_factorization}
+
 $$\mathrm{P}(x_{1:n} \mid s_{1:n}) = \prod_{i=1}^n \mathrm{P}(x_i \mid x_{1:i-1}, s_{1:i}) \,.
-    \label{eq:causal_sequence_factorization}$$
-:::
+    \label{eq-causal_sequence_factorization}$$ {#eq-causal_sequence_factorization}
 
 A common approach for modeling stochastic sequences is to assume Markov
 statistics, meaning each element depends only on its immediate
@@ -406,7 +400,7 @@ dependencies or feedback. Yet, these non-Markovian features are often
 crucial to describe physical or biological processes.
 
 Hence, we use a more general approach to directly learn
-[@eq:causal_sequence_factorization] and parameterize the probability
+[@eq-causal_sequence_factorization] and parameterize the probability
 $\mathrm{P}(x_i \mid x_{1:i-1}, s_{1:i})$ at each time $i$ using neural
 networks. These models are called *autoregressive models* and have been
 used for modeling the probability distribution of sequential data in a
@@ -477,19 +471,10 @@ steps can often share a majority, if not all, of their weights. This
 drastically simplifies training and evaluation of the autoregressive
 model.
 
-<figure id="fig:ML_autoregressive_model">
-<embed src="ML_autoregressive_model.pdf" />
-<figcaption>Two possible network architectures for autoregressive
-sequence models. In both cases, the next output
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math>
-is sampled from a Gaussian distribution with parameters
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>μ</mi><mi>i</mi></msub><mo>,</mo><msub><mi>σ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\mu_i, \sigma_i)</annotation></semantics></math>
-which the neural network computes from the history
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mrow><mn>0</mn><mo>:</mo><mi>i</mi></mrow></msub><mo>,</mo><msub><mi>x</mi><mrow><mn>0</mn><mo>:</mo><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></mrow></msub></mrow><annotation encoding="application/x-tex">s_{0:i}, x_{0:{i-1}}</annotation></semantics></math>.</figcaption>
-</figure>
+![Two possible network architectures for autoregressive sequence models. In both cases, the next output $x_i$ is sampled from a Gaussian distribution with parameters $(\mu_i, \sigma_i)$ which the neural network computes from the history $s_{0:i}, x_{0:{i-1}}$.](figures/ML_autoregressive_model.svg){#fig-ML_autoregressive_model}
 
 We discuss two neural network architectures (schematically in
-[@fig:ML_autoregressive_model]) that are widely used for stochastic
+[@fig-ML_autoregressive_model]) that are widely used for stochastic
 sequence prediction and make use of weight-sharing to reduce
 computational costs: recurrent neural networks (RNNs) and autoregressive
 convolutional neural networks (CNNs). Other sequence models like
@@ -510,10 +495,9 @@ Given the sequences $s_{1:n}$ and $x_{1:n}$ the RNN takes an initial
 state $h_0\in\mathbb{R}^d$ and generates a sequence
 $h_{1:n}=(h_1,\ldots,h_n)$ from a recursive relation
 
-::: {#eq:recursion}
+
 $$h_i = f_\theta(s_i, x_{i-1}, h_{i-1})
-    \label{eq:recursion}$$
-:::
+    \label{eq-recursion}$$ {#eq-recursion}
 
 where $h_i\in\mathbb{R}^d$ for $i\in\{1,\ldots,n\}$ and an activation
 function $f_\theta$. The activation function $f_\theta$ could for
@@ -531,13 +515,12 @@ From the RNN we can obtain a stochastic representation of the output
 sequence $x_{1:n}$. We extend the recursive relation above by adding a
 sampling step to obtain $x_i$ from $h_i$
 
-::: {#eq:recursion-2}
+
 $$\begin{aligned}
         % h_i &= f_\theta(s_i, x_{i-1}, h_{i-1}) \\
         x_i \mid h_i &\sim \mathcal{N}(\mu(h_i), \sigma(h_i))
 \end{aligned}
-\label{eq:recursion-2}$$
-:::
+\label{eq-recursion-2}$$ {#eq-recursion-2}
 
 such that each $x_i$ is a normal-distributed random variable whose mean
 $\mu(h_i)$ and standard deviation $\sigma(h_i)$ are computed from the
@@ -556,7 +539,7 @@ parameters by
 $\mathbfit{\theta} = (\theta, W_\mu, b_mu, W_\sigma, b_\sigma)$.
 
 The recursive
-relations `\labelcref{eq:recursion,eq:recursion-2}`{=latex} fully define
+relations `\labelcref{eq-recursion,eq-recursion-2}`{=latex} fully define
 the conditional probability distribution
 $P(x_{1:n}|s_{1:n},\mathbfit{\theta})$ of the output sequence given the
 input sequence. Since $h_i$ depends on $s_i$ and $x_{i-1}$, as well as
@@ -631,13 +614,12 @@ $x_i \sim \mathcal{N}(\hat{\mu}_i, \hat{\sigma}_i)$.
 
 The conditional probability of the resulting output sequence is given by
 
-::: {#eq:autoregressive_conditional_density}
+
 $$\begin{aligned}
     \rho_{\symbf\theta}(x_{1:n}|s_{1:n}) &= \prod^n_{i=1} \mathrm{P}(x_i|x_{1:t-1}, s_{1:t}, \mathbfit{\theta})\\
     &= \prod^n_{i=1} \frac{1}{\sqrt{2\pi}\hat{\sigma}_i} \exp\left(-\frac{(x_i-\hat{\mu}_i)^2}{2\hat{\sigma}^2_i}\right)\,.
 \end{aligned}
-\label{eq:autoregressive_conditional_density}$$
-:::
+\label{eq-autoregressive_conditional_density}$$ {#eq-autoregressive_conditional_density}
 
 This probability can be evaluated on the fly while generating the
 sequence. Moreover, for a given pair of input and output sequences, we
@@ -650,7 +632,7 @@ Note that while generating a sequence is inherently a sequential
 process, the path likelihood $\rho_{\symbf\theta}(x_{1:n}|s_{1:n})$ can
 be evaluated in parallel in some neural architectures like the CNN.
 Specifically, for a given pair of sequences $(s_{1:n}, x_{1:n})$, the
-conditional probability in [@eq:autoregressive_conditional_density] is
+conditional probability in [@eq-autoregressive_conditional_density] is
 parallelizable, since the computations for $\hat\mu_i$ and
 $\hat\sigma_i$ for $i=1,\ldots,n$ are independent of each other. This
 allows for efficient training on parallel computing hardware.
@@ -662,10 +644,9 @@ $(s^k_{1:n}, x^k_{1:n})$ for $k=1,\ldots,N$. The loss function to be
 minimized is then given by the sum of the individual negative log
 likelihoods for the trajectory pairs:
 
-::: {#eq:loss_function}
+
 $$\mathcal{L}(\mathbfit{\theta}) = -\sum^N_{k=1} \ln \rho_{\symbf\theta}(x_{1:n}|s_{1:n}) \,.
-    \label{eq:loss_function}$$
-:::
+    \label{eq-loss_function}$$ {#eq-loss_function}
 
 This training objective is equivalent to minimizing an empirical
 estimate of the Kullback-Leibler (KL) divergence between the
@@ -678,13 +659,13 @@ model. Training is performed in iterations and it is often beneficial to
 introduce stochasticity between iterations to speed up gradient descent
 and regularize the loss function to prevent overfitting
 [@2010.Bottou; @2021.Feng]. For this reason, as typically done for
-training neural networks, the loss function in [@eq:loss_function] is
+training neural networks, the loss function in [@eq-loss_function] is
 only computed for a subset of the training data, in mini-batches of size
 $M$, instead of the whole training set of size $N$. At the beginning of
 each iteration, the data subset that is used is randomly selected
 (without replacement) from the whole data set.
 
-### Efficient Marginalization Using Variational Inference {#sec:ml_variational}
+### Efficient Marginalization Using Variational Inference {#sec-ml_variational}
 
 In the preceding section, we have shown how machine learning techniques
 can be leveraged to obtain a Path Weight Sampling (PWS) estimate of the
@@ -697,7 +678,7 @@ In this section, we employ machine learning differently, to optimize the
 PWS method itself. Specifically, we address the computationally most
 demanding task: the evaluation of the marginalization integral. While we
 have presented alternative techniques for computing this integral in
-[@ch:dpws; @ch:variants], here we leverage recent advances in machine
+[@sec-dpws; @sec-variants], here we leverage recent advances in machine
 learning and introduce an efficient marginalization strategy based on
 variational inference.
 
@@ -721,7 +702,7 @@ To compute the marginal probability with help of the inference model, we
 write $\mathrm{P}(x_{1:n})$ as the expectation with respect to a
 probability density $q(s_{1:n}|x_{1:n})$, i.e.,
 
-::: {#eq:ml_importance_sampling}
+
 $$\begin{aligned}
     \mathrm{P}(x_{1:n}) 
     &= \int \mathrm{P}(x_{1:n}|s_{1:n})\mathrm{P}(s_{1:n})\,ds_{1:n}\\
@@ -730,11 +711,10 @@ $$\begin{aligned}
  q(s_{1:n}|x_{1:n})\right]\\
     &= \mathbb{E}_{q(s_{1:n}|x_{1:n})} \left[ \frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] 
 \end{aligned}
-    \label{eq:ml_importance_sampling}$$
-:::
+    \label{eq-ml_importance_sampling}$$ {#eq-ml_importance_sampling}
 
 where $q(s_{1:n}|x_{1:n})$ can be chosen arbitrarily in principle.
-[@eq:ml_importance_sampling] is estimated using Monte Carlo sampling, by
+[@eq-ml_importance_sampling] is estimated using Monte Carlo sampling, by
 using the inference network to generate a set of trajectories
 $\{s^1_{1:n},\ldots,s^M_{1:n}\}$ from $q(s_{1:n}|x_{1:n})$ and computing
 the respective importance weights $w_1,\ldots,w_M$ according to
@@ -744,10 +724,9 @@ $$w(s_{1:n}, x_{1:n}) = \frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(
 
 The marginal probability is then estimated by
 
-::: {#eq:ml_importance_sample_mc}
+
 $$\mathrm{P}(x_{1:n}) \approx \frac{1}{M} \sum^M_{k=1} w_k \,.
-    \label{eq:ml_importance_sample_mc}$$
-:::
+    \label{eq-ml_importance_sample_mc}$$ {#eq-ml_importance_sample_mc}
 
 In this process, $q(s_{1:n}|x_{1:n})$ serves as the importance sampling
 distribution. Regardless of the choice of $q(s_{1:n}|x_{1:n})$, this
@@ -756,12 +735,12 @@ $M\to\infty$. However, crucially, for finite $M$ the choice of
 $q(s_{1:n}|x_{1:n})$ determines the variance and thus efficiency of the
 estimate.
 
-If, as done in Direct PWS ([@ch:dpws]), we choose the "prior"
+If, as done in Direct PWS ([@sec-dpws]), we choose the "prior"
 probability $\mathrm{P}(s_{1:n})$ as the importance sampling
 distribution, the resulting estimate is typically highly inefficient.
 This is because with that choice the importance weights are usually very
 unevenly distributed, with heavy tails which significantly increases the
-variance of the estimator, see also [@ch:variants]. It is well-known
+variance of the estimator, see also [@sec-variants]. It is well-known
 that the prior is generally a poor importance sampling distribution
 since it often allocates significant probability mass to regions of the
 configuration space that contribute little to the likelihood
@@ -788,18 +767,17 @@ Objective (ELBO) which provides a lower bound on the "evidence"
 $\mathrm{P}(x_{1:n})$. Maximizing this bound brings the variational
 approximation closer to the true posterior. The ELBO can be derived by
 applying Jensen's inequality to the last line of
-[@eq:ml_importance_sampling]:
+[@eq-ml_importance_sampling]:
 
-::: {#eq:ml_elbo}
+
 $$\ln \mathrm{P}(x_{1:n}) \geq 
 \mathbb{E}_{q(s_{1:n}|x_{1:n})}  \left[ 
 \ln\frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] = \mathcal{L}_\text{ELBO}
-\label{eq:ml_elbo}$$
-:::
+\label{eq-ml_elbo}$$ {#eq-ml_elbo}
 
 It is easy to show that maximizing the ELBO is equivalent to minimizing
 the KL-divergence between the variational distribution and the true
-posterior. Although the estimate in [@eq:ml_importance_sample_mc] is
+posterior. Although the estimate in [@eq-ml_importance_sample_mc] is
 always unbiased, i.e., it converges to the marginal probability
 $\mathrm{P}(x_{1:n})$ as $M\to\infty$ regardless of the choice of
 $q(s_{1:n}|x_{1:n})$, in practice, convergence will be slow unless the
@@ -861,7 +839,7 @@ variational models. SGVB leverages the reparameterization trick to
 estimate the gradient of the ELBO, which makes the training procedure
 efficient.
 
-## Application to a Minimal Nonlinear Model {#sec:ml_application}
+## Application to a Minimal Nonlinear Model {#sec-ml_application}
 
 We evaluate our approach using synthetic training data to train a
 generative model and then using PWS to compute the mutual information
@@ -884,9 +862,8 @@ $$\langle S_{\tau} S_{\tau + t} \rangle = \frac{\phi^{|t|}}{1 - \phi^2} \,.$$
 
 The output $X_t$ is governed by the equation
 
-::: {#eq:nonlinear_model}
-$$X_t = \sigma(\gamma S_t) + \rho X_{t-1} + \vartheta \eta_t \label{eq:nonlinear_model}$$
-:::
+
+$$X_t = \sigma(\gamma S_t) + \rho X_{t-1} + \vartheta \eta_t \label{eq-nonlinear_model}$$ {#eq-nonlinear_model}
 
 where $\eta_t$ are iid Gaussian random numbers, $\gamma$, $\rho$ and
 $\vartheta$ are positive real parameters, and
@@ -894,33 +871,18 @@ $\vartheta$ are positive real parameters, and
 $$\sigma(x) = \frac{1}{1+e^{-x}}$$
 
 is the logistic function. The gain $\gamma$ effectively controls the
-strength of the nonlinearity; see [@fig:input_output]. This process
+strength of the nonlinearity; see [@fig-input_output]. This process
 models a response that saturates as the input grows. In fact,
 $\sigma(x)$ is equivalent to the Hill function commonly used in
 biochemistry to describe saturating enzyme kinetics
 [@2005.Edelstein-Keshet].
 
-<figure id="fig:input_output">
-<embed src="input_output.pdf" />
-<figcaption>Example time series from the training set. The training set
-was generated using parameters
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mn>0.5</mn><mo>,</mo><mi>ρ</mi><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\phi=\num{0.5}, \rho=\num{0.2}</annotation></semantics></math>,
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϑ</mi><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">\vartheta=\num{0.2}</annotation></semantics></math>.
-In the upper left panel one stochastic realization of the input process
-is shown. The other panels show the mean output as well as 10/90-th
-percentiles for the output at different values of the input gain
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>.
-The effect of the gain on the output can be clearly seen. For the
-highest gain
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>=</mo><mn>10.0</mn></mrow><annotation encoding="application/x-tex">\gamma = \num{10.0}</annotation></semantics></math>,
-we observe saturation of the output.</figcaption>
-</figure>
+![Example time series from the training set. The training set was generated using parameters $\phi=\num{0.5}, \rho=\num{0.2}$, and $\vartheta=\num{0.2}$. In the upper left panel one stochastic realization of the input process is shown. The other panels show the mean output as well as 10/90-th percentiles for the output at different values of the input gain $\gamma$. The effect of the gain on the output can be clearly seen. For the highest gain $\gamma = \num{10.0}$, we observe saturation of the output.](figures/input_output.svg){#fig-input_output}
 
 ### Training the Neural Networks
 
 We trained our machine learning model with synthetic data generated
-according to [@eq:nonlinear_model] for various values of the gain,
+according to [@eq-nonlinear_model] for various values of the gain,
 denoted by $\gamma$. For each value of $\gamma$, we created a distinct
 training set of 1000 pairs of time series $(s_{1:50}, x_{1:50})$ and
 trained one autoregressive model per training set. Once the models were
@@ -955,7 +917,7 @@ with five components. The inference network is trained for 100 epochs
 with mini-batches of size 64. For each $x_{1:n}$ in the training set, 16
 Monte Carlo draws from the inference network
 $\tilde{s}_{1:n}\sim q(\tilde{s}_{1:n}|x_{1:n})$ are used to estimate
-the ELBO loss in [@eq:ml_elbo]. The loss function gradient is estimated
+the ELBO loss in [@eq-ml_elbo]. The loss function gradient is estimated
 using SGVB [@2013.Kingma]. The model is optimized using the ADAM
 optimizer with weight decay regularization (same parameters as above).
 We use an initial learning rate of 5 × 10^−3^ that decays exponentially
@@ -965,46 +927,20 @@ To compute the marginal probability $\mathrm{P}(x_{1:n})$ from our
 models, we use the inference network to generate $2^{14} = \num{16384}$
 samples $\tilde{s}_{1:n}$ for each sequence $x_{1:n}$. From these
 samples $\tilde{s}_{1:n}$, the marginal probability is estimated using
-[@eq:ml_importance_sample_mc]. We monitor the convergence of the
+[@eq-ml_importance_sample_mc]. We monitor the convergence of the
 variational marginalization procedure by computing the effective sample
 size from the importance weights [@2017.Martino]. In our case, the
 effective sample size always remained above 85% of the actual sample
 size, indicating that the inference network approximates the posterior
 well.
 
-<figure id="fig:mi_gain">
-<embed src="MI_gain.pdf" />
-<figcaption>Mutual information estimates for the nonlinear 1D
-time-series model across a range of input gain values (see <span
-class="citation" data-cites="eq:nonlinear_model"></span>). The green
-dots represent the ML-PWS estimates (using an autoregressive RNN model
-for learning the stochastic dynamics), while the solid green line
-indicates the ground truth mutual information calculated by applying PWS
-directly to the nonlinear model. For comparison, the Gaussian
-approximation has been obtained in two diferent ways: the dotted orange
-line (labeled <em>Gaussian I</em>) represents Gaussian information
-estimates obtained from the same dataset
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>1000</mn></mrow><annotation encoding="application/x-tex">N=\num{1000}</annotation></semantics></math>)
-that was used to train the machine learning model, showing finite sample
-size effects. The dashed orange line (labeled <em>Gaussian II</em>)
-represents a “reduced-bias” Gaussian approximation using an extended
-dataset
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>100000</mn></mrow><annotation encoding="application/x-tex">N=\num{100000}</annotation></semantics></math>).
-For low gain
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>≲</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\gamma \lesssim 10</annotation></semantics></math>),
-both Gaussian approximations align closely with the ground truth and
-ML-PWS. At high gain, however, the Gaussian approximation fails to
-capture nonlinear effects, and only provides a lower bound on the mutual
-information. Yet, ML-PWS does not suffer from this problem and correctly
-estimates the mutual information for the whole range of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>.</figcaption>
-</figure>
+![Mutual information estimates for the nonlinear 1D time-series model across a range of input gain values (see <span class="citation" data-cites="eq-nonlinear_model"></span>). The green dots represent the ML-PWS estimates (using an autoregressive RNN model for learning the stochastic dynamics), while the solid green line indicates the ground truth mutual information calculated by applying PWS directly to the nonlinear model. For comparison, the Gaussian approximation has been obtained in two diferent ways: the dotted orange line (labeled <em>Gaussian I</em>) represents Gaussian information estimates obtained from the same dataset ($N=\num{1000}$) that was used to train the machine learning model, showing finite sample size effects. The dashed orange line (labeled <em>Gaussian II</em>) represents a “reduced-bias” Gaussian approximation using an extended dataset ($N=\num{100000}$). For low gain ($\gamma \lesssim 10$), both Gaussian approximations align closely with the ground truth and ML-PWS. At high gain, however, the Gaussian approximation fails to capture nonlinear effects, and only provides a lower bound on the mutual information. Yet, ML-PWS does not suffer from this problem and correctly estimates the mutual information for the whole range of $\gamma$.](figures/MI_gain.svg){#fig-mi_gain}
 
 ### Comparison Against the True Mutual Information
 
-The green dots in [@fig:mi_gain] display the ML-PWS estimate of the
+The green dots in [@fig-mi_gain] display the ML-PWS estimate of the
 mutual information $I(S_{1:50}, X_{1:50})$ as a function of the gain
-$\gamma$, see [@eq:nonlinear_model]. As expected, for small $\gamma$,
+$\gamma$, see [@eq-nonlinear_model]. As expected, for small $\gamma$,
 the mutual information grows with $\gamma$ as the gain enhances the
 signal-to-noise ratio. For larger values of $\gamma$, we observe a
 saturation and even a decline in the information rate due to the
@@ -1014,11 +950,11 @@ of the nonlinearity of the system.
 Next, we compared the mutual information estimates against various
 benchmarks. First, we compute the true mutual information of the
 nonlinear system using PWS directly with the model given in
-[@eq:nonlinear_model]. Since this model represents the true underlying
+[@eq-nonlinear_model]. Since this model represents the true underlying
 dynamics of the training data, we consider this result as the "ground
 truth" mutual information.
 
-[@fig:mi_gain] (solid green line) shows the ground truth mutual
+[@fig-mi_gain] (solid green line) shows the ground truth mutual
 information. We can see that the machine learning approach matches the
 ground truth very well across all values of $\gamma$. This demonstrates
 that the autoregressive neural network can accurately learn the
@@ -1049,20 +985,20 @@ Gaussian approximation for the mutual information (in nats) is given by
 
 $$I(S_{1:n}, X_{1:n}) = \frac{1}{2} \ln \frac{|\Sigma_{ss}| |\Sigma_{xx}|}{|\Sigma|}\,.$$
 
-See [@ch:notes-gaussian] for more details.
+See [@sec-notes-gaussian] for more details.
 
 To make a fair comparison of our machine learning method with the
 Gaussian approximation, we use the same dataset for obtaining the
 Gaussian approximation that was used for training the ML model. We refer
 to this benchmark as "Gaussian I" and it corresponds to the dotted
-orange line in [@fig:mi_gain]. The Gaussian approximation suffers from
+orange line in [@fig-mi_gain]. The Gaussian approximation suffers from
 two sources of systematic bias: a finite sample size bias due to
 imperfect correlation function estimates from 1000 trajectory pairs, and
 a bias arising from the assumption of linearity which does not hold at
 large $\gamma$. Our aim was to distinguish these two sources of bias.
 
 We created another benchmark, called "Gaussian II" (dashed orange line
-in [@fig:mi_gain]) to be able to quantify the bias introduced by the
+in [@fig-mi_gain]) to be able to quantify the bias introduced by the
 small sample size of the "Gaussian I" benchmark. Gaussian II is similar
 to Gaussian I but is obtained from a significantly larger dataset of
 100000 trajectory pairs $(s_{1:50}, x_{1:50})$, generated from the
@@ -1073,7 +1009,7 @@ should be noted that this benchmark is "unfair" since it uses a much
 larger dataset than the one that was used to train the autoregressive ML
 model.
 
-In [@fig:mi_gain] we compare the results obtained using PWS against the
+In [@fig-mi_gain] we compare the results obtained using PWS against the
 two variants of the Gaussian approximation, and we observe that for
 $\gamma \lesssim 10$ the Gaussian approximations (the regular one,
 Gaussian I, and the one with reduced bias, Gaussian II) closely match
@@ -1085,13 +1021,13 @@ Gaussian approximation fails to correctly capture the nonlinear dynamics
 of the system, and only yields a lower bound for the mutual information,
 as expected from information theory [@mitra2001nonlinear].
 
-[@fig:mi_gain] also clearly displays the effect of finite sample size on
+[@fig-mi_gain] also clearly displays the effect of finite sample size on
 the accuracy of the Gaussian approximation. Specifically, the Gaussian
 approximation obtained from the smaller training dataset (Gaussian I,
-displayed as dotted orange line in [@fig:mi_gain]) consistently
+displayed as dotted orange line in [@fig-mi_gain]) consistently
 overestimates the mutual information as computed with the Gaussian
 approximation from the larger dataset (Gaussian II, dashed orange line
-in [@fig:mi_gain]). This means that at low gain, even though the system
+in [@fig-mi_gain]). This means that at low gain, even though the system
 is approximately linear, the Gaussian approximation obtained from the
 training set slightly overestimates the true mutual information. This
 over-estimation is purely an artifact of finite sample size bias, and is
@@ -1100,7 +1036,7 @@ thus, our new method based on machine learning yields a better estimate
 for the mutual information using the training set, even at low gain,
 where the Gaussian approximation is expected to hold.
 
-## Discussion {#sec:ml_discussion}
+## Discussion {#sec-ml_discussion}
 
 By combining neural networks with PWS, we introduced ML-PWS, a new
 scheme to estimate the mutual information between input and output
@@ -1133,7 +1069,7 @@ model reduction, making it possible to answer the question of whether a
 time series with a simplified representation still maintains the same
 mutual information rate.
 
-As our results in [@fig:mi_gain] demonstrate, ML-PWS with Gaussian
+As our results in [@fig-mi_gain] demonstrate, ML-PWS with Gaussian
 autoregressive models is significantly more general than the Gaussian
 framework [@2009.Tostevin]. The range of stochastic processes
 representable by neural autoregressive models is much larger than the
@@ -1206,7 +1142,7 @@ generative model, regardless of whether it is based on neural networks.
 This flexibility makes it a powerful marginalization scheme for any
 application of PWS to a system with continuous state space. Furthermore,
 since marginalization is mathematically equivalent to a free-energy
-computation (see [@ch:variants]), our approach demonstrates that
+computation (see [@sec-variants]), our approach demonstrates that
 variational techniques can yield efficient methods for free-energy
 estimation.
 
@@ -1228,5 +1164,5 @@ learning.
 [^1]: This chapter is co-authored by Manuel Reinhardt, Gašper Tkačik
     (IST Austria), and Pieter Rein ten Wolde.
 
-[^2]: See also [@ch:lna_vs_pws], where we extensively discuss the
+[^2]: See also [@sec-lna_vs_pws], where we extensively discuss the
     limitations of the Gaussian approximation for nonlinear systems.

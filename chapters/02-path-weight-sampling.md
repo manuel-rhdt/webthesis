@@ -6,7 +6,7 @@ link-citations: true
 reference-section-title: References
 ---
 
-# Path Weight Sampling {#ch:dpws}
+# Path Weight Sampling {#sec-dpws}
 
 > Most natural and engineered information-processing systems transmit
 > information via signals that vary in time. Computing the information
@@ -56,7 +56,7 @@ the mutual information between the input and output trajectories, not
 between their signal values at given time points. The rate at which this
 trajectory mutual information increases with the trajectory duration in
 the long-time limit defines the mutual information rate, see
-[@eq:intro-info-rate]. In the absence of feedback this rate also equals
+[@eq-intro-info-rate]. In the absence of feedback this rate also equals
 the multi-step transfer entropy [@1990.Massey; @2000.Schreiber].
 
 More generally, useful information is often contained in the temporal
@@ -147,13 +147,13 @@ solves the problem in part, the marginal output entropy associated with
 $\mathcal{P}[\mathbfit{x}]$ cannot be computed with the approach of
 @2019.Cepeda-Humerez, and thus requires a different scheme.
 
-In [@sec:sec2] we show how, for time-varying input signals, the marginal
+In [@sec-sec2] we show how, for time-varying input signals, the marginal
 probability $\mathcal{P}[\mathbfit{x}]$ can be obtained as a Monte Carlo
 average of $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ over a large number
 of input trajectories. We then use the Monte Carlo estimate for
 $\mathcal{P}[\mathbfit{x}]$ to compute the marginal output entropy.
 
-In [@sec:integrating-out] we show that, surprisingly, our PWS methods
+In [@sec-integrating-out] we show that, surprisingly, our PWS methods
 additionally make it possible to compute the mutual information between
 input and output trajectories of systems with hidden internal states.
 Hidden states correspond, for example, to network components that merely
@@ -163,14 +163,14 @@ is encoded in this output, and not the other internal system components.
 Most information processing systems contain such hidden states, and
 generally we want to integrate out these latent network components. In
 addition, we can generalize PWS to systems with feedback from the output
-to the input as shown in [@sec:feedback].
+to the input as shown in [@sec-feedback].
 
-## Monte Carlo Estimate of the Mutual Information {#sec:sec2}
+## Monte Carlo Estimate of the Mutual Information {#sec-sec2}
 
 In this section we present the fundamental ideas of PWS. These ideas lie
 at the heart of Direct PWS (DPWS) and also form the foundation of the
 other two more advanced PWS variants which will be explained in
-[@ch:variants].
+[@sec-variants].
 
 ### Statement of the Problem
 
@@ -187,49 +187,38 @@ $\mathrm{P}(s, x) = \mathrm{P}(s)\,\mathrm P(x|s)$.
 
 When the conditional output distributions $\mathrm P(x|s)$ overlap with
 each other, information is lost because the input can not always be
-inferred uniquely from the output (see [@fig:information]). The
+inferred uniquely from the output (see [@fig-information]). The
 remaining information that the output carries about the signal on
 average is quantified by the mutual information between input and
 output.
 
-<figure id="fig:information">
-<embed src="mi-schema.pdf" />
-<figcaption> Schematic of information processing under the influence of
-noise. Overlapping output distributions for different inputs lead to
-information loss, because the input cannot always be uniquely inferred
-from the output. The mutual information
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">I</mi><mo stretchy="false" form="prefix">(</mo><mi>𝒮</mi><mo>,</mo><mi>𝒳</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathrm{I}(\mathcal{S},\mathcal{X})</annotation></semantics></math>
-quantifies how much information the observation of the output typically
-retains about the input signal. </figcaption>
-</figure>
+![ Schematic of information processing under the influence of noise. Overlapping output distributions for different inputs lead to information loss, because the input cannot always be uniquely inferred from the output. The mutual information $\mathrm{I}(\mathcal{S},\mathcal{X})$ quantifies how much information the observation of the output typically retains about the input signal. ](figures/mi-schema.svg){#fig-information}
 
 Mathematically, the mutual information between a random variable
 $\mathcal{S}$, representing the input, and a second random variable
 $\mathcal{X}$, representing the output, is defined as
 
-::: {#eq:mutual_information}
+
 $$\mathrm I(\mathcal{S}, \mathcal{X}) = \iint ds\,dx\  \mathrm{P}(s, x) \ln \frac{\mathrm{P}(s, x)}{\mathrm{P}(s) \mathrm{P}(x)}\,,
-    \label{eq:mutual_information}$$
-:::
+    \label{eq-mutual_information}$$ {#eq-mutual_information}
 
 where the marginal output distribution is given by
 $\mathrm{P}(x) = \int ds\ \mathrm{P}(s, x)$. The quantity
 $\mathrm I(\mathcal{S}, \mathcal{X})$ as defined above is a non-negative
 real number, representing the mutual information between $\mathcal{S}$
-and $\mathcal{X}$ in nats. The integrals in [@eq:mutual_information] run
+and $\mathcal{X}$ in nats. The integrals in [@eq-mutual_information] run
 over all possible realizations of the random variables $\mathcal{S}$ and
 $\mathcal{X}$. In our case, $\mathcal{S}$ and $\mathcal{X}$ represent
 stochastic trajectories and so the integrals become path integrals.
 
 In general, the mutual information can be decomposed into two terms, a
 conditional and marginal entropy. Due to the symmetry of
-[@eq:mutual_information] with respect to exchange of $\mathcal{S}$ and
+[@eq-mutual_information] with respect to exchange of $\mathcal{S}$ and
 $\mathcal{X}$, this decomposition can be written as
 
-::: {#eq:mutual_information_entropies}
+
 $$\mathrm I(\mathcal{S}, \mathcal{X}) = \mathrm{H}(\mathcal{S}) - \mathrm{H}(\mathcal{S}|\mathcal{X}) = \mathrm{H}(\mathcal{X}) - \mathrm{H}(\mathcal{X}|\mathcal{S})\,.
-    \label{eq:mutual_information_entropies}$$
-:::
+    \label{eq-mutual_information_entropies}$$ {#eq-mutual_information_entropies}
 
 The (marginal) input entropy $\mathrm{H}(\mathcal{S})$ represents the
 total uncertainty about the input, and the conditional input entropy
@@ -249,14 +238,13 @@ than vice versa. The accessible entropies are thus the marginal output
 entropy $\mathrm{H}(\mathcal{X})$ and the conditional output entropy
 $\mathrm{H}(\mathcal{X}|\mathcal{S})$, which are defined as
 
-::: {#eq:marginal-entropy}
+
 $$\begin{aligned}
     \mathrm{H}(\mathcal{X}) &= -\int dx\ \mathrm{P}(x) \ln \mathrm{P}(x)
-    \label{eq:marginal-entropy} \\
+    \label{eq-marginal-entropy} \\
     \mathrm{H}(\mathcal{X}|\mathcal{S}) &= -\int ds\ \mathrm{P}(s) \int dx\  \mathrm{P}(x|s) \ln \mathrm{P}(x|s) \,.
-    \label{eq:conditional-entropy}
-\end{aligned}$$
-:::
+    \label{eq-conditional-entropy}
+\end{aligned}$$ {#eq-marginal-entropy}
 
 The conventional way of computing the mutual information involves
 generating many samples to obtain empirical distribution estimates for
@@ -270,29 +258,9 @@ limitations of the conventional method make it impractical for
 high-dimensional data, highlighting the need for alternative approaches
 to accurately compute mutual information for trajectories.
 
-###  Direct PWS {#sec:algorithm}
+###  Direct PWS {#sec-algorithm}
 
-<figure id="fig:algorithm">
-<embed src="Algorithm.pdf" />
-<figcaption>The PWS framework to compute the mutual information between
-trajectories in 4 steps. <strong>1</strong>. Generate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
-input-output pairs from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo>,</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s},\mathbfit{x}]</annotation></semantics></math>.
-<strong>2</strong>. For each input-output pair compute the trajectory
-likelihood
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>𝒙</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">|</mo><msub><mi>𝒔</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}_i|\mathbfit{s}_i]</annotation></semantics></math>
-using <span class="citation" data-cites="eq:traj_prob"></span>.
-<strong>3</strong>. Compute
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><msub><mi>𝒙</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}_i]</annotation></semantics></math>
-for every output. This step differentiates the different variants of PWS
-from each other. Direct PWS is presented in this chapter, whereas RR-PWS
-and TI-PWS are described in <span class="citation"
-data-cites="ch:variants"></span>. <strong>4</strong>. Using the
-likelihoods and the marginal probabilities from the previous steps we
-can estimate the mutual information using <span class="citation"
-data-cites="eq:average-of-differences"></span>. </figcaption>
-</figure>
+![The PWS framework to compute the mutual information between trajectories in 4 steps. <strong>1</strong>. Generate $N$ input-output pairs from $\mathcal{P}[\mathbfit{s},\mathbfit{x}]$. <strong>2</strong>. For each input-output pair compute the trajectory likelihood $\mathcal{P}[\mathbfit{x}_i|\mathbfit{s}_i]$ using <span class="citation" data-cites="eq-traj_prob"></span>. <strong>3</strong>. Compute $\mathcal{P}[\mathbfit{x}_i]$ for every output. This step differentiates the different variants of PWS from each other. Direct PWS is presented in this chapter, whereas RR-PWS and TI-PWS are described in <span class="citation" data-cites="sec-variants"></span>. <strong>4</strong>. Using the likelihoods and the marginal probabilities from the previous steps we can estimate the mutual information using <span class="citation" data-cites="eq-average-of-differences"></span>. ](figures/Algorithm.svg){#fig-algorithm}
 
 The central idea of PWS is to compute probability densities for
 trajectories exactly, sidestepping the problem having to estimate them
@@ -314,7 +282,7 @@ Specifically, we will show that
 - by combining the two ideas above, we can derive a direct Monte Carlo
   estimate for the mutual information
   $\mathrm{I}(\mathcal{S},\mathcal{X})$, as illustrated in
-  [@fig:algorithm].
+  [@fig-algorithm].
 
 Note that we denote trajectories by bold symbols to distinguish them
 from scalar quantities.
@@ -348,14 +316,13 @@ $\mathbfit{x}_{i,1},\ldots,\mathbfit{x}_{i,K}$ from
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}_i]$. Then, the Monte Carlo
 estimate for the conditional entropy is
 
-::: {#eq:conditional-entropy-estimate}
+
 $$\begin{aligned}
     \mathrm{H}(\mathcal{X}|\mathcal{S}) &= -\int \mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\int \mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\ 
     &=-\left\langle \left\langle \ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{x}|\mathbfit{s}]} \right\rangle_{\mathcal{P}[\mathbfit{s}]} \\
     &\approx -\frac{1}{N}\sum^{N}_{i=1}\frac{1}{K}\sum^{K}_{j=1} \ln\mathcal{P}[\mathbfit{x}_{i,j}|\mathbfit{s}_i] \,.
 \end{aligned}
-\label{eq:conditional-entropy-estimate}$$
-:::
+\label{eq-conditional-entropy-estimate}$$ {#eq-conditional-entropy-estimate}
 
 Secondly, for a given output $\mathbfit{x}$ we generate $M$ inputs
 $\mathbfit{s}^\prime_1,\ldots,\mathbfit{s}^\prime_M$ according to
@@ -363,28 +330,26 @@ $\mathcal{P}[\mathbfit{s}]$, then we can obtain a Monte Carlo estimate
 for the marginal probability of the output trajectory
 $\mathcal{P}[\mathbfit{x}]$:
 
-::: {#eq:marginal-naive}
+
 $$\begin{aligned}
     \mathcal{P}[\mathbfit{x}] &= \int\mathcal{D}[\mathbfit{s}]\  \mathcal{P}[\mathbfit{s}]  \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\
     &= \left\langle \mathcal{P}[\mathbfit{x}|\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{s}]} \\
     &\approx \frac{1}{M}\sum^M_{j=1} \mathcal{P}[\mathbfit{x}|\mathbfit{s}^\prime_{j}]\,.
 \end{aligned}
-    \label{eq:marginal-naive}$$
-:::
+    \label{eq-marginal-naive}$$ {#eq-marginal-naive}
 
 The estimate for the marginal entropy is then given by
 
-::: {#eq:marginal-entropy-estimate}
+
 $$\begin{aligned}
     \mathrm{H}(\mathcal{X}) &= -\int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{x}]\ln\mathcal{P}[\mathbfit{x}] \\
     &= -\left\langle \ln\mathcal{P}[\mathbfit{x}] \right\rangle_{\mathcal{P}[\mathbfit{x}]}\\
     &\approx -\frac{1}{N}\sum^{N}_{i=1} \ln\mathcal{P}[\mathbfit{x}_i] \\
     &\approx -\frac{1}{N}\sum^{N}_{i=1} \ln \left[ \frac{1}{M}\sum^M_{j=1} \mathcal{P}[\mathbfit{x}_i|\mathbfit{s}^\prime_{i,j}] \right]\,.
 \end{aligned}
-    \label{eq:marginal-entropy-estimate}$$
-:::
+    \label{eq-marginal-entropy-estimate}$$ {#eq-marginal-entropy-estimate}
 
-In the last step we inserted the result from [@eq:marginal-naive]. In
+In the last step we inserted the result from [@eq-marginal-naive]. In
 this estimate, the trajectories $\mathbfit{x}_1,\ldots,\mathbfit{x}_N$
 are sampled from $\mathcal{P}[\mathbfit{x}]$, i.e., by first sampling
 from $\mathcal{P}[\mathbfit{s}]$ and then from
@@ -398,7 +363,7 @@ Specifically, computing the difference of two averages, leads to large
 statistical errors. We can obtain an improved estimate by reformulating
 the mutual information as a single average of differences:
 
-::: {#eq:average-of-differences}
+
 $$\begin{aligned}
     \mathrm{I}(\mathcal{S},\mathcal{X}) &= \int\mathcal{D}[\mathbfit{s}]\int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}] \ln\frac{\mathcal{P}[\mathbfit{x}|\mathbfit{s}]}{\mathcal{P}[\mathbfit{x}]} \\
     &=  \left\langle
@@ -406,18 +371,17 @@ $$\begin{aligned}
     \ln\mathcal{P}[\mathbfit{x}]
     \right\rangle_{\mathcal{P}{[\mathbfit{s},\mathbfit{x}]}}\,.
 \end{aligned}
-\label{eq:average-of-differences}$$
-:::
+\label{eq-average-of-differences}$$ {#eq-average-of-differences}
 
 This equation applies to all variants of PWS. They differ, however, in
 the way $\mathcal{P}[\mathbfit{x}]$ is computed. In the brute-force
-version of PWS, called *Direct PWS* (DPWS), we use [@eq:marginal-naive]
+version of PWS, called *Direct PWS* (DPWS), we use [@eq-marginal-naive]
 to evaluate the marginal probability $\mathcal{P}[\mathbfit{x}]$. DPWS
 indeed involves two nested Monte Carlo computations, in which $N$ pairs
 $(\mathbfit{s}_i, \mathbfit{x}_i)$ are generated, and for each output
 $\mathbfit{x}_i$, $M$ input trajectories $\{\mathbfit{s}\}$ are
 generated from scratch to compute $\mathcal{P}[\mathbfit{x}]$. In
-[@ch:variants], we present two additional variants of PWS where the
+[@sec-variants], we present two additional variants of PWS where the
 brute-force estimate of the marginal probability
 $\mathcal{P}[\mathbfit{x}]$ is replaced by more elaborate schemes. That
 said, DPWS is a conceptually simple, straightforward to implement, and
@@ -425,16 +389,16 @@ exact scheme to compute the mutual information.
 
 Having explained the core ideas of our technique above, we will continue
 this section with a review of the necessary concepts of master equations
-to implement PWS. First, in [@sec:mjp], we derive the formula for the
+to implement PWS. First, in [@sec-mjp], we derive the formula for the
 conditional probability $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ which
 lies at the heart of our technique. In
-[@sec:mjp; @sec:input-statistics], we discuss how trajectories are
+[@sec-mjp; @sec-input-statistics], we discuss how trajectories are
 generated according to $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ and
 $\mathcal{P}[\mathbfit{s}]$, which are the remaining ingredients
-required for using DPWS. Then, in [@ch:variants], we will present the
+required for using DPWS. Then, in [@sec-variants], we will present the
 two other variants of PWS that improve on DPWS.
 
-###  Driven Markov Jump Process {#sec:mjp}
+###  Driven Markov Jump Process {#sec-mjp}
 
 In this chapter, we consider systems that can be modeled by a master
 equation and are being driven by a stochastic signal. The master
@@ -458,9 +422,8 @@ $$Q_t(x, x) = -\sum_{x^\prime\in\Omega\smallsetminus\{x\}} w_t(x^\prime, x)$$
 
 the master equation simplifies to
 
-::: {#eq:master-equation}
-$$\frac{\partial\mathrm{P}(x,t)}{\partial t} = \sum_{x^\prime\in\Omega} Q_t(x, x^\prime) \mathrm{P}(x^\prime,t)\,. \label{eq:master-equation}$$
-:::
+
+$$\frac{\partial\mathrm{P}(x,t)}{\partial t} = \sum_{x^\prime\in\Omega} Q_t(x, x^\prime) \mathrm{P}(x^\prime,t)\,. \label{eq-master-equation}$$ {#eq-master-equation}
 
 Note that by definition the diagonal matrix element $Q_t(x,x)$ is the
 negative exit rate from state $x$, i.e. the total rate at which
@@ -475,7 +438,7 @@ $T=t_n-t_0$. At each time $t_i$ (for $i=1,\ldots,n-1$) the trajectory
 describes an instantaneous jump $x_{i-1}\rightarrow x_{i}$. The
 probability density of $\mathbfit{x}$ is
 
-::: {#eq:traj-prob-master-eq}
+
 $$\begin{aligned}
     \mathcal{P}[\mathbfit{x}] &= 
     \mathrm{P}(x_0)\times \left(
@@ -486,8 +449,7 @@ $$\begin{aligned}
     \exp\int\limits^{t_{i}}_{t_{i-1}} dt\ Q_t(x_{i-1}, x_{i-1})
     \right),
 \end{aligned}
-\label{eq:traj-prob-master-eq}$$
-:::
+\label{eq-traj-prob-master-eq}$$ {#eq-traj-prob-master-eq}
 
 a product of the probability of the initial state $\mathrm{P}(x_0)$, the
 rates of the $n-1$ transitions $Q_{t_i}\left(x_i, x_{i-1}\right)$, and
@@ -495,7 +457,7 @@ the survival probabilities for the waiting times between jumps, given by
 $\exp\int^{t_{i}}_{t_{i-1}} dt\ Q_t(x_{i-1}, x_{i-1})$ for
 $i=1,\ldots,n$.
 
-#### Computing the Likelihood $\mathcal{P}[x|s]$  {#sec:likelihood}
+#### Computing the Likelihood $\mathcal{P}[x|s]$  {#sec-likelihood}
 
 To compute the likelihood or conditional
 probability $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ of an output
@@ -509,9 +471,9 @@ ${\mathbfit{s}}$ prior to $t$.
 In the common case that every input trajectory $\mathbfit{s}$ leads to a
 unique transition rate matrix $Q_t(x^\prime,x;\mathbfit{s})$, i.e. the
 map $\mathbfit{s}\mapsto Q_t(\cdot,\cdot;\mathbfit{s})$ is injective,
-the likelihood is directly given by [@eq:traj-prob-master-eq]:
+the likelihood is directly given by [@eq-traj-prob-master-eq]:
 
-::: {#eq:traj_prob}
+
 $$\begin{aligned}
     \mathcal{P}[\mathbfit{x}|\mathbfit{s}] &= 
     \mathrm{P}(x_0|s_0)\times \left(
@@ -521,38 +483,35 @@ $$\begin{aligned}
     \prod^{n}_{i=1}
     \exp\int\limits^{t_{i}}_{t_{i-1}} dt\ Q_t(x_{i-1}, x_{i-1};\mathbfit{s})
     \right)
-    \label{eq:traj_prob}
-\end{aligned}$$
-:::
+    \label{eq-traj_prob}
+\end{aligned}$$ {#eq-traj_prob}
 
 where $\mathrm{P}(x_0|s_0)$ is the probability of the initial state
 $x_0$ of the output given the initial state of the input $s_0=s(t_0)$.
 
 The evaluation of the trajectory likelihood is at the heart of our Monte
 Carlo scheme. However, numerically computing a large product like
-[@eq:traj_prob] very quickly reaches the limits of floating point
+[@eq-traj_prob] very quickly reaches the limits of floating point
 arithmetic since the result is often either too large or too close to
 zero to be representable as a floating point number. Thus, to avoid
 numerical issues, it is vital to perform the computations in log-space,
 i.e. to compute
 
-::: {#eq:log_traj_prob}
+
 $$\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] = \ln \mathrm{P}(x_0|s_0) + \int^T_{t_0}dt\ \mathcal{L}_t[\mathbfit{s},\mathbfit{x}]
-    \label{eq:log_traj_prob}$$
-:::
+    \label{eq-log_traj_prob}$$ {#eq-log_traj_prob}
 
 where
 
-::: {#eq:path_action}
+
 $$\mathcal{L}_t[\mathbfit{s},\mathbfit{x}] = Q_t(x(t),x(t);\mathbfit{s}) +
     \sum^{n-1}_{i=1} \delta(t-t_i) \ln Q_t(x_i,x_{i-1};\mathbfit{s})\,.
-    \label{eq:path_action}$$
-:::
+    \label{eq-path_action}$$ {#eq-path_action}
 
 The computation of the log-likelihood
 $\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ for given trajectories
 $\mathbfit{s}$ and $\mathbfit{x}$ according to
-[@eq:log_traj_prob; @eq:path_action] proceeds as follows:
+[@eq-log_traj_prob; @eq-path_action] proceeds as follows:
 
 - At the start of the trajectory we compute the log-probability of the
   initial condition $\ln\mathrm{P}(x_0|s_0)$,
@@ -570,12 +529,12 @@ $\mathbfit{s}$ and $\mathbfit{x}$ according to
 
 The sum of the three contributions above yields the exact log-likelihood
 $\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ as given in
-[@eq:log_traj_prob].
+[@eq-log_traj_prob].
 
 The algorithm to compute the log-likelihood
 $\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ is both efficient and
 straightforward to implement, being closely related to the standard
-Gillespie algorithm. The only term in [@eq:log_traj_prob] that cannot be
+Gillespie algorithm. The only term in [@eq-log_traj_prob] that cannot be
 directly obtained from the master equation is $\ln\mathrm{P}(x_0|s_0)$.
 This quantity depends on the initial distribution of the system of
 interest.
@@ -591,11 +550,11 @@ analytically from the master equation [@2007.vanKampen; @2017.Weber]
 (possibly using simplifying approximations [@2009.Walczak; @2007.Kim]),
 or computationally from stochastic simulations [@1976.Gillespie].
 
-#### Sampling from $\mathcal{P}[x|s]$ {#sec:gillespie}
+#### Sampling from $\mathcal{P}[x|s]$ {#sec-gillespie}
 
 Standard kinetic Monte Carlo simulations naturally produce exact samples
 of the probability distribution $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$
-as defined in [@eq:traj_prob]. That is, for any signal trajectory
+as defined in [@eq-traj_prob]. That is, for any signal trajectory
 $\mathbfit{s}$ and initial state $x_0$ drawn from $\mathrm{P}(x_0|s_0)$
 we can use the Stochastic Simulation Algorithm (SSA) or variants thereof
 to generate a corresponding trajectory $\mathbfit{x}$. The SSA
@@ -624,20 +583,19 @@ computing the waiting time using the inverse survival function
 $\Delta t_i = S^{-1}_i(u)$. Numerically, computing the inverse of the
 survival function requires solving the equation
 
-::: {#eq:inverse-transform-sampling}
+
 $$\ln u = \int^{t_i+\Delta t_i}_{t_i} dt\ Q_t(x_i, x_i;\mathbfit{s})
-    \label{eq:inverse-transform-sampling}$$
-:::
+    \label{eq-inverse-transform-sampling}$$ {#eq-inverse-transform-sampling}
 
 for the waiting time $\Delta t_i$. Depending on the complexity of
 $Q_t(x_i, x_i|\mathbfit{s})$, this equation can either be solved
 analytically or numerically, e.g. using Newton's method. Hence, this
 method to generate stochastic trajectories is only truly exact if we can
-solve [@eq:inverse-transform-sampling] analytically. Additionally, in
+solve [@eq-inverse-transform-sampling] analytically. Additionally, in
 some cases more efficient variants of the SSA with time dependent rates
 could be used [@1997.Prados; @2015.Thanh].
 
-### Input Statistics {#sec:input-statistics}
+### Input Statistics {#sec-input-statistics}
 
 For our mutual information estimate, we need to be able to draw samples
 from the input distribution $\mathcal P[\mathbfit{s}]$. Our algorithm
@@ -648,13 +606,13 @@ For example, the input signal may be described by a continuous-time jump
 process. One benefit is that it is possible to generate exact
 realizations of such a process (using the SSA) and to exactly compute
 the likelihood $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ using
-[@eq:log_traj_prob]. Specifically, the likelihood can be exactly
+[@eq-log_traj_prob]. Specifically, the likelihood can be exactly
 evaluated because the transition rates $Q_t(\cdot,\cdot;\mathbfit{s})$
 for any input trajectory $\mathbfit{s}$, while time-dependent, are
 *piece-wise constant*. This implies that the integral in
-[@eq:log_traj_prob] can be evaluated analytically without
+[@eq-log_traj_prob] can be evaluated analytically without
 approximations. Similarly, for piece-wise constant transition rates, the
-inverse function of [@eq:inverse-transform-sampling] can be evaluated
+inverse function of [@eq-inverse-transform-sampling] can be evaluated
 directly such that we can sample exact trajectories from the driven jump
 process. As a result, when both input and output are described by a
 master equation, PWS is a completely exact Monte Carlo scheme to compute
@@ -667,7 +625,7 @@ which trajectories can be generated numerically. This includes
 continuous stochastic processes that are found as solutions to
 stochastic differential equations [@1992.Kloeden].
 
-## Integrating Out Internal Components  {#sec:integrating-out}
+## Integrating Out Internal Components  {#sec-integrating-out}
 
 So far the output trajectory $\mathbfit{x}$ has been considered to
 correspond to the trajectory of the system in the *full* state space
@@ -718,71 +676,68 @@ components. To compute the value of
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$, we must perform the
 marginalization integral
 
-::: {#eq:marginalization_integral}
+
 $$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] = \int\mathcal{D}[\mathbfit{x}^1] \cdots \int\mathcal{D}[\mathbfit{x}^{n-1}]\; \mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^n|\mathbfit{s}]\,.
-    \label{eq:marginalization_integral}$$
-:::
+    \label{eq-marginalization_integral}$$ {#eq-marginalization_integral}
 
 We can compute this integral using a Monte Carlo scheme as described
 below and use the resulting estimate for
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$ to compute the mutual
-information using our technique presented in [@sec:algorithm].
+information using our technique presented in [@sec-algorithm].
 
-The marginalization of [@eq:marginalization_integral] entails
+The marginalization of [@eq-marginalization_integral] entails
 integrating out degrees of freedom from a known joint probability
-distribution. In [@eq:marginal-naive] we solved the analogous problem of
+distribution. In [@eq-marginal-naive] we solved the analogous problem of
 obtaining the marginal probability $\mathcal{P}[\mathbfit{x}]$ by
 integrating out the input trajectories through the integral
 $\mathcal{P}[\mathbfit{x}]=\int d\mathbfit{s}\ \mathcal{P}[\mathbfit{s},\mathbfit{x}]=\int d\mathbfit{s}\ \mathcal{P}[\mathbfit{s}]\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$.
-As described in [@sec:algorithm], the integral from [@eq:marginal-naive]
+As described in [@sec-algorithm], the integral from [@eq-marginal-naive]
 can be computed via a Monte Carlo estimate by sampling many input
 trajectories from $\mathcal{P}[\mathbfit{s}]$ and taking the average of
 the corresponding conditional probabilities
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}_i]$. We will show that in the
 case where there is no feedback from the readout component back to the
 other components, a completely analogous Monte Carlo estimate can be
-derived for [@eq:marginalization_integral].
+derived for [@eq-marginalization_integral].
 
-More specifically, we can evaluate [@eq:marginalization_integral] via a
+More specifically, we can evaluate [@eq-marginalization_integral] via a
 direct Monte Carlo estimate under the condition that the stochastic
 dynamics of the other components $X^1,\ldots,X^{n-1}$ are not influenced
 by $X^n$ (i.e., no feedback from the readout). Using the identity
 
 $$\mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^n|\mathbfit{s}] = \mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1}|\mathbfit{s}]\ \mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]$$
 
-to rewrite the integrand in [@eq:marginalization_integral], we are able
+to rewrite the integrand in [@eq-marginalization_integral], we are able
 to represent the conditional probability
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$ as an average over the
 readout component's trajectory probability
 
-::: {#eq:marginalization_average}
+
 $$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] = 
     \left\langle \mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}] \right\rangle_{\mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1}|\mathbfit{s}]} \,.
-    \label{eq:marginalization_average}$$
-:::
+    \label{eq-marginalization_average}$$ {#eq-marginalization_average}
 
 Thus, assuming that we can evaluate the conditional probability of the
 readout given all the other components,
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]$,
 we arrive at the estimate
 
-::: {#eq:marginalization_mc}
+
 $$\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}] 
     \approx \frac{1}{M}\sum^M_{i=1} \mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]
-\label{eq:marginalization_mc}$$
-:::
+\label{eq-marginalization_mc}$$ {#eq-marginalization_mc}
 
 where the samples $\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i$ for
 $i=1,\ldots,M$ are drawn from
 $\mathcal{P}[\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1}|\mathbfit{s}]$.
 Notice that the derivation of this Monte Carlo estimate is fully
-analogous to the estimate in [@eq:marginal-naive], but instead of
+analogous to the estimate in [@eq-marginal-naive], but instead of
 integrating out the input trajectory $\mathbfit{s}$ we integrate out the
 component trajectories $\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1}$.
 
 To obtain
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]$
-in [@eq:marginalization_average; @eq:marginalization_mc], we note that,
+in [@eq-marginalization_average; @eq-marginalization_mc], we note that,
 in absence of feedback, we can describe the stochastic dynamics of the
 readout component $X^n$ as a jump process with time-dependent transition
 rates whose time-dependence arises from the trajectories of the other
@@ -793,16 +748,16 @@ input signal. Specifically, denoting
 $\mathbfit{u}=(\mathbfit{x}^1,\ldots,\mathbfit{x}^{n-1},\mathbfit{s})$
 as the joint trajectory representing the history of all upstream
 components as well as the input signal, we can, as explained in
-[@sec:mjp], write the time dependent transition rate matrix
+[@sec-mjp], write the time dependent transition rate matrix
 $Q_t(\cdot|\mathbfit{u})$ for the stochastic dynamics of $X^n$ and use
-[@eq:traj_prob] to compute
+[@eq-traj_prob] to compute
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{u}]=\mathcal{P}[\mathbfit{x}^n|\mathbfit{x}^1_i,\ldots,\mathbfit{x}^{n-1}_i,\mathbfit{s}]$.
-Using [@eq:marginalization_mc], this then allows us to compute
+Using [@eq-marginalization_mc], this then allows us to compute
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$.
 
 Finally, to compute the mutual information
 $\mathrm{I}(\mathcal{S};\mathcal{X}^n)$, e.g. using the estimate in
-[@eq:average-of-differences], we additionally need to evaluate the
+[@eq-average-of-differences], we additionally need to evaluate the
 marginal output probability $\mathcal{P}[\mathbfit{x}^n]$. This requires
 us to perform one additional integration over the space of input
 trajectories $\mathbfit{s}$:
@@ -831,17 +786,17 @@ intermediate components is analogous to that used for computing
 $\mathcal{P}[\mathbfit{x}]$ from
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$. In both cases, one needs to
 marginalize a distribution function by integrating out components.
-Indeed, the schemes presented here and in [@sec:algorithm] are bona fide
+Indeed, the schemes presented here and in [@sec-algorithm] are bona fide
 schemes to compute the mutual information between the input
 $\mathbfit{s}$ and either the trajectory of the output component
 $\mathbfit{x}^n$ or the full output $\mathbfit{x}$. However, when the
 trajectories are sufficiently long or the stochastic dynamics are
-sufficiently complex, then the free-energy schemes of [@ch:variants] may
+sufficiently complex, then the free-energy schemes of [@sec-variants] may
 be necessary to enhance the efficiency of computing the marginalized
 distribution, $\mathcal{P}[\mathbfit{x}]$ or
 $\mathcal{P}[\mathbfit{x}^n|\mathbfit{s}]$.
 
-## Dealing with Feedback {#sec:feedback}
+## Dealing with Feedback {#sec-feedback}
 
 In principle all physical information processing systems exhibit
 feedback. The physical interaction needed to measure the input signal
@@ -860,12 +815,12 @@ a system with feedback, and subsequently present a modified version of
 PWS that can be used to compute the trajectory mutual information for
 these systems.
 
-### Computing the Mutual Information with Feedback between Input and Output {#sec:mi-feedback}
+### Computing the Mutual Information with Feedback between Input and Output {#sec-mi-feedback}
 
 PWS requires the computation of the trajectory likelihood
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$, a quantity that is not readily
 available for systems with feedback. Indeed, as already mentioned in
-[@sec:likelihood], for a given input trajectory $\mathbfit{s}$, the
+[@sec-likelihood], for a given input trajectory $\mathbfit{s}$, the
 output dynamics are no longer described by a Markov process in a system
 with feedback, and therefore we cannot find an expression for
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ based on the master equation.
@@ -894,12 +849,11 @@ $$\mathrm{I}(\mathcal{S}, \mathcal{X}) = \int\mathcal{D}[\mathbfit{s}]\int\mathc
 
 Thus, the PWS scheme with feedback consists of the computation of
 
-::: {#eq:mi-with-feedback}
+
 $$\mathrm{I}(\mathcal{S}, \mathcal{X}) = \left\langle
     \ln\frac{\mathcal{P}[\mathbfit{s}, \mathbfit{x}]}{\mathcal{P}[\mathbfit{s}]\,\mathcal{P}[\mathbfit{x}]}
     \right\rangle_{\mathcal{P}[\mathbfit{s},\mathbfit{x}]}
-    \label{eq:mi-with-feedback}$$
-:::
+    \label{eq-mi-with-feedback}$$ {#eq-mi-with-feedback}
 
 which we want to estimate via a Monte Carlo average using samples from
 $\mathcal{P}[\mathbfit{s}, \mathbfit{x}]$. We see that while we don't
@@ -916,35 +870,33 @@ Carlo estimate.
 Specifically, for PWS with feedback, we need to compute *two*
 marginalization integrals per Monte Carlo sample:
 
-::: {#eq:marg1}
+
 $$\mathcal{P}[\mathbfit{s}] = \int\mathcal{D}[\mathbfit{x}]\ \mathcal{P}[\mathbfit{s}, \mathbfit{x}]\,,
-    \label{eq:marg1}$$
-:::
+    \label{eq-marg1}$$ {#eq-marg1}
 
 and
 
-::: {#eq:marg2}
+
 $$\mathcal{P}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}, \mathbfit{x}] \,.
-    \label{eq:marg2}$$
-:::
+    \label{eq-marg2}$$ {#eq-marg2}
 
 However, these marginalization integrals cannot be directly computed
 with the techniques described so far. Therefore, in the following
 subsection, we discuss how to compute marginalization integrals for
 systems with feedback.
 
-Additionally, as discussed in [@sec:integrating-out], we may also need
+Additionally, as discussed in [@sec-integrating-out], we may also need
 to integrate out internal components of the master equation even when
 the output feeds back onto these internal components. The technique
 discussed below can also be used in this case as a way to compute the
-marginalization integral in [@eq:marginalization_integral].
+marginalization integral in [@eq-marginalization_integral].
 
-### Marginalization Integrals for Systems with Feedback {#sec:marginalization-feedback}
+### Marginalization Integrals for Systems with Feedback {#sec-marginalization-feedback}
 
 Computing marginalization integrals in systems with feedback is harder
 than it is in the case without feedback. Specifically, we will show that
 it is not obvious how apply the Monte Carlo estimate from
-[@eq:marginal-naive] to systems with feedback. Nevertheless, if the
+[@eq-marginal-naive] to systems with feedback. Nevertheless, if the
 system with feedback can be decomposed into a non-interacting part and
 an interacting part that includes the feedback, it is often still
 possible to compute marginalization integrals. Below, we sketch the
@@ -953,10 +905,9 @@ for systems with feedback using such a decomposition.
 
 For concreteness, we discuss how to compute
 
-::: {#eq:feedback-marginalization-integral}
+
 $$\mathcal{P}[\mathbfit{x}]=\int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}]
-    \label{eq:feedback-marginalization-integral}$$
-:::
+    \label{eq-feedback-marginalization-integral}$$ {#eq-feedback-marginalization-integral}
 
 as the prototype for a marginalization integral we want to compute.
 Unlike before, we now assume that $\mathbfit{x}$ feeds back onto
@@ -995,10 +946,9 @@ $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]$. To construct a suitable
 reference potential, we can use a decomposition of the full potential
 into three parts
 
-::: {#eq:hamiltonian-decomposition}
+
 $$\mathcal{U}[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_S[\mathbfit{s}] + \mathcal{U}_X[\mathbfit{x}] + \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]
-    \label{eq:hamiltonian-decomposition}$$
-:::
+    \label{eq-hamiltonian-decomposition}$$ {#eq-hamiltonian-decomposition}
 
 where $\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]$ describes the
 features of the system that induce interaction, or correlation, between
@@ -1012,14 +962,13 @@ $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_S[\mathbfit{s}] + \math
 To be able to do so, we require that the partition function
 (normalization constant)
 
-::: {#eq:z0}
+
 $$\mathcal{Z}_0[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ e^{-\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]}
-    \label{eq:z0}$$
-:::
+    \label{eq-z0}$$ {#eq-z0}
 
 is known. In other words, we need to choose the decomposition in
-[@eq:hamiltonian-decomposition] such that the partition function
-[@eq:z0] is known either analytically or numerically. If such a
+[@eq-hamiltonian-decomposition] such that the partition function
+[@eq-z0] is known either analytically or numerically. If such a
 decomposition is found, we can compute the marginal probability
 $\mathcal{P}[\mathbfit{x}]$ from the difference in free energy
 $\Delta\mathcal{F}[\mathbfit{x}]$ between $\mathcal{U}$ and
@@ -1031,10 +980,10 @@ where $\mathcal{F}_0 = -\ln\mathcal{Z}_0[\mathbfit{x}]$ is known.
 Because we have a known expression for
 $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]$, the free-energy difference
 $\Delta\mathcal{F}[\mathbfit{x}]$ can now be computed using any of the
-techniques described in [@sec:marginalization].
+techniques described in [@sec-marginalization].
 
 As an example for finding a decomposition like
-[@eq:hamiltonian-decomposition], let us consider the case where the
+[@eq-hamiltonian-decomposition], let us consider the case where the
 joint system of input and output is described by a single master
 equation, i.e. we have a master equation with two components, $S$ which
 represents the input, and $X$ which represents the output. In such a
@@ -1069,7 +1018,7 @@ system, which must be computed using a marginalization integral. Since
 in the non-interacting version both $S$ and $X$ obey independent
 dynamics which are characterized by individual master equations, both
 $\mathcal{P}_0[\mathbfit{s}]$ and $\mathcal{P}_0[\mathbfit{x}]$ can be
-individually computed using [@eq:traj-prob-master-eq]. Thus, in this
+individually computed using [@eq-traj-prob-master-eq]. Thus, in this
 case, the non-interacting potential is
 $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}] = -\ln\mathcal{P}_0[\mathbfit{s}]-\ln\mathcal{P}_0[\mathbfit{x}]$
 and, since the probability densities $\mathcal{P}_0[\mathbfit{s}]$ and
@@ -1078,14 +1027,14 @@ partition function is $\mathcal{Z}_0=1$. Hence, for this reaction
 system, we can straightforwardly define a non-interacting version that
 can be used to obtain the reference potential
 $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]$. Using the techniques
-described in [@sec:marginalization], we can then compute the free-energy
+described in [@sec-marginalization], we can then compute the free-energy
 difference between $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]$ and
 $\mathcal{U}[\mathbfit{s}, \mathbfit{x}]=-\ln\mathcal{P}[\mathbfit{s}, \mathbfit{x}]$,
 where the latter potential describes the dynamics of the fully
 interacting system. Specifically, we can compute the marginal
 probabilities $\mathcal{P}[\mathbfit{s}]$, $\mathcal{P}[\mathbfit{x}]$
 pertaining to the interacting system which are required for the mutual
-information estimate in [@eq:mi-with-feedback].
+information estimate in [@eq-mi-with-feedback].
 
 In summary, for systems with feedback, we can compute marginalization
 integrals by specifying a reference potential
@@ -1098,7 +1047,7 @@ the optimal reference potential
 $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]$ is likely to be
 system-specific. Still, if a suitable expression for
 $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]$ can be found, we can make use
-of the techniques developed in [@sec:marginalization] to compute
+of the techniques developed in [@sec-marginalization] to compute
 marginal probability $\mathcal{P}[\mathbfit{x}]$.
 
 ## Discussion
@@ -1120,7 +1069,7 @@ K-nearest-neighbors estimators [@2002.Kaiser; @2004.Kraskov],
 decoding-based information estimates [@2008.Gao], or schemes that
 compute the mutual information from the data within the Gaussian
 framework [@2021.Mattingly]. PWS requires a (generative) model based on
-a master equation or Langevin equation. Yet, in [@ch:ml-pws], we will
+a master equation or Langevin equation. Yet, in [@sec-ml-pws], we will
 show how PWS can be combined with machine learning to obtain the rate
 directly from time-series data.
 

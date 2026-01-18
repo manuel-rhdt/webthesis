@@ -42,7 +42,7 @@ from output to input. In this thesis, we present three variants of PWS,
 which all compute the conditional probability in the same way but differ
 in the way the marginal output probability is obtained.
 
-In **[@ch:dpws]**, we present Direct PWS, the simplest variant of PWS
+In **[@sec-dpws]**, we present Direct PWS, the simplest variant of PWS
 which computes the marginal output probability as a brute-force average
 over the conditional trajectory probabilities. While this scheme is
 feasible for simple systems, the direct Monte Carlo averaging procedure
@@ -53,7 +53,7 @@ Our second and third variants of PWS are based on the realization that
 computing the marginal trajectory probability for a stochastic model is
 equivalent to computing the partition function in statistical physics.
 These schemes leverage techniques for computing free energies from
-statistical physics. In **[@ch:variants]**, we first introduce
+statistical physics. In **[@sec-variants]**, we first introduce
 Rosenbluth-Rosenbluth PWS (RR-PWS) which exploits the analogy between
 signal trajectory sampling and polymer sampling, and is based on
 efficient techniques for computing the (excess) chemical potential of a
@@ -67,7 +67,7 @@ of PWS.
 To demonstrate the power of PWS and to gain new insights about the
 accuracy of biochemical signaling we apply PWS to the bacterial
 chemotaxis system, a complex biological information-processing system.
-In **[@ch:chemotaxis]**, we build a mechanistic model of chemotaxis
+In **[@sec-chemotaxis]**, we build a mechanistic model of chemotaxis
 based on previous literature and use PWS with this model to compute the
 mutual information rate of a bacterium in a shallow gradient. By
 comparing our model against experiments performed by @2021.Mattingly, we
@@ -86,7 +86,7 @@ additive Gaussian noise which are often violated in inherently nonlinear
 physical or biological systems. To assess the accuracy of the Gaussian
 approximation when applied to nonlinear systems we require an exact
 method, such as PWS, to provide an accurate benchmark for the trajectory
-mutual information. In **[@ch:lna_vs_pws]** we use PWS to systematically
+mutual information. In **[@sec-lna_vs_pws]** we use PWS to systematically
 assess the accuracy of the Gaussian approximation through two case
 studies: first, a discrete linear system which has near-Gaussian
 statistics but leads to a surprisingly large error in the Gaussian
@@ -98,7 +98,7 @@ methods like PWS become essential.
 
 While PWS does not suffer from the limitations of the Gaussian
 approximation, it requires a stochastic model of the system of interest,
-which is often unavailable. In **[@ch:ml-pws]** we leverage recent
+which is often unavailable. In **[@sec-ml-pws]** we leverage recent
 advances in machine learning to learn a data-driven stochastic model
 directly from experimental time-series data and use PWS with the
 resulting model to compute the trajectory mutual information. This

@@ -71,7 +71,10 @@ def main():
         def replace_figure(match: re.Match):
             soup = BeautifulSoup(match.group(0), "html.parser")
             identifier = soup.figure.get('id')
-            caption = soup.figcaption.decode_contents()
+            caption = soup.figcaption
+            for mathml in caption.find_all('math'):
+                mathml.replace_with(f"${mathml.annotation.string}$")
+            caption = caption.decode_contents().replace("\n", " ")
             img_src = "figures/" + Path(soup.img['src']).name
 
             md = f"![{caption}]({img_src})"
@@ -84,7 +87,7 @@ def main():
         )
 
         # Save each file at ./ directory
-        output_file = Path(".") / md_file.name
+        output_file = Path("processed") / md_file.name
         with open(output_file, "w", encoding="utf-8") as f:
             f.write(new_content)
 

@@ -6,7 +6,7 @@ link-citations: true
 reference-section-title: References
 ---
 
-# More Efficient Variants of PWS {#ch:variants}
+# More Efficient Variants of PWS {#sec-variants}
 
 > In the previous chapter, we introduced Path Weight Sampling (PWS), a
 > computational approach capable of providing exact information rate
@@ -53,29 +53,29 @@ to be computationally infeasible. To address this issue, we describe two
 improved variants of PWS in this section, both based on free-energy
 estimators from statistical physics.
 
-Specifically, in [@sec:smc] we present *Rosenbluth-Rosenbluth PWS*
+Specifically, in [@sec-smc] we present *Rosenbluth-Rosenbluth PWS*
 (RR-PWS) which exploits the observation that the computation of
 $\mathcal{P}[\mathbfit{x}]$ is analogous to the calculation of the
 (excess) chemical potential of a polymer, for which efficient methods
 have been developed [@1990.Siepmann; @1997.Grassberger; @2002.Frenkel].
-In [@sec:thermodynamic-integration], we present *Thermodynamic
+In [@sec-thermodynamic-integration], we present *Thermodynamic
 Integration PWS* (TI-PWS) which is based on the classic free energy
 estimation technique of thermodynamic integration
 [@1984.Frenkel; @1998.Gelman; @2001.Neal] in conjunction with a
 trajectory space MCMC sampler using ideas from transition path sampling
 [@2002.Bolhuis].
 
-In [@sec:pws_variants_benchmark] we apply PWS to a well-known model
+In [@sec-pws_variants_benchmark] we apply PWS to a well-known model
 system. It consists a simple pair of coupled birth-death processes which
 allows us to test the efficiency of the three PWS variants, as well as
 to compare the PWS results with analytical results from the Gaussian
 approximation [@2009.Tostevin] and the technique by @2019.Duso.
 
-## Marginalizing in Trajectory Space {#sec:marginalization}
+## Marginalizing in Trajectory Space {#sec-marginalization}
 
 PWS evaluates the mutual information $I(\mathcal{S},\mathcal{X})$ from
 the marginal entropy $H(\mathcal{X})$ and the conditional entropy
-$H(\mathcal{X}|\mathcal{S})$, see [@eq:mutual_information_entropies]. Of
+$H(\mathcal{X}|\mathcal{S})$, see [@eq-mutual_information_entropies]. Of
 these two entropies, the conditional one can be efficiently computed
 using the scheme described in the previous chapter, and as used in DPWS.
 However, obtaining the marginal entropy
@@ -94,12 +94,11 @@ For instance, we obtain the marginal probability distribution
 $\mathcal{P}[\mathbfit{x}]$ from
 $\mathcal{P}[\mathbfit{s},\mathbfit{x}]$ by computing the integral
 
-::: {#eq:generic-marginalization}
-$$\mathcal{P}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\mathcal{P}[\mathbfit{x}|\mathbfit{s}]\,.
-    \label{eq:generic-marginalization}$$
-:::
 
-In DPWS, we use [@eq:marginal-naive] to compute
+$$\mathcal{P}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s},\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\ \mathcal{P}[\mathbfit{s}]\mathcal{P}[\mathbfit{x}|\mathbfit{s}]\,.
+    \label{eq-generic-marginalization}$$ {#eq-generic-marginalization}
+
+In DPWS, we use [@eq-marginal-naive] to compute
 $\mathcal{P}[\mathbfit{x}]$ which involves generating independent input
 trajectories from $\mathcal{P}[\mathbfit{s}]$. However, this this is not
 the optimal Monte Carlo technique to perform the marginalization. The
@@ -124,7 +123,7 @@ physics for the efficient computation of free energies.
 
 \centering
 
-::: {#tab:translation}
+::: {#tbl-translation}
    $\mathcal{P}[\mathbfit{s},\mathbfit{x}]$                     $e^{-\mathcal{U}[\mathbfit{s}, \mathbfit{x}]}$
   ------------------------------------------ ------------------------------------------------------------------------------------
          $\mathcal{P}[\mathbfit{s}]$               $\frac{1}{\mathcal{Z}_0[\mathbfit{x}]} e^{-\mathcal{U}_0[\mathbfit{s}]}$
@@ -135,31 +134,29 @@ physics for the efficient computation of free energies.
 
   : Translation to the notation of statistical physics. The definitions
   of $\mathcal{U}$ and $\mathcal{U}_0$ that are used here are given in
-  [@eq:h0; @eq:h1].
+  [@eq-h0; @eq-h1].
 :::
 
 To understand how these ideas can be applied to compute the marginal
 probability $\mathcal{P}[\mathbfit{x}]$, it is helpful to rephrase the
-marginalization integral in [@eq:generic-marginalization] in the
+marginalization integral in [@eq-generic-marginalization] in the
 language of statistical physics. In this language,
 $\mathcal{P}[\mathbfit{x}]$ corresponds to the normalization constant,
 or partition function, of the Boltzmann distribution for the
 potential[^3]
 
-::: {#eq:h1}
-$$\label{eq:h1} \mathcal{U}[\mathbfit{s},\mathbfit{x}] = -\ln\mathcal{P}[\mathbfit{s},\mathbfit{x}] \,.$$
-:::
 
-In [@eq:h1], $\mathbfit{s}$ is interpreted as a variable in the
+$$\label{eq-h1} \mathcal{U}[\mathbfit{s},\mathbfit{x}] = -\ln\mathcal{P}[\mathbfit{s},\mathbfit{x}] \,.$$ {#eq-h1}
+
+In [@eq-h1], $\mathbfit{s}$ is interpreted as a variable in the
 configuration space, while $\mathbfit{x}$ acts as an auxiliary variable,
 i.e., a parameter. Note that both $\mathbfit{s}$ and $\mathbfit{x}$
 still represent trajectories. For this potential, the partition function
 is given by
 
-::: {#eq:partition-function}
+
 $$\mathcal{Z}[\mathbfit{x}] = \int\mathcal{D}[\mathbfit{s}]\; e^{-\mathcal{U}[\mathbfit{s},\mathbfit{x}]} \,.
-    \label{eq:partition-function}$$
-:::
+    \label{eq-partition-function}$$ {#eq-partition-function}
 
 The integral only runs over the configuration space, i.e. we integrate
 only with respect to $\mathbfit{s}$. By inserting the expression for
@@ -168,19 +165,17 @@ function is exactly equal to the marginal probability of the output,
 i.e. $\mathcal{Z}[\mathbfit{x}] = \mathcal{P}[\mathbfit{x}]$. The free
 energy is given by
 
-::: {#eq:free-energy}
+
 $$\mathcal{F}[\mathbfit{x}] = -\ln \mathcal{Z}[\mathbfit{x}] = -\ln \mathcal{P}[\mathbfit{x}]\,.
-    \label{eq:free-energy}$$
-:::
+    \label{eq-free-energy}$$ {#eq-free-energy}
 
 In statistical physics it is well known that the free energy cannot be
 directly measured from a simulation. Instead, one estimates the
 free-energy difference
 
-::: {#eq:free-energy-difference}
+
 $$\Delta\mathcal{F}[\mathbfit{x}] = \mathcal{F}[\mathbfit{x}] - \mathcal{F}_0[\mathbfit{x}] = -\ln \frac{\mathcal{Z}[\mathbfit{x}]}{\mathcal{Z}_0[\mathbfit{x}]}
-    \label{eq:free-energy-difference}$$
-:::
+    \label{eq-free-energy-difference}$$ {#eq-free-energy-difference}
 
 between the system and a reference system with known free energy
 $\mathcal{F}_0[\mathbfit{x}]$. The reference system can be freely chosen
@@ -188,9 +183,8 @@ and is usually defined using a Boltzmann distribution for a convenient
 reference potential $\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]$. In our
 case, a natural choice of reference potential is
 
-::: {#eq:h0}
-$$\label{eq:h0} \mathcal{U}_0[\mathbfit{s},\mathbfit{x}]=-\ln\mathcal{P}[\mathbfit{s}]$$
-:::
+
+$$\label{eq-h0} \mathcal{U}_0[\mathbfit{s},\mathbfit{x}]=-\ln\mathcal{P}[\mathbfit{s}]$$ {#eq-h0}
 
 with the corresponding partition function being simply
 
@@ -200,10 +194,9 @@ The reference free energy therefore is zero
 ($\mathcal{F}_0[\mathbfit{x}]=-\ln\mathcal{Z}_0[\mathbfit{x}]=0$).
 Hence, the free-energy difference is
 
-::: {#eq:free-energy-difference-equals-lnp}
+
 $$\Delta\mathcal{F}[\mathbfit{x}]= \mathcal{F}[\mathbfit{x}] = -\ln\mathcal{P}[\mathbfit{x}]\,.
-    \label{eq:free-energy-difference-equals-lnp}$$
-:::
+    \label{eq-free-energy-difference-equals-lnp}$$ {#eq-free-energy-difference-equals-lnp}
 
 Note that in our case the reference potential
 $\mathcal{U}_0[\mathbfit{s},\mathbfit{x}]=-\ln\mathcal{P}[\mathbfit{s}]$
@@ -217,10 +210,9 @@ What is the interaction between the output $\mathbfit{x}$ and the input
 trajectory ensemble? We define the interaction potential
 $\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]$ through
 
-::: {#eq:interaction-potential}
+
 $$\mathcal{U}[\mathbfit{s}, \mathbfit{x}] = \mathcal{U}_0[\mathbfit{s}] + \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}] \,.
-    \label{eq:interaction-potential}$$
-:::
+    \label{eq-interaction-potential}$$ {#eq-interaction-potential}
 
 The interaction potential makes it apparent that the distribution of
 $\mathbfit{s}$ corresponding to the potential
@@ -229,25 +221,24 @@ with respect to the distribution corresponding to the reference
 potential $\mathcal{U}_0[\mathbfit{s}]$. By inserting the expressions
 for $\mathcal{U}_0[\mathbfit{s}]$ and
 $\mathcal{U}[\mathbfit{s}, \mathbfit{x}]$ into
-[@eq:interaction-potential] we see that
+[@eq-interaction-potential] we see that
 
-::: {#eq:boltzmann-weight}
+
 $$\begin{aligned}
     \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}] &= -\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}] \\
     &= -\ln\mathrm{P}(x_0|s_0)-\int^T_0 dt\ \mathcal{L}_t[\mathbfit{s}, \mathbfit{x}]
 \end{aligned}
-\label{eq:boltzmann-weight}$$
-:::
+\label{eq-boltzmann-weight}$$ {#eq-boltzmann-weight}
 
 where $\mathcal{L}_t[\mathbfit{s}, \mathbfit{x}]$ is given by
-[@eq:log_traj_prob] and can be directly computed from the master
+[@eq-log_traj_prob] and can be directly computed from the master
 equation. This expression illustrates that the interaction of the output
 trajectory $\mathbfit{x}$ with the ensemble of input trajectories is
 characterized by the trajectory likelihood
 $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$.
 
 To summarize, in this section we have introduced notation (see
-[@tab:translation]) showing that computing a marginalization integral is
+[@tbl-translation]) showing that computing a marginalization integral is
 equivalent to the computation of a free-energy difference. This picture
 allows us to distinguish between two ensembles for $\mathbfit{s}$, the
 *non-interacting* ensemble distributed according to
@@ -255,57 +246,32 @@ $\exp(-\mathcal{U}_0[\mathbfit{s}])=\mathcal{P}[\mathbfit{s}]$, and the
 *interacting* ensemble distributed according to
 $\exp(-\mathcal{U}[\mathbfit{s},\mathbfit{x}])\propto\mathcal{P}[\mathbfit{s}|\mathbfit{x}]$.
 With these notions we can rewrite the brute force estimate in Direct PWS
-([@ch:dpws]) as
+([@sec-dpws]) as
 
-::: {#eq:boltzmann-average}
+
 $$\begin{aligned}
      \mathcal{P}[\mathbfit{x}] = \frac{\mathcal{Z}[\mathbfit{x}]}{\mathcal{Z}_0[\mathbfit{x}]} &= \langle e^{-\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]} \rangle_0 
-     \label{eq:boltzmann-average}
-\end{aligned}$$
-:::
+     \label{eq-boltzmann-average}
+\end{aligned}$$ {#eq-boltzmann-average}
 
 where the notation $\langle\cdots\rangle_0$ refers to an average with
 respect to the non-interacting ensemble. By inserting the expressions
 for $\mathcal{U}_0$ and $\Delta\mathcal{U}$, it is easy to verify that
-this estimate is equivalent to [@eq:marginal-naive].
+this estimate is equivalent to [@eq-marginal-naive].
 
 The more advanced variants of PWS introduced below leverage the analogy
 with statistical physics to improve the efficiency of marginalization.
 RR-PWS draws ideas from soft condensed matter simulations by recognizing
-that [@eq:free-energy-difference] has the same form as the excess
+that [@eq-free-energy-difference] has the same form as the excess
 chemical potential of a polymer for which efficient computation
 techniques have been developed [@1990.Siepmann; @1994.Mueller].
 Meanwhile, TI-PWS is inspired by Transition Path Sampling (TPS) for
 sampling rare trajectories [@2002.Bolhuis] and uses thermodynamic
 integration for free-energy estimation.
 
-## RR-PWS {#sec:smc}
+## RR-PWS {#sec-smc}
 
-<figure id="fig:smc">
-<embed src="FigureSMC.pdf" />
-<figcaption>Illustration of one step of the bootstrap particle filter in
-RR-PWS. We start with a set of trajectories
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>𝒔</mi><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>i</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><mi>k</mi></msubsup><annotation encoding="application/x-tex">\mathbfit{s}^k_{[0,i-1]}</annotation></semantics></math>
-with time span
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><msub><mi>τ</mi><mn>0</mn></msub><mo>,</mo><msub><mi>τ</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[\tau_0,\tau_{i-1}]</annotation></semantics></math>
-(left panel). In the next step we propagate these trajectories forward
-in time to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\tau_i</annotation></semantics></math>,
-according to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s}]</annotation></semantics></math>
-(central panel). Then we resample the trajectories according to the
-Boltzmann weights of their most recent segments, effectively eliminating
-or duplicating individual segments. An example outcome of the resampling
-step is shown in the right panel where the bottom trajectory was
-duplicated and one of the top trajectories was eliminated. These steps
-are repeated for each segment, until a set of input trajectories of the
-desired length is generated. The intermediate resampling steps bias the
-trajectory distribution from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s}]</annotation></semantics></math>
-towards
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo stretchy="false" form="prefix">|</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s}|\mathbfit{x}]</annotation></semantics></math>.
-</figcaption>
-</figure>
+![Illustration of one step of the bootstrap particle filter in RR-PWS. We start with a set of trajectories $\mathbfit{s}^k_{[0,i-1]}$ with time span $[\tau_0,\tau_{i-1}]$ (left panel). In the next step we propagate these trajectories forward in time to $\tau_i$, according to $\mathcal{P}[\mathbfit{s}]$ (central panel). Then we resample the trajectories according to the Boltzmann weights of their most recent segments, effectively eliminating or duplicating individual segments. An example outcome of the resampling step is shown in the right panel where the bottom trajectory was duplicated and one of the top trajectories was eliminated. These steps are repeated for each segment, until a set of input trajectories of the desired length is generated. The intermediate resampling steps bias the trajectory distribution from $\mathcal{P}[\mathbfit{s}]$ towards $\mathcal{P}[\mathbfit{s}|\mathbfit{x}]$. ](figures/FigureSMC.svg){#fig-smc}
 
 In Rosenbluth-Rosenbluth PWS we compute the free-energy difference
 $\Delta\mathcal{F}$ between the ideal system $\mathcal{U}_0$ and
@@ -369,13 +335,13 @@ trajectories segment by segment:
         of each new segment. This Boltzmann weight of a segment from
         $\tau_{i-1}$ to $\tau_i$ can be expressed as $$U^k_i =
                 -\delta_{1i} \ln\mathrm{P}(x_0|s_0) -\int^{\tau_i}_{\tau_{i-1}} dt\ \mathcal{L}_t[\mathbfit{s}^k_{[i-1,i]}, \mathbfit{x}_{[i-1,i]}]\,,
-                \label{eq:weight_segment}$$ see [@eq:boltzmann-weight],
+                \label{eq-weight_segment}$$ see [@eq-boltzmann-weight],
         and is therefore straightforward to compute from the master
         equation.
 
     3.  Sample $M$ times from the distribution
         $$p^\text{select}_i(k) = \frac{e^{-U^k_i}}{w_i}
-                \label{eq:index-prob}$$ where the Rosenbluth weight
+                \label{eq-index-prob}$$ where the Rosenbluth weight
         $w_i$ is defined as $$w_i = \sum^M_{k=1} e^{-U^k_i}\,.$$ This
         sampling procedure yields $M$ randomly drawn indices
         $\ell^1_i, \ldots, \ell^M_i$. Each $\ell^k_i$ is an index that
@@ -391,25 +357,23 @@ trajectories segment by segment:
 
 The normalized Rosenbluth factor of the final ensemble is then given by
 
-::: {#eq:normalized-rosenbluth-factor}
-$$\mathcal{W} = \prod^n_{i=1} \frac{w_i}{M} \,.
-    \label{eq:normalized-rosenbluth-factor}$$
-:::
 
-As shown in [@sec:smc-correctness], we can derive an *unbiased* estimate
+$$\mathcal{W} = \prod^n_{i=1} \frac{w_i}{M} \,.
+    \label{eq-normalized-rosenbluth-factor}$$ {#eq-normalized-rosenbluth-factor}
+
+As shown in [@sec-smc-correctness], we can derive an *unbiased* estimate
 for the desired ratio
 $\mathcal{Z}[\mathbfit{x}]/\mathcal{Z}_0[\mathbfit{x}] = \mathcal{P}[\mathbfit{x}]$
 based on the Rosenbluth factor:
 
-::: {#eq:smc-marginal}
+
 $$\hat{\mathcal{P}}[\mathbfit{x}] = \mathrm{P}(x_0)\ \mathcal{W}
-    \label{eq:smc-marginal}$$
-:::
+    \label{eq-smc-marginal}$$ {#eq-smc-marginal}
 
 with $\mathrm{P}(x_0)$ being the probability of the initial output
 $x_0$. The particle filter can therefore be integrated into the DPWS
 algorithm to compute the marginal density $\mathcal{P}[\mathbfit{x}]$,
-substituting the brute-force estimate given in [@eq:marginal-naive]. We
+substituting the brute-force estimate given in [@eq-marginal-naive]. We
 call the resulting algorithm to compute the mutual information *RR-PWS*.
 
 ### Intuitive Justification of the Algorithm
@@ -426,7 +390,7 @@ cloning the corresponding trajectory. Concomitantly, the indices
 $\ell^1_i, \ldots, \ell^M_i$ may not include every original index
 $1,\ldots,M$, therefore eliminating some trajectories. Since indices of
 trajectories with high Boltzmann weight are more likely to be sampled
-from [@eq:index-prob], this scheme biases the sampling distribution
+from [@eq-index-prob], this scheme biases the sampling distribution
 towards trajectories with large Boltzmann weight, ensuring that we are
 only spending computational effort on propagating trajectories which
 contribute significantly to the marginalization integral.
@@ -442,12 +406,12 @@ computing averages using the sampled trajectories. Importantly for our
 case, the Rosenbluth factor can also be used to estimate the marginal
 probability $\mathcal{P}[\mathbfit{x}]$. For illustration of the
 algorithm, one iteration of the particle filter is presented
-schematically in [@fig:smc].
+schematically in [@fig-smc].
 
-### Detailed Justification {#sec:smc-correctness}
+### Detailed Justification {#sec-smc-correctness}
 
 This subsection justifies the marginal probability estimate shown in
-[@eq:smc-marginal] in greater detail, and may be skipped on first
+[@eq-smc-marginal] in greater detail, and may be skipped on first
 reading. We show that the bootstrap particle filter provides a
 consistent estimator for the marginal probability
 $\mathcal{P}[\mathbfit{x}]$, or, equivalently, the ratio of partition
@@ -480,10 +444,9 @@ $\hat{h}[\mathbfit{s}]=h[\mathbfit{s}]/\int\mathcal{D}[\mathbfit{s}]h[\mathbfit{
 To generate samples from $\hat{h}[\mathbfit{s}]$, we assign each of the
 existing samples from $f[\mathbfit{s}]$ a normalized weight
 
-::: {#eq:weights-appendix}
+
 $$W^k = \frac{g[\mathbfit{s}^k]}{\sum^M_{j=1}g[\mathbfit{s}^j]}\,.
-    \label{eq:weights-appendix}$$
-:::
+    \label{eq-weights-appendix}$$ {#eq-weights-appendix}
 
 Then, by sampling from the discrete set
 $\{\mathbfit{s}^1,\ldots,\mathbfit{s}^M\}$ according to the assigned
@@ -491,7 +454,7 @@ weights $W^1,\ldots,W^M$, we select samples that are approximately
 distributed according to $\hat{h}[\mathbfit{s}]$. Indeed, for
 $M\rightarrow\infty$ the distribution of the resulting samples
 approaches the density $\hat{h}[\mathbfit{s}]$ [@1992.Smith]. We use
-resampling at each iteration of the algorithm of [@sec:smc] to regularly
+resampling at each iteration of the algorithm of [@sec-smc] to regularly
 prune those trajectories with low overall contribution to the
 marginalization integral.
 
@@ -536,13 +499,12 @@ according to the target distribution. By choosing
 $g[\mathbfit{s}_{[0,i]}] = \exp\left\{ -\Delta\mathcal{U}[\mathbfit{s}_{[i-1,i]}, \mathbfit{x}_{[i-1,i]}] \right\} = \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}_{[0,i]}]$,
 we generate normalized weights
 
-::: {#eq:normalized-weights}
-$$W^k_i = \frac{\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^k_{[0,i]}]}{\sum^M_{j=1} \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^j_{[0,i]}]}\,,
-    \label{eq:normalized-weights}$$
-:::
 
-cf. [@eq:weights-appendix]. Note that this is the same choice of
-weighting function as in [@sec:smc], [@eq:index-prob]. By comparison
+$$W^k_i = \frac{\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^k_{[0,i]}]}{\sum^M_{j=1} \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}^j_{[0,i]}]}\,,
+    \label{eq-normalized-weights}$$ {#eq-normalized-weights}
+
+cf. [@eq-weights-appendix]. Note that this is the same choice of
+weighting function as in [@sec-smc], [@eq-index-prob]. By comparison
 with the notation used there, we see that the Boltzmann factors $U^k_i$
 and Rosenbluth weights $w_i$ were defined such that we can express the
 normalized weight equivalently as
@@ -550,16 +512,15 @@ normalized weight equivalently as
 $$W^k_i = \frac{e^{-U^k_i}}{w_i} \,.$$
 
 Why is this choice of weighting function the correct one? First, observe
-that resampling with the normalized weights of [@eq:normalized-weights]
+that resampling with the normalized weights of [@eq-normalized-weights]
 produces samples approximately distributed according to
 
-::: {#eq:h-unnormalized}
+
 $$\begin{aligned}
     h[\mathbfit{s}_{[0,i]}] &= f[\mathbfit{s}_{[0,i]}] g[\mathbfit{s}_{[0,i]}] \\
     &= \mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]\  \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]},\mathbfit{s}_{[0,i]}]\,.
 \end{aligned}
-\label{eq:h-unnormalized}$$
-:::
+\label{eq-h-unnormalized}$$ {#eq-h-unnormalized}
 
 What remains to be shown is that this density $h[\mathbfit{s}_{[0,i]}]$,
 when normalized, becomes the desired target distribution
@@ -573,7 +534,7 @@ $$g[\mathbfit{s}_{[0,i]}]=\frac{ \mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{
 
 Notice that the first term of the numerator can be written as
 $\mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i]}]$. After
-inserting this result into [@eq:h-unnormalized], we obtain
+inserting this result into [@eq-h-unnormalized], we obtain
 
 $$h[\mathbfit{s}_{[0,i]}] = \mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i]}]\ \mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}]\,.$$
 
@@ -614,12 +575,11 @@ Hence, we find that the probability
 $\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}]$ can be
 expressed as the average
 
-::: {#eq:marginal-segment-average}
+
 $$\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}] = \left\langle
     g[\mathbfit{s}_{[0,i]}]
     \right\rangle_{\mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]}\,.
-    \label{eq:marginal-segment-average}$$
-:::
+    \label{eq-marginal-segment-average}$$ {#eq-marginal-segment-average}
 
 In principle, this average can be computed using a Monte Carlo scheme,
 using trajectories generated from
@@ -628,9 +588,9 @@ at each iteration of the particle filter, we *do* dispose of a set of
 trajectories $\mathbfit{s}^1_{[0,i]},\ldots,\mathbfit{s}^M_{[0,i]}$
 which are approximately distributed according to
 $\mathcal{P}[\mathbfit{s}_{[0,i]}|\mathbfit{x}_{[0,i-1]}]$ above.
-Therefore, we can compute the average [@eq:marginal-segment-average]
+Therefore, we can compute the average [@eq-marginal-segment-average]
 directly from the trajectories that are present for each iteration of
-the particle filter. With the notation from [@sec:smc], using
+the particle filter. With the notation from [@sec-smc], using
 $g[\mathbfit{s}^k_{[0,i]}]=\exp(-U^k_i)$, we thus obtain the estimate
 
 $$\mathcal{P}[\mathbfit{x}_{[i-1,i]}|\mathbfit{x}_{[0,i-1]}] \approx
@@ -647,13 +607,13 @@ following estimate for the marginal output probability
 
 $$\hat{\mathcal{P}}[\mathbfit{x}] = \mathrm{P}(x_0) \prod^n_{i=1} \frac{w_i}{M}$$
 
-which is precisely [@eq:smc-marginal].
+which is precisely [@eq-smc-marginal].
 
 ### Tuning the Particle Filter
 
 For the efficiency of the particle filter, it is important to carefully
 choose the number of segments $n$. When segments are very short (i.e.,
-when $n$ is large), the accumulated weights ([@eq:weight_segment]) tend
+when $n$ is large), the accumulated weights ([@eq-weight_segment]) tend
 to differ very little between newly generated segments
 $\mathbfit{s}^k_{[i-1,i]}$. Hence, the pruning and enrichment of the
 segments is dominated by noise. In contrast, when the segments are very
@@ -677,7 +637,7 @@ variance; we find, however, the improvement over simple sampling is very
 minor. Using these techniques, the only parameter that needs to be
 chosen by hand for the particle filter is the ensemble size $M$.
 
-## TI-PWS {#sec:thermodynamic-integration}
+## TI-PWS {#sec-thermodynamic-integration}
 
 Thermodynamic integration PWS (TI-PWS), is based on the analogy of
 marginalization integrals with free-energy computations. As before, we
@@ -695,10 +655,9 @@ $$\mathcal{Z}_\theta[\mathbfit{x}]=\int\mathcal{D}[\mathbfit{s}]\ e^{-\mathcal{U
 
 For instance, for $0\leq\theta\leq 1$, we can define our potential as
 
-::: {#eq:ti-hamiltonian}
+
 $$\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]=\mathcal{U}_0[\mathbfit{s}, \mathbfit{x}]+\theta\,\Delta\mathcal{U}[\mathbfit{s},\mathbfit{x}]\,,
-    \label{eq:ti-hamiltonian}$$
-:::
+    \label{eq-ti-hamiltonian}$$ {#eq-ti-hamiltonian}
 
 such that
 $e^{-\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]}=\mathcal{P}[\mathbfit{s}]\mathcal{P}[\mathbfit{x}|\mathbfit{s}]^\theta$.
@@ -708,13 +667,13 @@ one. For reasons of computational efficiency, it can be beneficial to
 choose a different path between $\mathcal{U}_0$ and $\mathcal{U}_1$,
 depending on the specific system [@1998.Gelman]. Here we will not
 consider other paths however, and derive the thermodynamic integration
-estimate for the potential given in [@eq:ti-hamiltonian].
+estimate for the potential given in [@eq-ti-hamiltonian].
 
 To derive the thermodynamic integration estimate for the free-energy
 difference, we first compute the derivative of
 $\ln\mathcal{Z}_\theta[\mathbfit{x}]$ with respect to $\theta$:
 
-::: {#eq:z-derivative}
+
 $$\begin{aligned}
     \frac{\partial}{\partial \theta} \ln\mathcal{Z}_\theta[\mathbfit{x}] &= \frac{1}{\mathcal{Z}_\theta[\mathbfit{x}]} \frac{\partial}{\partial \theta} \int\mathcal{D}[\mathbfit{s}]\  e^{-\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]} \\
     &= -\left\langle \frac{\partial \mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]}{\partial\theta} \right\rangle_\theta\\
@@ -722,8 +681,7 @@ $$\begin{aligned}
     \Delta\mathcal{U}[\mathbfit{s},\mathbfit{x}]
     \right\rangle_\theta\,.
 \end{aligned}
-\label{eq:z-derivative}$$
-:::
+\label{eq-z-derivative}$$ {#eq-z-derivative}
 
 Thus, the derivative of $\ln\mathcal{Z}_\theta[\mathbfit{x}]$ is an
 average of the Boltzmann weight with respect to
@@ -732,19 +690,18 @@ distribution of $\mathbfit{s}$ given by
 
 $$\mathcal{P}_\theta[\mathbfit{s}|\mathbfit{x}] = \frac{1}{\mathcal{Z}_\theta[\mathbfit{x}]} e^{-\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}]}\,.$$
 
-Integrating [@eq:z-derivative] with respect to $\theta$ leads to the
+Integrating [@eq-z-derivative] with respect to $\theta$ leads to the
 formula for the free-energy difference
 
-::: {#eq:ti-estimate}
+
 $$\Delta\mathcal{F}[\mathbfit{x}] = -\int^1_0 d\theta\ \left\langle 
     \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]
     \right\rangle_\theta
-    \label{eq:ti-estimate}$$
-:::
+    \label{eq-ti-estimate}$$ {#eq-ti-estimate}
 
 which is the fundamental identity underlying thermodynamic integration.
 
-To compute the free-energy difference using [@eq:ti-estimate], we
+To compute the free-energy difference using [@eq-ti-estimate], we
 evaluate the integral with respect to $\theta$ numerically using
 Gaussian quadrature, while the inner average
 $\left\langle \Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}] \right\rangle_\theta$
@@ -759,7 +716,7 @@ strongly depends on the proposal moves that are employed, we are certain
 that better MCMC estimates are possible with more sophisticated proposal
 distributions.
 
-### MCMC Sampling in Trajectory Space {#sec:mcmc}
+### MCMC Sampling in Trajectory Space {#sec-mcmc}
 
 TI-PWS relies on the computation of averages with respect to the
 ensembles corresponding to the interaction parameter $\theta$, given by
@@ -776,10 +733,9 @@ trajectory $\mathbfit{s}^\prime$ from a given trajectory $\mathbfit{s}$
 with probability $T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)$. We
 accept the proposal using the Metropolis criterion with probability
 
-::: {#eq:metropolis-acceptance}
+
 $$A(\mathbfit{s}^\prime,\mathbfit{s})=\min\left( 1, e^{\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}] - \mathcal{U}_\theta[\mathbfit{s}^\prime, \mathbfit{x}]}\frac{T(\mathbfit{s}^\prime\rightarrow\mathbfit{s})}{T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)} \right)
-    \label{eq:metropolis-acceptance}$$
-:::
+    \label{eq-metropolis-acceptance}$$ {#eq-metropolis-acceptance}
 
 to create a chain of trajectories with stationary distribution given by
 $\mathcal{P}_\theta[\mathbfit{s}|\mathbfit{x}]=e^{-\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}]}/\mathcal{Z}_\theta[\mathbfit{x}]$
@@ -805,22 +761,21 @@ $T(\mathbfit{s}\rightarrow\mathbfit{s}^\prime)=\mathcal{P}[\mathbfit{s}^\prime]$
 and a proposal $\mathbfit{s}\rightarrow\mathbfit{s}^\prime$ is accepted
 with probability
 
-::: {#eq:acceptance-rate}
+
 $$\begin{aligned}
     A(\mathbfit{s}^\prime,\mathbfit{s}) &= \min\left( 1, e^{\mathcal{U}_\theta[\mathbfit{s}, \mathbfit{x}] - \mathcal{U}_\theta[\mathbfit{s}^\prime, \mathbfit{x}]}\frac{\mathcal{P}[\mathbfit{s}]}{\mathcal{P}[\mathbfit{s}^\prime]} \right) \\
     &= \min\left( 1, \frac{\mathcal{P}[\mathbfit{x}|\mathbfit{s}^\prime]^\theta}{\mathcal{P}[\mathbfit{x}|\mathbfit{s}]^\theta} \right)
 \end{aligned}
-\label{eq:acceptance-rate}$$
-:::
+\label{eq-acceptance-rate}$$ {#eq-acceptance-rate}
 
 where the second line follows by using the definition of
 $\mathcal{U}_\theta[\mathbfit{s},\mathbfit{x}]$ given in
-[@eq:ti-hamiltonian]. Although this simple scheme is correct, it should
+[@eq-ti-hamiltonian]. Although this simple scheme is correct, it should
 not be used in practice to compute $\mathcal{P}[\mathbfit{x}]$. Indeed,
 on would get a better estimate of $\mathcal{P}[\mathbfit{x}]$ by just
 using the same number of independent sample trajectories from
 $\mathcal{P}[\mathbfit{s}]$ and using the brute-force scheme in
-[@eq:marginal-naive] without taking the detour of using MCMC to estimate
+[@eq-marginal-naive] without taking the detour of using MCMC to estimate
 the normalization constant.
 
 Instead, an idea from transition path sampling is to only regenerate a
@@ -834,14 +789,14 @@ existing trajectory $\mathbfit{s}$ is randomly selected, and a new
 trajectory segment is regrown from this point to the end, resulting in
 the proposal $\mathbfit{s}^\prime$. Since the new segment is generated
 according to the unbiased input statistics, the acceptance probability
-for the proposed trajectory is given by [@eq:acceptance-rate], i.e., the
+for the proposed trajectory is given by [@eq-acceptance-rate], i.e., the
 same as if the entire trajectory had been regenerated. If the input
 dynamics given by $\mathcal{P}[\mathbfit{s}]$ are time-reversible, we
 can also perform a *backward shooting* move. Here, the beginning of
 $\mathbfit{s}$ is replaced by a new segment that is generated backwards
 in time. Assuming that the initial condition is the input's steady state
 distribution, the corresponding acceptance probability of the backward
-shooting move is again given by [@eq:acceptance-rate]. Using these two
+shooting move is again given by [@eq-acceptance-rate]. Using these two
 moves we create an MCMC sampler where both ends of the trajectory are
 flexible, and thus if the trajectory is not too long, the chain will
 quickly relax to its stationary distribution.
@@ -887,7 +842,7 @@ appropriate Metropolis criterion [@2010.Andrieu]. Another class of
 efficient samplers for Markov jump processes can be built using
 uniformization [@2013.Rao].
 
-## Simple Application and Benchmark {#sec:pws_variants_benchmark}
+## Simple Application and Benchmark {#sec-pws_variants_benchmark}
 
 To demonstrate the power of our framework and illustrate how the
 techniques of the previous sections can be used in practice, we apply
@@ -933,36 +888,9 @@ approximation. This does not influence the asymptotic rate of increase
 of the mutual information, but leads to a nonzero mutual information
 already for $T=0$.
 
-<figure id="fig:gene-expr">
-<embed src="gene-expr-figure.pdf" />
-<figcaption>Comparing different schemes to compute the mutual
-information as a function of trajectory duration for a simple coupled
-birth-death process with rates
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>50</mn><mo>,</mo><mi>λ</mi><mo>=</mo><mn>1</mn><mo>,</mo><msub><mi>ρ</mi><mn>0</mn></msub><mo>=</mo><mn>10</mn><mo>,</mo><mi>μ</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\kappa = 50, \lambda=1, \rho_0=10, \mu = 10</annotation></semantics></math>
-and steady-state initial condition. The top panels show example
-trajectories of input and output as well as the mean (solid line) and
-standard deviation (shaded region). Below, the mutual information is
-shown as a function of trajectory duration. The inset shows an enlarged
-version of the dotted rectangle near the origin. For short trajectories
-all PWS estimates agree. Yet, for longer trajectories, DPWS and TI-PWS
-require a much larger number of input trajectories
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
-for computing
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>
-than RR-PWS to converge. Results for the three PWS variants are compared
-with the <span class="citation" data-cites="2019.Duso"></span> estimate,
-and with the linear noise approximation from Ref. <span class="citation"
-data-cites="2009.Tostevin"></span>. We find excellent agreement between
-the Duso scheme and RR-PWS. The Gaussian linear noise approximation
-systematically underestimates the mutual information. All PWS estimates,
-as well as the Duso approximation were computed using
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><msup><mn>10</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">N=10^4</annotation></semantics></math>
-samples from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒔</mi><mo>,</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{s},\mathbfit{x}]</annotation></semantics></math>.
-</figcaption>
-</figure>
+![Comparing different schemes to compute the mutual information as a function of trajectory duration for a simple coupled birth-death process with rates $\kappa = 50, \lambda=1, \rho_0=10, \mu = 10$ and steady-state initial condition. The top panels show example trajectories of input and output as well as the mean (solid line) and standard deviation (shaded region). Below, the mutual information is shown as a function of trajectory duration. The inset shows an enlarged version of the dotted rectangle near the origin. For short trajectories all PWS estimates agree. Yet, for longer trajectories, DPWS and TI-PWS require a much larger number of input trajectories $M$ for computing $\mathcal{P}[\mathbfit{x}]$ than RR-PWS to converge. Results for the three PWS variants are compared with the <span class="citation" data-cites="2019.Duso"></span> estimate, and with the linear noise approximation from Ref. <span class="citation" data-cites="2009.Tostevin"></span>. We find excellent agreement between the Duso scheme and RR-PWS. The Gaussian linear noise approximation systematically underestimates the mutual information. All PWS estimates, as well as the Duso approximation were computed using $N=10^4$ samples from $\mathcal{P}[\mathbfit{s},\mathbfit{x}]$. ](figures/gene-expr-figure.svg){#fig-gene-expr}
 
-[@fig:gene-expr] shows the mutual information as a function of the
+[@fig-gene-expr] shows the mutual information as a function of the
 trajectory duration $T$. We compare the three PWS variants and two
 approximate schemes. One is that of @2019.Duso. To apply it, we used the
 code publicly provided by the authors[^5], and to avoid making
@@ -970,7 +898,7 @@ modifications to this code, we chose a fixed initial condition
 $(s_0=x_0=50)$ which causes the mutual information to be zero for $T=0$.
 The figure also shows the analytical result of a Gaussian model
 [@2009.Tostevin], obtained using the linear-noise approximation (see
-[@sec:gaussian-covariance]).
+[@sec-gaussian-covariance]).
 
 We find that the efficiency of the respective PWS variants depends on
 the duration of the input-output trajectories. For short trajectories
@@ -982,7 +910,7 @@ longer trajectories, the estimate becomes increasingly dominated by rare
 trajectories, which make an exceptionally large contribution to the
 average of $\mathcal{P}[\mathbfit{x}]$. Missing these rare trajectories
 with a high weight tends to increase the marginal entropy
-$\mathrm{H}(\mathcal{X})$ \[see [@eq:marginal-entropy-estimate]\], and
+$\mathrm{H}(\mathcal{X})$ \[see [@eq-marginal-entropy-estimate]\], and
 thereby the mutual information; indeed, the estimates of DPWS and TI-PWS
 are higher than that of RR-PWS. For brute-force DPWS, the error
 decreases as we increase the number $M$ of input trajectories per output
@@ -994,7 +922,7 @@ not change the results.
 
 We also find excellent agreement between the RR-PWS estimate and the
 approximate result of @2019.Duso. Only very small deviations are visible
-in [@fig:gene-expr]. These deviations are mostly caused by the different
+in [@fig-gene-expr]. These deviations are mostly caused by the different
 choice for the initial conditions. In RR-PWS, the initial conditions are
 drawn from the stationary distribution, while in the Duso scheme they
 are fixed, such that the mutual information computed with RR-PWS is
@@ -1002,45 +930,18 @@ finite while that computed with the Duso scheme is zero. Yet, as the
 trajectory duration $T$ increases, the Duso estimate slowly "catches up"
 with the RR-PWS result.
 
-[@fig:gene-expr] also shows that although the Gaussian model matches the
+[@fig-gene-expr] also shows that although the Gaussian model matches the
 PWS result for $T=0$, it systematically underestimates the mutual
 information for trajectories of finite duration $T>0$. Interestingly,
 this is not a consequence of small copy-number fluctuations: increasing
 the average copy number does not significantly improve the Gaussian
 estimate.[^6]
 
-<figure id="fig:timing">
-<embed src="Timing.pdf" />
-<figcaption>Comparing estimation bias for the different PWS variants in
-relation to their CPU time requirements. Each dot represents a single
-mutual information estimate with
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><msup><mn>10</mn><mn>4</mn></msup></mrow><annotation encoding="application/x-tex">N=10^4</annotation></semantics></math>
-samples for output trajectories of duration
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">T=5</annotation></semantics></math>.
-Almost all the CPU time of a PWS estimate is spent on the computation of
-the marginal probability
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>𝒫</mi><mo stretchy="false" form="prefix">[</mo><mi>𝒙</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\mathcal{P}[\mathbfit{x}]</annotation></semantics></math>.
-The bias of the marginal probability estimate can be reduced by using a
-larger number
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
-of sampled input trajectories to compute the marginalization integral,
-which also increases the required CPU time. The RR-PWS estimate
-converges much faster than the estimate of DPWS and TI-PWS. For DPWS and
-TI-PWS, the dots represents estimates ranging from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>2</mn><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">M=2^5</annotation></semantics></math>
-to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>2</mn><mn>14</mn></msup></mrow><annotation encoding="application/x-tex">M=2^{14}</annotation></semantics></math>,
-for RR-PWS ranging from
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>2</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">M=2^3</annotation></semantics></math>
-to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msup><mn>2</mn><mn>10</mn></msup></mrow><annotation encoding="application/x-tex">M=2^{10}</annotation></semantics></math>.
-As the baseline of zero bias we use the converged result from the RR-PWS
-estimates.</figcaption>
-</figure>
+![Comparing estimation bias for the different PWS variants in relation to their CPU time requirements. Each dot represents a single mutual information estimate with $N=10^4$ samples for output trajectories of duration $T=5$. Almost all the CPU time of a PWS estimate is spent on the computation of the marginal probability $\mathcal{P}[\mathbfit{x}]$. The bias of the marginal probability estimate can be reduced by using a larger number $M$ of sampled input trajectories to compute the marginalization integral, which also increases the required CPU time. The RR-PWS estimate converges much faster than the estimate of DPWS and TI-PWS. For DPWS and TI-PWS, the dots represents estimates ranging from $M=2^5$ to $M=2^{14}$, for RR-PWS ranging from $M=2^3$ to $M=2^{10}$. As the baseline of zero bias we use the converged result from the RR-PWS estimates.](figures/Timing.svg){#fig-timing}
 
 The different approaches for computing the marginal probability
 $\mathcal{P}[\mathbfit{x}]$ lead to different computational efficiencies
-of the respective PWS schemes. In [@fig:timing], as a benchmark, we show
+of the respective PWS schemes. In [@fig-timing], as a benchmark, we show
 the magnitude of the error of the different PWS estimates in relation to
 the required CPU time. Indeed, as expected, the computation of the
 marginal probability poses problems for long trajectories when using the
@@ -1066,7 +967,7 @@ by segment, and these explore the trajectory space much faster.
 
 ## Discussion
 
-Aside from Direct PWS introduced in [@ch:dpws], we developed two
+Aside from Direct PWS introduced in [@sec-dpws], we developed two
 additional variants of PWS, capitalizing on the connection between
 information theory and statistical physics. Specifically, the
 computation of the mutual information requires the evaluation of the
@@ -1125,26 +1026,25 @@ time $\tau$ earlier. In contrast, DPWS and TI-PWS generate full
 trajectories one at the time, and are therefore more likely to capture
 these correlations. Also the machine-learning based approach for
 determining the optimal importance sampling distribution
-$q[\mathbfit{s}|\mathbfit{x}]$ presented in [@ch:ml-pws]
-([@sec:ml_variational]) is likely to prove useful in these scenarios
+$q[\mathbfit{s}|\mathbfit{x}]$ presented in [@sec-ml-pws]
+([@sec-ml_variational]) is likely to prove useful in these scenarios
 with complex temporal dependences between the input and output
 trajectories.
 
 ## Supplementary Information
 
-### Gaussian Approximation of the Linear System  {#sec:gaussian-covariance}
+### Gaussian Approximation of the Linear System  {#sec-gaussian-covariance}
 
 We derive the Gaussian approximation of the simple reaction system used
-in [@sec:pws_variants_benchmark]. We recall the elementary biochemical
+in [@sec-pws_variants_benchmark]. We recall the elementary biochemical
 reaction motif consisting of four reactions
 
-::: {#eq:reaction-scheme}
+
 $$\text{0  →  S}, \quad
     \text{S  →  0}, \quad
     \text{S  →  S + X}, \quad
     \text{X  →  0}
-    \label{eq:reaction-scheme}$$
-:::
+    \label{eq-reaction-scheme}$$ {#eq-reaction-scheme}
 
 with input $S$ and output $X$. This reaction motif is a simple model for
 gene expression, where the rate of production of a protein $X$ is
@@ -1174,13 +1074,12 @@ $$\mathrm{P}(\mathbfit{Z}=\mathbfit{z}) = \frac{1}{\sqrt{(2\pi)^{2n}|\Sigma|}} e
 where the covariance Matrix $\Sigma\in\mathbb{R}^{2n\times 2n}$ has the
 following block structure
 
-::: {#eq:cov_z}
+
 $$\Sigma = \left( \begin{array}{cc}
         \Sigma_{SS} & \Sigma_{XS} \\
         \Sigma_{SX} & \Sigma_{XX}
     \end{array} \right)\,.
-    \label{eq:cov_z}$$
-:::
+    \label{eq-cov_z}$$ {#eq-cov_z}
 
 Here $\Sigma_{SS}$ and $\Sigma_{XX}$ are the (auto-)covariance matrices
 of the input and the output, respectively, whereas
@@ -1191,20 +1090,19 @@ where $C_{AB}(t)$ denote the (cross-)covariance functions and
 $t_1,\ldots,t_n$ are the sampling times. Thus, the full statistics of
 the trajectories are determined from the (cross-)covariance functions.
 
-Since the reaction scheme in [@eq:reaction-scheme] features only
+Since the reaction scheme in [@eq-reaction-scheme] features only
 first-order reactions, the covariance functions can be calculated
 explicitly using the regression theorem [@2006.Warren; @2009.Gardiner].
 For $t\geq 0$, we obtain the following expressions for the covariance
 functions:
 
-::: {#eq:c_ss}
+
 $$\begin{aligned}
-    \label{eq:c_ss} C_{SS}(t) &= \sigma^2_{SS} \exp(-\lambda t) \\
-    \label{eq:c_sx} C_{SX}(t) &= \rho\sigma^2_{SS}t\ \mathrm{exprel}[(\lambda - \mu) t]\ \exp(-\lambda t) + \sigma^2_{SX} \exp(-\mu t) \\
-    \label{eq:c_xs} C_{XS}(t) &= \sigma^2_{SX} \exp(-\lambda t) \\
-   \label{eq:c_xx} C_{XX}(t) &= \rho \sigma^2_{SX} t\ \mathrm{exprel}[(\lambda - \mu) t]\ \exp(-\lambda t) + \sigma^2_{XX} \exp(-\mu t)\,.
-\end{aligned}$$
-:::
+    \label{eq-c_ss} C_{SS}(t) &= \sigma^2_{SS} \exp(-\lambda t) \\
+    \label{eq-c_sx} C_{SX}(t) &= \rho\sigma^2_{SS}t\ \mathrm{exprel}[(\lambda - \mu) t]\ \exp(-\lambda t) + \sigma^2_{SX} \exp(-\mu t) \\
+    \label{eq-c_xs} C_{XS}(t) &= \sigma^2_{SX} \exp(-\lambda t) \\
+   \label{eq-c_xx} C_{XX}(t) &= \rho \sigma^2_{SX} t\ \mathrm{exprel}[(\lambda - \mu) t]\ \exp(-\lambda t) + \sigma^2_{XX} \exp(-\mu t)\,.
+\end{aligned}$$ {#eq-c_ss}
 
 In the expressions above we used the relative exponential function
 
@@ -1226,9 +1124,9 @@ functions for $t<0$ can be obtained by applying the symmetry relation
 $C_{AB}(t) = C_{BA}(-t)$.
 
 Now, we can directly compute the mutual information from the
-covariances. Using [@eq:c_ss; @eq:c_sx; @eq:c_xs; @eq:c_xx] we obtain
+covariances. Using [@eq-c_ss; @eq-c_sx; @eq-c_xs; @eq-c_xx] we obtain
 the matrix elements of the joint covariance matrix $\Sigma$ defined in
-[@eq:cov_z] and then the mutual information is given by the expression
+[@eq-cov_z] and then the mutual information is given by the expression
 
 $$I(\mathcal{S}, \mathcal{X}) = \frac{1}{2} \ln \left( \frac{|\Sigma_{SS}||\Sigma_{XX}|}{|\Sigma|} \right).$$
 
@@ -1236,7 +1134,7 @@ Note, that for discretized trajectories of length $n$, the matrix
 $\Sigma$ has dimensions of $2n\times 2n$. Thus, the computation of the
 trajectory mutual information requires the computation of a
 $2n\times 2n$ matrix, which can be computationally challenging for long
-trajectories (large $n$). In [@ch:notes-gaussian] of this thesis, we
+trajectories (large $n$). In [@sec-notes-gaussian] of this thesis, we
 discuss some techniques to considerably accelerate the computation of
 the mutual information.
 
@@ -1244,19 +1142,18 @@ Using spectral analysis, @2010.Tostevin were able to derive an
 analytical expression for the Gaussian mutual information rate of this
 model in the continuous-time limit, given by
 
-::: {#eq:spectral_tostevin_gaussian}
+
 $$R(\mathcal{S}, \mathcal{X}) = \frac{\lambda}{2}\left[ \sqrt{1 + \frac{\rho}{\lambda}} - 1 \right] \,.
-    \label{eq:spectral_tostevin_gaussian}$$
-:::
+    \label{eq-spectral_tostevin_gaussian}$$ {#eq-spectral_tostevin_gaussian}
 
 The information rate of the discretely sampled process converges to this
 value as the sampling rate approaches infinity [@2010.Tostevin]. Notably
-however, the model corresponding to [@eq:spectral_tostevin_gaussian] is
+however, the model corresponding to [@eq-spectral_tostevin_gaussian] is
 a continuum description that assumes Gaussian statistics; indeed, this
 rate deviates from the mutual information rate of the exact model that
 is described by the chemical master equation, even in the limit of large
 copy numbers [@2023.Moor]. This finding is also further discussed in
-[@ch:lna_vs_pws] ([@sec:linsys]).
+[@sec-lna_vs_pws] ([@sec-linsys]).
 
 [^1]: The contents of this chapter have been published in *Phys. Rev. X*
     **13**, 041017 (2023) [@2023.Reinhardt].
@@ -1287,7 +1184,7 @@ copy numbers [@2023.Moor]. This finding is also further discussed in
     effective number of samples $M_\text{eff}$ is much smaller than the
     actual number of generated trajectories $M$, i.e.
     $M_\text{eff} \ll M$. We therefore only expect the estimate in
-    [@eq:marginal-naive] to be reliable when computing the mutual
+    [@eq-marginal-naive] to be reliable when computing the mutual
     information for systems where it is not too high. Thus, strikingly,
     the difficulty of computing the mutual information is proportional
     to the magnitude of the mutual information itself.
@@ -1328,4 +1225,4 @@ copy numbers [@2023.Moor]. This finding is also further discussed in
     linear-noise approximation misses this distinction because in the
     noise term for the output the contributions from the production and
     decay reactions are added together. We also comment further on this
-    matter in [@ch:lna_vs_pws].
+    matter in [@sec-lna_vs_pws].

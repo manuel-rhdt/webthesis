@@ -6,7 +6,7 @@ link-citations: true
 reference-section-title: References
 ---
 
-# Application---Bacterial Chemotaxis {#ch:chemotaxis}
+# Application---Bacterial Chemotaxis {#sec-chemotaxis}
 
 > The chemotaxis signaling network of the bacterium *Escherichia coli*
 > is a sophisticated information processing system, enabling the
@@ -113,16 +113,16 @@ about tenfold lower. Lastly, we found that the Gaussian framework is
 highly accurate in the regime of shallow gradients as studied by
 @2021.Mattingly, thus verifying their Gaussian approach *a posteriori*.
 
-In [@sec:chemotaxis_input] we describe the dynamics of the input signal.
-[@sec:chemotaxis-model] introduces the stochastic model of the
+In [@sec-chemotaxis_input] we describe the dynamics of the input signal.
+[@sec-chemotaxis-model] introduces the stochastic model of the
 chemotaxis system that we developed based on available literature. In
-[@sec:lna] we describe the Gaussian approximation used by
+[@sec-lna] we describe the Gaussian approximation used by
 @2021.Mattingly to compute the information transmission rate and in
-[@sec:comparison] we present the results. We conclude with a discussion
+[@sec-comparison] we present the results. We conclude with a discussion
 of our findings, particularly regarding the number of clusters and their
 size.
 
-## Stochastic Dynamics of the Input Signal for Chemotaxis {#sec:chemotaxis_input}
+## Stochastic Dynamics of the Input Signal for Chemotaxis {#sec-chemotaxis_input}
 
 The information transmission rate depends not only on the biochemical
 chemotaxis network, but also on the dynamics of the input signal. It is
@@ -131,18 +131,7 @@ with those in the experiments of @2021.Mattingly. For these experiments
 the input signal is the time-dependent ligand concentration $c(t)$ that
 is experienced by the swimming bacterium.
 
-<figure>
-<p><embed src="figures/ecoli_swimming.pdf" /> </p>
-<figcaption>In a shallow exponential gradient
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(x)</annotation></semantics></math>,
-the bacterium diffuses nearly freely in the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>-direction.
-The variance of the position increases with time, the hallmark of a
-random walk. The input signal is the concentration
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)=c(x(t))</annotation></semantics></math>
-as experienced by the bacterium at time
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</figcaption>
-</figure>
+![In a shallow exponential gradient $c(x)$, the bacterium diffuses nearly freely in the $x$-direction. The variance of the position increases with time, the hallmark of a random walk. The input signal is the concentration $c(t)=c(x(t))$ as experienced by the bacterium at time $t$.](figures/ecoli_swimming.svg)
 
 We consider an *Escherichia coli* bacterium that swims in a static
 nutrient concentration gradient $c(x)$. Following @2021.Mattingly, the
@@ -170,35 +159,33 @@ i.e., $x(t)=\int^t_0d\tau\, v_x(\tau)$. Thus, when projected onto the
 gradient axis, the bacterium performs a 1D random walk described by the
 Langevin equation
 
-::: {#eq:random_walk}
+
 $$\frac{d^2 x}{dt^2} = -\lambda \frac{dx}{dt} + \sigma \xi(t) \,.
-    \label{eq:random_walk}$$
-:::
+    \label{eq-random_walk}$$ {#eq-random_walk}
 
 Since the bacterium moves in a static concentration gradient described
 by $c(x)$, the concentration dynamics that the cell observes are
 generated directly from its own movement dynamics, see Fig. 
-`\ref{fig:ecoli_swimming}`{=latex}. At time $t$ the cell is at position
+`\ref{fig-ecoli_swimming}`{=latex}. At time $t$ the cell is at position
 $x(t)$ and thus measures the concentration $c(t)=c(x(t))$. We find the
 stochastic dynamics of $c$ by differentiating using the chain rule
 
-::: {#eq:concentration_dynamics}
+
 $$\frac{dc}{dt} = \frac{\partial c}{\partial x} \frac{\partial x}{\partial t} = g c(t)\,v_x(t)\,.
-    \label{eq:concentration_dynamics}$$
-:::
+    \label{eq-concentration_dynamics}$$ {#eq-concentration_dynamics}
 
 The concentration dynamics are thus fully determined by the stochastic
 dynamics of the cell's swimming velocity $v_x(t)$ in the absence of a
 gradient and by the shape of the concentration gradient $c(x)$. The
-resulting stochastic dynamics are visualized in [@fig:trajectories].
+resulting stochastic dynamics are visualized in [@fig-trajectories].
 
 ![Input dynamics. *Left column:* two example time traces of the
 up-gradient velocity $v_x(t)$ and the observed concentration $c(t)$
-obtained by integrating [@eq:concentration_dynamics]. *Right column:*
+obtained by integrating [@eq-concentration_dynamics]. *Right column:*
 averages of velocity and concentration traces obtained from 1000
 simulated trajectories. The solid lines show the mean as a function of
 time and boundaries of the shaded regions indicate the 5% and 95%
-quantiles.](input_trajectories.pdf){#fig:trajectories
+quantiles.](input_trajectories.pdf){#fig-trajectories
 width="\\textwidth"}
 
 In the PWS simulations we use $c(t)$ directly as the input to our
@@ -219,7 +206,7 @@ transform of its correlation function:
 
 $$P_{ss}(\omega) = g^2 V(\omega) = g^2 \frac{2a_v \lambda}{\omega^2 + \lambda^2}\,.$$
 
-We use this same input below in [@sec:lna] to compute the Gaussian
+We use this same input below in [@sec-lna] to compute the Gaussian
 approximation of the mutual information rate. As discussed in more
 detail in the main text, we note that the mutual information between the
 output and the input trajectory $c(t)$, as measured in the PWS
@@ -227,18 +214,9 @@ simulations, is identical to that between the output and the input
 trajectory $s(t)$, as computed in the Gaussian model because of the
 deterministic and monotonic mapping between $c(t)$ and $s(t)$.
 
-## Stochastic Chemotaxis Model {#sec:chemotaxis-model}
+## Stochastic Chemotaxis Model {#sec-chemotaxis-model}
 
-<figure id="fig:chemotaxis_cartoon">
-<embed src="figures/chemotaxis_cartoon.pdf" />
-<figcaption>Cartoon of the chemotaxis network of <em>E. coli</em>.
-Receptors form clusters with an associated CheA kinase. A cluster can
-either be active or inactive, depending on the number of bound ligands
-(green dots) and methylated sites (orange dots). Active CheA can
-phosphorylate CheY; phosphorylated CheY controls the rotation direction
-of the flagellar motors and thereby the movement of the
-bacterium.</figcaption>
-</figure>
+![Cartoon of the chemotaxis network of <em>E. coli</em>. Receptors form clusters with an associated CheA kinase. A cluster can either be active or inactive, depending on the number of bound ligands (green dots) and methylated sites (orange dots). Active CheA can phosphorylate CheY; phosphorylated CheY controls the rotation direction of the flagellar motors and thereby the movement of the bacterium.](figures/chemotaxis_cartoon.svg){#fig-chemotaxis_cartoon}
 
 We apply PWS to a stochastic model of the chemotaxis network that
 describes individual reactions via a master equation. In this model, the
@@ -259,7 +237,7 @@ in order to avoid wasting CPU time. In addition, the receptor clusters
 can phosphorylate CheY, while phosphorylated CheY is dephosphorylated at
 a constant rate. The dynamics of the kinase CheA and the phosphatase
 CheZ which drive (de)phosphorylation are not modeled explicitly.
-[@fig:chemotaxis_cartoon] shows a depiction of the bacterial chemotaxis
+[@fig-chemotaxis_cartoon] shows a depiction of the bacterial chemotaxis
 network.
 
 Table @tbl-chemotaxis-parameters shows the parameter
@@ -294,7 +272,7 @@ response kernel and noise correlation function to the data of
 | $m_0 / N$ | 0.5 |  | receptor methylation level without ligands [@2010.Shimizu] |
 | $\delta\!f_m$ | -2.0 | $k_\mathrm{B}T$ | free energy change of active conformation from attachment of one methyl group [@2010.Shimizu] |
 
-: The parameters required for the chemotaxis model, based on literature values. These are the parameters used in the so-called literature-based model. In the fitted model (see @sec-comparison) the same parameter values are chosen, except for $N=15$ and $N_c=9$, which were obtained by fitting to the data of @2021.Mattingly; we note that changing $N$ and $N_c$ also requires updating $k_A$ to keep the fraction $\phi_Y$ of phosphorylated CheY constant. {#tab:chemotaxis-parameters}
+: The parameters required for the chemotaxis model, based on literature values. These are the parameters used in the so-called literature-based model. In the fitted model (see @sec-comparison) the same parameter values are chosen, except for $N=15$ and $N_c=9$, which were obtained by fitting to the data of @2021.Mattingly; we note that changing $N$ and $N_c$ also requires updating $k_A$ to keep the fraction $\phi_Y$ of phosphorylated CheY constant. {#tbl-chemotaxis-parameters}
 
 ### MWC Model
 
@@ -321,15 +299,13 @@ receptor cluster with $m$ methylated sites to be active, $p_a(c, m)$, is
 determined by the free-energy difference between the active and inactive
 receptor states
 
-::: {#eq:prob_active}
-$$p_a(c, m) = \frac{1}{1 + e^{-f(c, m)}} \label{eq:prob_active}$$
-:::
+
+$$p_a(c, m) = \frac{1}{1 + e^{-f(c, m)}} \label{eq-prob_active}$$ {#eq-prob_active}
 
 where
 
-::: {#eq:free_energy_active}
-$$f(c, m) = N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right) + \delta f_m (m - m_0) \,. \label{eq:free_energy_active}$$
-:::
+
+$$f(c, m) = N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right) + \delta f_m (m - m_0) \,. \label{eq-free_energy_active}$$ {#eq-free_energy_active}
 
 Here, the number of methylated sites of a cluster (not receptor) is
 denoted by $m$, ranging from $0$ to $NM$. The parameters are again taken
@@ -342,21 +318,19 @@ that in the equations we assume units such that $k_\mathrm{B} T=1$.
 The dynamics of methylation in our model are described by the following
 mean-field equation
 
-::: {#eq:methylation_dynamics}
+
 $$\frac{dm}{dt} = (1-p_a(c, m)) k_R - p_a(c, m) k_B \,.
-    \label{eq:methylation_dynamics}$$
-:::
+    \label{eq-methylation_dynamics}$$ {#eq-methylation_dynamics}
 
 The system reaches a steady state for the adapted activity
 $p_a(c, m)=a_0$ where
 
-::: {#eq:adapted_activity}
+
 $$a_0 = \frac{k_R}{k_R + k_B} \,.
-    \label{eq:adapted_activity}$$
-:::
+    \label{eq-adapted_activity}$$ {#eq-adapted_activity}
 
 The steady-state methylation $m^\star$ can be obtained from
-[@eq:prob_active; @eq:free_energy_active] by solving
+[@eq-prob_active; @eq-free_energy_active] by solving
 $p_a(c, m^\star)=a_0$:
 
 $$m^\star = m_0 + \frac{N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right)+ \ln\left( \frac{1-a_0}{a_0} \right)}{-\delta f_m}\,.$$
@@ -365,12 +339,11 @@ To characterize the methylation timescale, we linearize the dynamics of
 $m(t)$ around the steady state (at constant ligand concentration
 $c(t)=c_0$). To first order, we can write
 
-::: {#eq:dmdt}
-$$\frac{d m}{d t} = -\frac{m(t) - m^\star}{\tau_m}\,. \label{eq:dmdt}$$
-:::
+
+$$\frac{d m}{d t} = -\frac{m(t) - m^\star}{\tau_m}\,. \label{eq-dmdt}$$ {#eq-dmdt}
 
 where $\tau_m$ is the characteristic timescale of the methylation
-dynamics. We find $\tau_m$ by expanding $p_a$ \[[@eq:prob_active]\]
+dynamics. We find $\tau_m$ by expanding $p_a$ \[[@eq-prob_active]\]
 around $m=m^\star$:
 
 $$\begin{aligned}
@@ -380,12 +353,12 @@ $$\begin{aligned}
 \end{aligned}$$
 
 and then plugging this first-order expansion into
-[@eq:methylation_dynamics] to get
+[@eq-methylation_dynamics] to get
 
 $$\frac{d m}{d t} =   
      \frac{\delta f_m (m - m^\star)}{k_R^{-1} + k_B^{-1}} \,.$$
 
-By comparing with [@eq:dmdt] we find that for small perturbations, the
+By comparing with [@eq-dmdt] we find that for small perturbations, the
 timescale for methylation to approach steady state is given by
 
 $$\tau_m = \frac{k^{-1}_R + k^{-1}_B}{-\delta f_m} \,.$$
@@ -473,7 +446,7 @@ active cluster. The dephosphorylation
 $\mathrm{Y_p}\rightarrow \mathrm{Y}$ is carried out by the phosphatase
 CheZ at a constant rate $k_Z=10\,\text{s}^{-1}$.
 
-## Mutual Information Rate for the Chemotaxis System in the Gaussian Approximation  {#sec:lna}
+## Mutual Information Rate for the Chemotaxis System in the Gaussian Approximation  {#sec-lna}
 
 To test the validity of the Gaussian approach used by @2021.Mattingly,
 we also compared the exact PWS results for our discrete, stochastic
@@ -483,10 +456,9 @@ $R(\mathcal{S}, \mathcal{X})$ of a Gaussian system in steady state can
 be computed exactly from the power spectral density functions of the
 system [@2009.Tostevin]:
 
-::: {#eq:info_rate_gaussian}
+
 $$R(\mathcal{S}, \mathcal{X}) = -\frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \ln\left[1 - \frac{|P_{sx}(\omega)|^2}{P_{ss}(\omega)P_{xx}(\omega)}\right] \,.
-    \label{eq:info_rate_gaussian}$$
-:::
+    \label{eq-info_rate_gaussian}$$ {#eq-info_rate_gaussian}
 
 Here, the power spectral density $P_{\alpha\beta}(\omega)$ is defined as
 
@@ -508,7 +480,7 @@ transmission rate.
 
 $V(t)$ denotes the autocorrelation function of the swimming velocity of
 bacteria, i.e., $V(t)=\langle v_x(\tau) v_x(\tau + t)\rangle$. As
-explained in [@sec:chemotaxis_input], the swimming dynamics of the
+explained in [@sec-chemotaxis_input], the swimming dynamics of the
 bacteria determine the statistics of the input signal
 $s(t) = \frac{d}{dt}\ln c(t)$, where $c(t)$ is the ligand concentration
 as experienced by the bacterium and $g$ is the gradient steepness. The
@@ -541,10 +513,9 @@ $x(t)=a(t) - a_0$. Assuming the input statistics are stationary and
 described by the correlation function $C_{ss}(t)$, it is easy to show
 that the cross-correlation between $s(t)$ and $x(t)$ is given by
 
-::: {#eq:conv_correlation}
+
 $$C_{sx}(t) = \langle s(\tau) x(\tau + t) \rangle = \int^t_{-\infty} dt^\prime\ K(t-t^\prime) C_{ss}(t^\prime) \,.
-    \label{eq:conv_correlation}$$
-:::
+    \label{eq-conv_correlation}$$ {#eq-conv_correlation}
 
 In other words, the cross-correlation between $s(t)$ and $x(t)$ is given
 by the convolution of the response kernel with the input correlation
@@ -554,27 +525,26 @@ The noise kernel $N(t)$ describes the autocorrelation of the activity
 fluctuations in the absence of an input stimulus. In particular,
 $N(t) = \langle \eta_a(\tau) \eta_a(\tau + t) \rangle$.
 
-We now rewrite [@eq:info_rate_gaussian] for the mutual information rate
+We now rewrite [@eq-info_rate_gaussian] for the mutual information rate
 in terms of the three kernels described above. We express the power
 spectra $P_{\alpha\beta}(\omega)$ in terms of the Fourier-transformed
 kernels $V(\omega)$, $K(\omega)$, and $N(\omega)$. In
-[@sec:chemotaxis_input] we already showed that
+[@sec-chemotaxis_input] we already showed that
 $P_{ss}(\omega) = g^2 V(\omega)$. The cross power spectrum is given by
 $P_{sx}(\omega) = K(\omega) P_{ss}(\omega)$ which follows from
-[@eq:conv_correlation]. Finally, from Ref. [@2009.Tostevin] we use the
+[@eq-conv_correlation]. Finally, from Ref. [@2009.Tostevin] we use the
 identity $P_{xx}(\omega) = P_{ss}(\omega) |K(\omega)|^2 + N(\omega)$ to
 express the output power spectrum. We insert these expressions into
-[@eq:info_rate_gaussian] which yields
+[@eq-info_rate_gaussian] which yields
 
 $$R(\mathcal{S}, \mathcal{X}) = \frac{1}{4\pi} \int^\infty_{-\infty} d\omega\ \ln\left(1+\frac{g^2 V(\omega) |K(\omega)|^2}{N(\omega)}\right).$$
 
 Then, for shallow gradients, we can make a Taylor approximation in $g$
 to obtain
 
-::: {#eq:gauss_mi_approx}
+
 $$R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \int^\infty_{-\infty} d\omega\ \frac{V(\omega)|K(\omega)|^2}{N(\omega)} + \mathcal{O}(g^4) \,.
-    \label{eq:gauss_mi_approx}$$
-:::
+    \label{eq-gauss_mi_approx}$$ {#eq-gauss_mi_approx}
 
 This result shows that the information rate in shallow gradients is
 proportional to $g^2$ and the proportionality constant is determined by
@@ -604,10 +574,9 @@ is relatively large, this fraction serves as a good proxy for the
 activity $a(t)$. We relate the $f(t)$ to the activity $a(t)$ via the
 expression
 
-::: {#eq:frac_to_act}
+
 $$a(t) = \frac{k_Z}{k_A N_c} f(t) 
-    \label{eq:frac_to_act}$$
-:::
+    \label{eq-frac_to_act}$$ {#eq-frac_to_act}
 
 where $k_A$ and $k_Z$ are the phosphorylation and dephosphorylation
 rate, respectively, and $N_c$ is the number of receptor clusters.
@@ -624,7 +593,7 @@ simulations of our chemotaxis model. In this case, we stochastically
 evolve the chemotaxis model at constant ligand concentration
 $c_0=100\,\mu\text{M}$ for a very long time of 1 × 10^4^ s. The result
 is a time trace of the activity $a(t)$, which we again obtain from the
-fraction $f(t)$ using [@eq:frac_to_act]. We discretize this time trace
+fraction $f(t)$ using [@eq-frac_to_act]. We discretize this time trace
 at a resolution of 0.01 s. This results in a time series
 $\mathbfit{a}=(a_1,\ldots,a_N)^T$ where $a_i=a(t_i)$. To estimate the
 correlations in the time series we subtract the overall average activity
@@ -639,7 +608,7 @@ trajectories.
 
 To compute the Gaussian information rate, we need the frequency-space
 representations of the kernels $V(t)$, $K(t)$, and $N(t)$. We already
-derived the analytical form of $V(\omega)$ in [@sec:chemotaxis_input].
+derived the analytical form of $V(\omega)$ in [@sec-chemotaxis_input].
 We obtain $K(\omega)$ and $N(\omega)$ numerically via a discrete Fourier
 transform of the corresponding time-domain kernel.
 
@@ -683,7 +652,7 @@ The procedure described above to obtain the DFT coefficients
 $\tilde{k}_k$ from $K(t)$ is also applied to $N(t)$ to obtain the
 coefficients $\tilde{n}_k$.
 
-We can then evaluate the information rate using [@eq:gauss_mi_approx] by
+We can then evaluate the information rate using [@eq-gauss_mi_approx] by
 discretizing the integral
 $\int d\omega\,F(\omega) \to \sum_k \Delta\omega\,F(\omega_k)$ with
 $\Delta\omega = 2\pi f_s / N$. More precisely, we compute the Gaussian
@@ -691,7 +660,7 @@ information rate as
 
 $$R(\mathcal{S}, \mathcal{X}) = \frac{g^2}{4\pi} \sum^{N-1}_{k=0} \Delta\omega\ \frac{V(\omega_k)|\tilde{k}_k|^2}{\tilde{n}_k} \,.$$
 
-##  Results {#sec:comparison}
+##  Results {#sec-comparison}
 
 We first asked whether our chemotaxis model based on the current
 literature can reproduce the information transmission rate as recently
@@ -727,39 +696,18 @@ ligand concentration $c(t)$ and the output trajectory of phosphorylated
 CheY, $y_p(t)$, and where each trajectory is of duration $T$. With
 RR-PWS it is possible to compute $I(\mathbf{C}, \mathbf{Y_p}; \tau)$ for
 all $\tau \leq T$ within a single PWS simulation of duration $T$ by
-saving intermediate results after each sampled segment, see [@sec:smc].
+saving intermediate results after each sampled segment, see [@sec-smc].
 The receptor states are considered hidden internal states, and we use
-the technique described in [@sec:integrating-out] to integrate them out.
+the technique described in [@sec-integrating-out] to integrate them out.
 
-<figure id="fig:chemotaxis_info_and_rate">
-<embed src="figures/chemotaxis_info_and_rate.pdf" />
-<figcaption>PWS simulations for the trajectory mutual information of
-chemotaxis in the shallow gradient regime. <strong>a</strong> Mutual
-information
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐂</mi><mi>T</mi></msub><mo>,</mo><msub><mi>𝐘</mi><mi>T</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(\mathbf{C}_T, \mathbf{Y}_T)</annotation></semantics></math>
-between input trajectories
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">c(t)</annotation></semantics></math>
-and output trajectories
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>p</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y_p(t)</annotation></semantics></math>
-as a function of trajectory duration
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>.
-In each RR-PWS simulation,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>7200</mn></mrow><annotation encoding="application/x-tex">N = 7200</annotation></semantics></math>
-Monte Carlo samples were used
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>256</mn></mrow><annotation encoding="application/x-tex">M = 256</annotation></semantics></math>
-for the particle filter). <strong>b</strong> The information
-transmission rate is defined as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>𝐂</mi><mi>T</mi></msub><mo>,</mo><msub><mi>𝐘</mi><mi>T</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">I(\mathbf{C}_T, \mathbf{Y}_T)/T</annotation></semantics></math>
-in the limit
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">T\to\infty</annotation></semantics></math>.</figcaption>
-</figure>
+![PWS simulations for the trajectory mutual information of chemotaxis in the shallow gradient regime. <strong>a</strong> Mutual information $I(\mathbf{C}_T, \mathbf{Y}_T)$ between input trajectories $c(t)$ and output trajectories $y_p(t)$ as a function of trajectory duration $T$. In each RR-PWS simulation, $N = 7200$ Monte Carlo samples were used ($M = 256$ for the particle filter). <strong>b</strong> The information transmission rate is defined as $I(\mathbf{C}_T, \mathbf{Y}_T)/T$ in the limit $T\to\infty$.](figures/chemotaxis_info_and_rate.svg){#fig-chemotaxis_info_and_rate}
 
-[@fig:chemotaxis_info_and_rate]a shows the PWS estimate of the
+[@fig-chemotaxis_info_and_rate]a shows the PWS estimate of the
 information transmission rate for cells swimming in gradients of
 different steepnesses $g$. The information transmission rate is obtained
 from the PWS estimate of the trajectory mutual information
 $I(\mathbf{C}, \mathbf{Y_p}; T)$, different trajectory durations $T$. As
-seen in [@fig:chemotaxis_info_and_rate]b, for short trajectories the
+seen in [@fig-chemotaxis_info_and_rate]b, for short trajectories the
 mutual information increases non-linearly with trajectory duration $T$,
 but in the long-duration limit the slope becomes constant. This
 asymptotic rate of increase of the mutual information with $T$ is the
@@ -768,33 +716,11 @@ precise definition is given by
 
 $$R(\mathbf{C}, \mathbf{Y_p}) = \lim_{T\to\infty} \frac{I(\mathbf{C}, \mathbf{Y_p}; T)}{T} \,.$$
 
-<figure id="fig:chemotaxis_comparison">
-<embed src="chemotaxis_comparison.pdf" />
-<figcaption>Comparison of theoretical models with experimental data for
-bacterial chemotaxis system. Panels <strong>a</strong> and
-<strong>b</strong> show the response and noise kernels, respectively,
-for the model based on literature parameters (green), parameters fitted
-to experiments (blue), and experiments from <span class="citation"
-data-cites="2021.Mattingly"></span> (orange). In panel
-<strong>c</strong>, the information transmission rate is shown for each
-model as a function of gradient steepness, with results from the
-Gaussian approximation shown alongside exact PWS calculations. The
-fitted model closely matches the experiments, while the literature-based
-model over-estimates information transmission rate by a factor of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\approx 4</annotation></semantics></math>
-despite having a lower response amplitude (panel <strong>a</strong>).
-This is because the literature-based model has a large number of
-independents receptor clusters
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>,
-resulting in much lower noise in the output (panel <strong>b</strong>).
-In all cases, the Gaussian approximation matches the exact PWS results,
-providing support for the accuracy of the measurements of <span
-class="citation" data-cites="2021.Mattingly"></span>.</figcaption>
-</figure>
+![Comparison of theoretical models with experimental data for bacterial chemotaxis system. Panels <strong>a</strong> and <strong>b</strong> show the response and noise kernels, respectively, for the model based on literature parameters (green), parameters fitted to experiments (blue), and experiments from <span class="citation" data-cites="2021.Mattingly"></span> (orange). In panel <strong>c</strong>, the information transmission rate is shown for each model as a function of gradient steepness, with results from the Gaussian approximation shown alongside exact PWS calculations. The fitted model closely matches the experiments, while the literature-based model over-estimates information transmission rate by a factor of $\approx 4$ despite having a lower response amplitude (panel <strong>a</strong>). This is because the literature-based model has a large number of independents receptor clusters $N_c$, resulting in much lower noise in the output (panel <strong>b</strong>). In all cases, the Gaussian approximation matches the exact PWS results, providing support for the accuracy of the measurements of <span class="citation" data-cites="2021.Mattingly"></span>.](figures/chemotaxis_comparison.svg){#fig-chemotaxis_comparison}
 
 We then compared our results for the information transmission rate of
 the literature-based model to those of @2021.Mattingly.
-[@fig:chemotaxis_comparison]c shows that the model predictions differ
+[@fig-chemotaxis_comparison]c shows that the model predictions differ
 from the experiments by a factor of $\approx 4$. Despite this
 discrepancy, we believe that the agreement between experiment and theory
 is, in fact, remarkable, because these predictions were made *ab
@@ -817,11 +743,11 @@ autocorrelation $N(t)$ of the kinase activity in a constant background
 concentration. Then they used a Gaussian model to compute the
 information transmission rate from these measured functions $K(t)$,
 $V(t)$, and $N(t)$ [@2009.Tostevin; @2021.Mattingly] (see also
-[@sec:lna]). This Gaussian model is based on a linear noise assumption
+[@sec-lna]). This Gaussian model is based on a linear noise assumption
 and cannot perfectly capture the true non-linear dynamics of the
 biochemical network. This could be the cause for the observed
 discrepancies in the information rate. We have indeed already seen in
-[@ch:variants] that there can be substantial differences between exact
+[@sec-variants] that there can be substantial differences between exact
 computations and the Gaussian approximation for the trajectory mutual
 information.
 
@@ -839,7 +765,7 @@ protocol [@2021.Mattingly].
 
 We find that the response kernel $K(t)$ and the autocorrelation function
 of the noise $N(t)$ of our system are different.
-[@fig:chemotaxis_comparison]a, b shows that our model reproduces the
+[@fig-chemotaxis_comparison]a, b shows that our model reproduces the
 timescales of $N(t)$ and $K(t)$ as measured experimentally. This is
 perhaps not surprising, because the decay of both $N(t)$ and $K(t)$ is
 set by the (de)methylation rate, which has been well-characterized
@@ -860,7 +786,7 @@ receptor cluster. Comparing this bound to the measured receptor noise
 strength $\sigma^2_N$ reveals that $N_{\mathrm c}$ needs to be much
 smaller than our original model assumes: the number of clusters needs to
 be as small as $N_{\mathrm c} \lesssim 10$. Indeed,
-[@fig:chemotaxis_comparison]b shows that with $N_{\mathrm c}=9$, our
+[@fig-chemotaxis_comparison]b shows that with $N_{\mathrm c}=9$, our
 model quantitatively fits the correlation function $N(t)$ of the
 receptor activity in a constant background concentration, as measured
 experimentally [@2021.Mattingly].
@@ -875,78 +801,37 @@ number of receptors per cluster has only been inferred indirectly from
 experiments [@2020.Kamino; @2010.Shimizu]. The higher gain as measured
 experimentally by @2021.Mattingly indicates that $N$ is larger than
 assumed in our model: with $N=15$ our model can quantitatively fit
-$K(t)$ ([@fig:chemotaxis_comparison]a).
+$K(t)$ ([@fig-chemotaxis_comparison]a).
 
 We thus find that by reducing the number of clusters from
 $N_{\mathrm c} = 400$ to $N_{\mathrm c}=9$ while simultaneously
 increasing their size from $N=6$ to $N=15$, our model is able to
 quantitatively fit both $N(t)$ and $K(t)$ [@2021.Mattingly], see
-[@fig:chemotaxis_comparison] and [@fig:fourier_kernels] for their
+[@fig-chemotaxis_comparison] and [@fig-fourier_kernels] for their
 Fourier representations. This suggests that the number of independent
 receptor clusters is smaller than hitherto believed, while their size is
 larger.
 
 \begin{tcolorbox}[float=t, title=PWS Estimate for the Fitted Chemotaxis Model]
 
-In the main text, we described that a chemotaxis model with $N_c = 9$ receptor clusters, each containing $N=15$ receptors, matches the experimental kernels of \citet{2021.Mattingly}. We then computed the information rate for this model using both the exact PWS method and a Gaussian approximation. How the rate in the Gaussian model is computed is described in \cref{sec:lna}. Here, we describe briefly how we compute the exact rate using PWS.
+In the main text, we described that a chemotaxis model with $N_c = 9$ receptor clusters, each containing $N=15$ receptors, matches the experimental kernels of \citet{2021.Mattingly}. We then computed the information rate for this model using both the exact PWS method and a Gaussian approximation. How the rate in the Gaussian model is computed is described in \cref{sec-lna}. Here, we describe briefly how we compute the exact rate using PWS.
 
 While in principle the rate could be computed directly via PWS for the model with $N_c=9$ and $N=15$, the receptor activity noise was so large that obtaining this estimate directly in a single PWS simulation proved to be inefficient.
 Instead, we computed the rate via an extrapolation procedure. 
 In particular, we computed the rate for a series of models with $N=15$, yet with $N_c$ going down from 400 to 50.
 The rate for the model of interest, with $N=15$ and $N_c=9$, was then obtained by fitting this data to a simple polynomial and then extrapolating to $N_c=9$.
 
-In \cref{fig:num_clusters} we show the information rate for a range of values of $N_c$, and for different gradient steepnesses $g$. 
+In \cref{fig-num_clusters} we show the information rate for a range of values of $N_c$, and for different gradient steepnesses $g$. 
 We see that the information rate increases non-linearly with the number $N_c$ of independent clusters.
 Based on the assumption that the information rate is zero in the limit $N_c\to 0$, we fit a quadratic function $R(N_c) = a N_c - b N^2_c$ with positive coefficients $a, b$ to the data.
-We provide the fit coefficients for different gradient steepnesses $g$ in \cref{tab:fit_coefficients}. From these fits we can obtain the extrapolated information rates for $N_c=9$ that are shown in the main text.
+We provide the fit coefficients for different gradient steepnesses $g$ in \cref{tbl-fit_coefficients}. From these fits we can obtain the extrapolated information rates for $N_c=9$ that are shown in the main text.
 \end{tcolorbox}
 
-<figure id="fig:fourier_kernels">
-<embed src="fourier_comparison.pdf" />
-<figcaption>Fourier representation of the kernels for computing the
-information transmission rate in the Gaussian approximation, the
-velocity power spectrum
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V(\omega)</annotation></semantics></math>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mrow><mtext mathvariant="normal">m</mtext><mtext mathvariant="normal">m</mtext><msup><mtext mathvariant="normal">s</mtext><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[(\si{\milli\meter\text{s}^{-1}})^2]</annotation></semantics></math>,
-the squared frequency response
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">|K(\omega)|^2</annotation></semantics></math>,
-and the noise power spectrum
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo stretchy="false" form="prefix">(</mo><mi>ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">N(\omega)</annotation></semantics></math>.
-The top-left panel shows the individual Fourier kernels as a function of
-frequency
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>
-for the different models. On the top-right the normalized kernels are
-shown with linear axis scales. In the bottom panels the integrand for
-computing the mutual information rate in the Gaussian approximation is
-shown. In the bottom right, the area under the curves represents the
-proportionality between the squared gradient steepness
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>g</mi><mn>2</mn></msup><annotation encoding="application/x-tex">g^2</annotation></semantics></math>
-and the information rate (units  s mm<sup>−−2</sup>). In the bottom left
-plot, the integrand is multiplied by
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>,
-so that with log scaling of the axes the area under the curve is equal
-to the integral. </figcaption>
-</figure>
+![Fourier representation of the kernels for computing the information transmission rate in the Gaussian approximation, the velocity power spectrum $V(\omega)$ $[(\si{\milli\meter\text{s}^{-1}})^2]$, the squared frequency response $|K(\omega)|^2$, and the noise power spectrum $N(\omega)$. The top-left panel shows the individual Fourier kernels as a function of frequency $\omega$ for the different models. On the top-right the normalized kernels are shown with linear axis scales. In the bottom panels the integrand for computing the mutual information rate in the Gaussian approximation is shown. In the bottom right, the area under the curves represents the proportionality between the squared gradient steepness $g^2$ and the information rate (units  s mm<sup>−−2</sup>). In the bottom left plot, the integrand is multiplied by $\omega$, so that with log scaling of the axes the area under the curve is equal to the integral. ](figures/fourier_comparison.svg){#fig-fourier_kernels}
 
 ### Comparing the chemotaxis information rate of the models against experiments
 
-<figure id="fig:num_clusters">
-<embed src="num-clusters.pdf" style="width:75.0%" />
-<figcaption>The information rate as a function of the number of receptor
-clusters
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>.
-The cluster size is fixed at
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>=</mo><mn>15</mn></mrow><annotation encoding="application/x-tex">N=15</annotation></semantics></math>.
-The left panel shows the increase of information rate as a function of
-gradient steepness for different values of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>N</mi><mi>c</mi></msub><annotation encoding="application/x-tex">N_c</annotation></semantics></math>,
-including a line for the experimental data from <span class="citation"
-data-cites="2021.Mattingly"></span>. The right panel shows the same data
-but highlights the increase of the information rate and when increasing
-the number of receptor clusters. A quadratic fit (shown as dotted lines)
-is used to extrapolate the information rate. All results were obtained
-using RR-PWS. </figcaption>
-</figure>
+![The information rate as a function of the number of receptor clusters $N_c$. The cluster size is fixed at $N=15$. The left panel shows the increase of information rate as a function of gradient steepness for different values of $N_c$, including a line for the experimental data from <span class="citation" data-cites="2021.Mattingly"></span>. The right panel shows the same data but highlights the increase of the information rate and when increasing the number of receptor clusters. A quadratic fit (shown as dotted lines) is used to extrapolate the information rate. All results were obtained using RR-PWS. ](figures/num-clusters.svg){#fig-num_clusters}
 
 How accurately can our revised model reproduce the measured information
 rate, and how accurate is the Gaussian framework for the experimental
@@ -954,10 +839,10 @@ system in the regime studied by @2021.Mattingly? In the revised model,
 called the "fitted model", with $N_{\mathrm c}=9$ and $N=15$, all key
 quantities for computing the information transmission rate within the
 Gaussian framework, $V(t)$, $N(t)$ and $K(t)$, are nearly identical to
-the experiments of @2021.Mattingly, see [@fig:chemotaxis_comparison].
-Within the Gaussian framework (see [@sec:lna]), the information
+the experiments of @2021.Mattingly, see [@fig-chemotaxis_comparison].
+Within the Gaussian framework (see [@sec-lna]), the information
 transmission rate in our model is thus expected to be very similar to
-the experimentally measured one, and [@fig:chemotaxis_comparison]c shows
+the experimentally measured one, and [@fig-chemotaxis_comparison]c shows
 that this is indeed the case. To quantify the accuracy of the Gaussian
 framework, we then recomputed the information transmission rate for the
 revised model, using exact PWS. We found that the result matches the

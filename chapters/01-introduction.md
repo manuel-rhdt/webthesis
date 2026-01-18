@@ -84,7 +84,7 @@ The canonical measure for the quality of information transmission is the
 mutual information. It quantifies how much information is shared between
 two random variables, such as the input and output signals of an
 information-processing mechanism, see
-[@fig:information_transmission_flow]. Let $S$ and $X$ be two random
+[@fig-information_transmission_flow]. Let $S$ and $X$ be two random
 variables that are jointly distributed according to the density
 $\mathrm{P}(s, x)$ and with marginal densities $\mathrm{P}(s)$ and
 $\mathrm{P}(x)$. The mutual information between $S$ and $X$ is then
@@ -106,21 +106,7 @@ no feedback from $X$ to $S$. In such cases, the mutual information
 $I(S, X)$ provides a measure for how effectively information about $S$
 is transmitted through the system into the output $X$.
 
-<figure id="fig:information_transmission_flow">
-<embed src="information_transmission_flow.pdf" style="width:65.0%" />
-<figcaption>A generic information processing device takes an input
-signal
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
-and produces an output signal
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.
-Because the output is correlated with the input, we can quantify the
-information that
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
-share. This quantity is called the mutual information and measures the
-information that is transmitted.</figcaption>
-</figure>
+![A generic information processing device takes an input signal $s$ and produces an output signal $x$. Because the output is correlated with the input, we can quantify the information that $s$ and $x$ share. This quantity is called the mutual information and measures the information that is transmitted.](figures/information_transmission_flow.svg){#fig-information_transmission_flow}
 
 In biological systems, information transmission has frequently been
 quantified via the *instantaneous mutual information* (IMI)
@@ -177,10 +163,9 @@ the trajectories in the long-time limit. Let $\mathbfit{S}_T$ and
 $\mathbfit{X}_T$ be trajectories of duration $T$, then the mutual
 information rate is given by
 
-::: {#eq:intro-info-rate}
+
 $$R = \lim_{T\to\infty} \frac{I(\mathbfit{S}_T, \mathbfit{X}_T)}{T} \,.
-    \label{eq:intro-info-rate}$$
-:::
+    \label{eq-intro-info-rate}$$ {#eq-intro-info-rate}
 
 The mutual information rate quantifies how many independent messages can
 be transmitted per unit time, on average, via a communication channel.
@@ -281,16 +266,15 @@ statistical physics.
 The crux of PWS lies in the efficient computation of
 $\mathrm{P}(\mathbfit{x})$ via the marginalization integral
 
-::: {#eq:intro-marginaliztion}
+
 $$\mathrm{P}(\mathbfit{x}) = \int \mathrm{P}(\mathbfit{x}|\mathbfit{s}) \mathrm{P}(\mathbfit{s})\,d\mathbfit{s}\,.
-    \label{eq:intro-marginaliztion}$$
-:::
+    \label{eq-intro-marginaliztion}$$ {#eq-intro-marginaliztion}
 
 To evaluate this integral efficiently, we present different variants of
-PWS. In [@ch:dpws] we introduce *Direct PWS*, the simplest variant of
-PWS, where [@eq:intro-marginaliztion] is computed bia a "brute-force"
+PWS. In [@sec-dpws] we introduce *Direct PWS*, the simplest variant of
+PWS, where [@eq-intro-marginaliztion] is computed bia a "brute-force"
 Monte Carlo approach that works well for short trajectories, but which
-becomes exponentially harder for long trajectories. In [@ch:variants],
+becomes exponentially harder for long trajectories. In [@sec-variants],
 we present two additional variants of PWS that evaluate the
 marginalization integral more efficiently, *RR-PWS* and *TI-PWS*.
 Rosenbluth-Rosenbluth PWS (RR-PWS) is based on efficient free-energy
@@ -300,7 +284,7 @@ Thermodynamic integration PWS (TI-PWS) uses techniques from transition
 path sampling to derive a MCMC sampler in trajectory space
 [@2002.Bolhuis]. From this MCMC chain, we can compute the
 marginalization integral using thermodynamic integration
-[@1998.Gelman; @2001.Neal; @2002.Frenkel]. Finally, in [@ch:ml-pws], we
+[@1998.Gelman; @2001.Neal; @2002.Frenkel]. Finally, in [@sec-ml-pws], we
 introduce a fourth marginalization technique based on variational
 inference via neural networks [@2013.Kingma]. Its conceptual simplicity,
 coupled with powerful marginalization methods, make PWS a versatile
@@ -314,23 +298,23 @@ stochastic model defining a probability measure over trajectories. While
 (stochastic) mechanistic models of experimental systems are increasingly
 becoming available, the question remains whether PWS can be applied
 directly to experimental data when no such model is available. In
-[@ch:ml-pws], we show that machine learning can be used to construct a
+[@sec-ml-pws], we show that machine learning can be used to construct a
 data-driven stochastic model that captures the trajectory statistics,
 i.e. $\mathrm{P}(\mathbfit{x}| \mathbfit{s})$, enabling the application
 of PWS to experimental data.
 
 We demonstrate the practical utility of PWS by calculating the
 trajectory mutual information for a range of systems. In
-[@ch:variants; @ch:lna_vs_pws], we study a minimal model for gene
+[@sec-variants; @sec-lna_vs_pws], we study a minimal model for gene
 expression, showing that PWS can estimate the mutual information rate
 for this system more accurately than any previous technique. Using PWS,
 we reveal that the Gaussian approximation, though expected to hold due
 to the system's linearity, does not provide an accurate estimate in this
-case. In [@ch:lna_vs_pws; @ch:ml-pws] we extend our analysis to simple
+case. In [@sec-lna_vs_pws; @sec-ml-pws] we extend our analysis to simple
 nonlinear models for information transmission, comparing PWS results
 against the Gaussian approximation; for these models, PWS is the first
 technique capable of accurately computing trajectory mutual information.
-Moreover, in [@ch:chemotaxis] we apply PWS to a complex stochastic model
+Moreover, in [@sec-chemotaxis] we apply PWS to a complex stochastic model
 of bacterial chemotaxis, marking the first instance where the
 information rate for a system of this complexity can be computed
 exactly. Together, these examples demonstrate that an exact technique
@@ -347,7 +331,7 @@ The main contributions of this thesis are as follows:
     dynamical stochastic systems. This framework is exact, applicable to
     both continuous and discrete time processes, and does not rely on
     any assumptions about the system's dynamics. PWS and its main
-    variants are described in [@ch:dpws; @ch:variants].
+    variants are described in [@sec-dpws; @sec-variants].
 
 2.  **Discovery of discrepancies between experiments and mathematical
     models of chemotaxis**: We apply PWS to various systems, including
@@ -357,10 +341,10 @@ The main contributions of this thesis are as follows:
     widely-used MWC model of chemotaxis cannot explain the experimental
     data. We find that the number of receptor clusters is smaller and
     that the size of these clusters is larger than hitherto believed. We
-    describe and characterize this finding in [@ch:chemotaxis].
+    describe and characterize this finding in [@sec-chemotaxis].
 
 3.  **Study of the accuracy of the gaussian approximation for the
-    information rate**: In [@ch:lna_vs_pws], we use PWS to
+    information rate**: In [@sec-lna_vs_pws], we use PWS to
     quantitatively study the accuracy of the widely-used Gaussian
     approximation. Before PWS, no exact technique was available to
     obtain *ground truth* results of the mutual information rate for
@@ -369,7 +353,7 @@ The main contributions of this thesis are as follows:
     surprisingly inaccurate, even for linear reaction systems.
 
 4.  **Neural networks for learning the stochastic dynamics from
-    time-series data**: In [@ch:ml-pws], we demonstrate that recent
+    time-series data**: In [@sec-ml-pws], we demonstrate that recent
     machine learning techniques can be employed to automatically learn
     the stochastic dynamics from experimental data. We show that by
     combining these learned models with PWS, it becomes possible to
@@ -384,10 +368,10 @@ present three variants of PWS, all of which compute the conditional
 entropy in the same manner, but differ in the way this Monte Carlo
 averaging procedure for computing the marginal probability
 $\mathcal{P}[\mathbfit{x}]$ is carried out.
-[@ch:dpws; @ch:variants; @ch:chemotaxis] of this thesis have been
+[@sec-dpws; @sec-variants; @sec-chemotaxis] of this thesis have been
 published previously in *Physical Review X*.[^3]
 
-In [@ch:dpws] we present the simplest PWS variant, *Direct* PWS (DPWS).
+In [@sec-dpws] we present the simplest PWS variant, *Direct* PWS (DPWS).
 To compute $\mathcal{P}[\mathbfit{x}]$, DPWS performs a brute-force
 average of the path likelihoods $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$
 over the input trajectories $\mathbfit{s}$. While we show that this
@@ -395,7 +379,7 @@ scheme works for simple systems, the brute-force Monte Carlo averaging
 procedure becomes more difficult for larger systems and exponentially
 harder for longer trajectories.
 
-In [@ch:variants], we present our second and third variant of PWS which
+In [@sec-variants], we present our second and third variant of PWS which
 are based on the realization that the marginal probability
 $\mathcal{P}[\mathbfit{x}]$ is akin to a partition function. These
 schemes leverage techniques for computing free energies from statistical
@@ -405,20 +389,20 @@ the efficiency of the three PWS variants, as well as to compare the PWS
 results against analytical results from the Gaussian approximation
 [@2009.Tostevin].
 
-In [@ch:chemotaxis], we apply PWS to the bacterial chemotaxis system,
+In [@sec-chemotaxis], we apply PWS to the bacterial chemotaxis system,
 which is arguably the best characterized signaling system in biology.
 @2021.Mattingly recently argued that bacterial chemotaxis in shallow
 gradients is information limited. Yet, to compute the information rate
 from their experimental data they had to employ a Gaussian framework.
 PWS makes it possible to asses the accuracy of this approximation.
 
-[@ch:lna_vs_pws] is devoted to studying the accuracy of the Gaussian
+[@sec-lna_vs_pws] is devoted to studying the accuracy of the Gaussian
 approximation for non-Gaussian systems. By understanding the limitations
 and strengths of the Gaussian approximation, this chapter aims to
 provide deeper insights into selecting the appropriate method for MI
 estimation depending on the system.
 
-Finally, [@ch:ml-pws] we introduce ML-PWS, which combines recent machine
+Finally, [@sec-ml-pws] we introduce ML-PWS, which combines recent machine
 learning models with PWS, to compute the mutual information directly
 from data. This idea significantly extends the range of applications for
 PWS, since we no longer require a mechanistic model of the system.
