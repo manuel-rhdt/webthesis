@@ -1,5 +1,4 @@
 ---
-bibliography: references.bib
 csl: american-physics-society.csl
 license: CC-BY-4.0
 link-citations: true
