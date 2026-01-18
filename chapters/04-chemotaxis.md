@@ -355,13 +355,13 @@ $$a_0 = \frac{k_R}{k_R + k_B} \,.
     \label{eq:adapted_activity}$$
 :::
 
-Ṯhe steady-state methylation $m^\star$ can be obtained from
+The steady-state methylation $m^\star$ can be obtained from
 [@eq:prob_active; @eq:free_energy_active] by solving
 $p_a(c, m^\star)=a_0$:
 
 $$m^\star = m_0 + \frac{N \ln\left( \frac{1 + c/K_i}{1 + c/K_a} \right)+ \ln\left( \frac{1-a_0}{a_0} \right)}{-\delta f_m}\,.$$
 
-Ṯo characterize the methylation timescale, we linearize the dynamics of
+To characterize the methylation timescale, we linearize the dynamics of
 $m(t)$ around the steady state (at constant ligand concentration
 $c(t)=c_0$). To first order, we can write
 
@@ -404,7 +404,7 @@ kinase activity is directly linked to the activity of a receptor
 cluster. Therefore, we assume that CheY is phosphorylated by active
 receptor clusters. Dephosphorylation of CheY-p is catalyzed by the
 phosphatase CheZ, which we assume to be present at a constant
-concentration. Ṯhe CheZ-catalyzed dephosphorylation rate was reported to
+concentration. The CheZ-catalyzed dephosphorylation rate was reported to
 be $2.2\,\text{s}^{-1}$ for attractant response and $22\,\text{s}^{-1}$
 for repellent response [@2002.Sourjikt5]. Based on this data, we use the
 approximate dephosphorylation rate $k_Z = 10\,\text{s}^{-1}$ in our
@@ -425,7 +425,7 @@ $N_c$.
 
 ### Reaction Kinetics
 
-S̱ince the timescale of conformational switching of active and inactive
+Since the timescale of conformational switching of active and inactive
 receptors and ligand binding is much faster [@2013.Ortega] than the
 timescale of phosphorylation or methylation, we don't explicitly model
 ligand (un)binding and conformational switching. Each cluster is
@@ -637,7 +637,7 @@ trajectories.
 
 #### Obtaining the Fourier Kernels using the FFT
 
-Ṯo compute the Gaussian information rate, we need the frequency-space
+To compute the Gaussian information rate, we need the frequency-space
 representations of the kernels $V(t)$, $K(t)$, and $N(t)$. We already
 derived the analytical form of $V(\omega)$ in [@sec:chemotaxis_input].
 We obtain $K(\omega)$ and $N(\omega)$ numerically via a discrete Fourier

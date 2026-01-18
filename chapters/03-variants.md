@@ -133,7 +133,7 @@ physics for the efficient computation of free energies.
          $\mathcal{P}[\mathbfit{x}]$                                     $\mathcal{Z}[\mathbfit{x}]$
    $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$                  $e^{-\Delta\mathcal{U}[\mathbfit{s}, \mathbfit{x}]}$
 
-  : Ṯranslation to the notation of statistical physics. The definitions
+  : Translation to the notation of statistical physics. The definitions
   of $\mathcal{U}$ and $\mathcal{U}_0$ that are used here are given in
   [@eq:h0; @eq:h1].
 :::
@@ -378,7 +378,7 @@ trajectories segment by segment:
                 \label{eq:index-prob}$$ where the Rosenbluth weight
         $w_i$ is defined as $$w_i = \sum^M_{k=1} e^{-U^k_i}\,.$$ This
         sampling procedure yields $M$ randomly drawn indices
-        $\ell^1_i, \ldots, \ell^M_i$. E̱ach $\ell^k_i$ is an index that
+        $\ell^1_i, \ldots, \ell^M_i$. Each $\ell^k_i$ is an index that
         lies in the range from $1,\ldots,M$ and that points to one of
         the trajectories that have been generated up to $\tau_i$. To
         continue the sampling procedure, we relabel the indices such
@@ -906,7 +906,7 @@ package [@2017.Rackauckas].
 
 We consider a stochastic process $\emptyset\rightleftharpoons\mathrm{X}$
 of species $\mathrm{X}$ which is created at rate $\rho(t)$ and decays
-with constant rate $\mu$ p̱er copy of $\mathrm{X}$. This system receives
+with constant rate $\mu$ per copy of $\mathrm{X}$. This system receives
 information from an input signal that modulates the birth rate
 $\rho(t)$. For simplicity, we assume it is given by
 
@@ -922,7 +922,7 @@ with production rate $\kappa$ and decay rate $\lambda$.
 
 We compute the trajectory mutual information for this system as a
 function of the trajectory duration $T$ of the input and output
-trajectories. F̱or $T\rightarrow\infty$, the trajectory mutual
+trajectories. For $T\rightarrow\infty$, the trajectory mutual
 information is expected to increase linearly with $T$, since, on
 average, every additional output segment contains the same additional
 amount of information on the input trajectory. Because we are interested
@@ -939,7 +939,7 @@ already for $T=0$.
 information as a function of trajectory duration for a simple coupled
 birth-death process with rates
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>κ</mi><mo>=</mo><mn>50</mn><mo>,</mo><mi>λ</mi><mo>=</mo><mn>1</mn><mo>,</mo><msub><mi>ρ</mi><mn>0</mn></msub><mo>=</mo><mn>10</mn><mo>,</mo><mi>μ</mi><mo>=</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">\kappa = 50, \lambda=1, \rho_0=10, \mu = 10</annotation></semantics></math>
-and steady-state initial condition. Ṯhe top panels show example
+and steady-state initial condition. The top panels show example
 trajectories of input and output as well as the mean (solid line) and
 standard deviation (shaded region). Below, the mutual information is
 shown as a function of trajectory duration. The inset shows an enlarged
@@ -972,7 +972,7 @@ The figure also shows the analytical result of a Gaussian model
 [@2009.Tostevin], obtained using the linear-noise approximation (see
 [@sec:gaussian-covariance]).
 
-W̱e find that the efficiency of the respective PWS variants depends on
+We find that the efficiency of the respective PWS variants depends on
 the duration of the input-output trajectories. For short trajectories
 all PWS variants yield very similar estimates for the mutual
 information. However, for longer trajectories the estimates of DPWS and,

@@ -96,7 +96,7 @@ simplified models are typically used. While empirical distribution
 estimates can be avoided by employing the K-nearest-neighbors entropy
 estimator [@2002.Kaiser; @2004.Kraskov], this method depends on a choice
 of metric in trajectory space and can become unreliable for long
-trajectories [@2019.Cepeda-Humerez]. A̱lternative, decoding-based
+trajectories [@2019.Cepeda-Humerez]. Alternative, decoding-based
 information estimates can be developed for trajectories [@2008.Gao], but
 merely provide a lower bound of the mutual information, and it remains
 unclear how tight these lower bounds
@@ -216,7 +216,7 @@ where the marginal output distribution is given by
 $\mathrm{P}(x) = \int ds\ \mathrm{P}(s, x)$. The quantity
 $\mathrm I(\mathcal{S}, \mathcal{X})$ as defined above is a non-negative
 real number, representing the mutual information between $\mathcal{S}$
-and $\mathcal{X}$ in nats. Ṯhe integrals in [@eq:mutual_information] run
+and $\mathcal{X}$ in nats. The integrals in [@eq:mutual_information] run
 over all possible realizations of the random variables $\mathcal{S}$ and
 $\mathcal{X}$. In our case, $\mathcal{S}$ and $\mathcal{X}$ represent
 stochastic trajectories and so the integrals become path integrals.
@@ -243,7 +243,7 @@ through the observation of the output.
 When analyzing data from experiments or simulations however, the mutual
 information is generally estimated via
 $\mathrm{I}(\mathcal{S},\mathcal{X})=\mathrm{H}(\mathcal{X}) - \mathrm{H}(\mathcal{X}|\mathcal{S})$.
-Ṯhis is because simulation or experimental data generally provide
+This is because simulation or experimental data generally provide
 information about the distribution of outputs for a given input, rather
 than vice versa. The accessible entropies are thus the marginal output
 entropy $\mathrm{H}(\mathcal{X})$ and the conditional output entropy
@@ -339,7 +339,7 @@ $$\hat{f}_N = \frac{1}{N} \sum^N_{i=1} f(\mathbfit{z}_i)$$
 
 which converges to the true mean in the limit $N\to\infty$.
 
-S̱pecifically, we want to estimate the conditional and the marginal
+Specifically, we want to estimate the conditional and the marginal
 entropy to compute the mutual information. Let us imagine that we
 generate $N$ input trajectories $\mathbfit{s}_1,\ldots,\mathbfit{s}_N$
 from the distribution $\mathcal{P}[\mathbfit{s}]$. Next, for every input
@@ -357,7 +357,7 @@ $$\begin{aligned}
 \label{eq:conditional-entropy-estimate}$$
 :::
 
-S̱econdly, for a given output $\mathbfit{x}$ we generate $M$ inputs
+Secondly, for a given output $\mathbfit{x}$ we generate $M$ inputs
 $\mathbfit{s}^\prime_1,\ldots,\mathbfit{s}^\prime_M$ according to
 $\mathcal{P}[\mathbfit{s}]$, then we can obtain a Monte Carlo estimate
 for the marginal probability of the output trajectory
@@ -409,7 +409,7 @@ $$\begin{aligned}
 \label{eq:average-of-differences}$$
 :::
 
-Ṯhis equation applies to all variants of PWS. They differ, however, in
+This equation applies to all variants of PWS. They differ, however, in
 the way $\mathcal{P}[\mathbfit{x}]$ is computed. In the brute-force
 version of PWS, called *Direct PWS* (DPWS), we use [@eq:marginal-naive]
 to evaluate the marginal probability $\mathcal{P}[\mathbfit{x}]$. DPWS
@@ -423,7 +423,7 @@ $\mathcal{P}[\mathbfit{x}]$ is replaced by more elaborate schemes. That
 said, DPWS is a conceptually simple, straightforward to implement, and
 exact scheme to compute the mutual information.
 
-H̱aving explained the core ideas of our technique above, we will continue
+Having explained the core ideas of our technique above, we will continue
 this section with a review of the necessary concepts of master equations
 to implement PWS. First, in [@sec:mjp], we derive the formula for the
 conditional probability $\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ which
@@ -489,7 +489,7 @@ $$\begin{aligned}
 \label{eq:traj-prob-master-eq}$$
 :::
 
-a̱ product of the probability of the initial state $\mathrm{P}(x_0)$, the
+a product of the probability of the initial state $\mathrm{P}(x_0)$, the
 rates of the $n-1$ transitions $Q_{t_i}\left(x_i, x_{i-1}\right)$, and
 the survival probabilities for the waiting times between jumps, given by
 $\exp\int^{t_{i}}_{t_{i-1}} dt\ Q_t(x_{i-1}, x_{i-1})$ for
@@ -549,7 +549,7 @@ $$\mathcal{L}_t[\mathbfit{s},\mathbfit{x}] = Q_t(x(t),x(t);\mathbfit{s}) +
     \label{eq:path_action}$$
 :::
 
-Ṯhe computation of the log-likelihood
+The computation of the log-likelihood
 $\ln\mathcal{P}[\mathbfit{x}|\mathbfit{s}]$ for given trajectories
 $\mathbfit{s}$ and $\mathbfit{x}$ according to
 [@eq:log_traj_prob; @eq:path_action] proceeds as follows:
