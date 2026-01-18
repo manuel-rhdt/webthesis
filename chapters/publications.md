@@ -20,6 +20,6 @@ Zechner, *State- versus Reaction-Based Information Processing in
 Biochemical Networks*, arXiv preprint
 [arXiv:2505.13373](https://arxiv.org/abs/2505.13373) (2025).
 
-[^1]: These authors contributed equally[]{#fnt:equal label="fnt:equal"}
+[^1]: These authors contributed equally.
 
 [^2]: Publication not appearing in this thesis.
