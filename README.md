@@ -62,10 +62,6 @@ BibTeX:
 }
 ```
 
-## Building
-
-The site is built with [Quarto](https://quarto.org/) (`quarto render`) and deployed by the GitHub Actions workflow in `.github/workflows/build-and-deploy.yml`. The body text is self-hosted Noto Sans (`theme/fonts.css`, latin and latin-ext subsets); the maths uses Lisnoti, which is derived from Noto Sans and has the same 0.536 em x-height, so text and equations share one optical size. After rendering, `scripts/formel-math.mjs` replaces every MathML equation with an SVG rendered by [formel](https://github.com/manuel-rhdt/formel), written once per distinct equation to `_book/math/`. Function names (`\sin`, `\ln`, `\lim`, `\operatorname{…}`) come out of pandoc as bare `<mo>` elements, which carry no operator-dictionary entry; the script rewrites them into `<mi>` followed by U+2061 FUNCTION APPLICATION so that formel spaces them the way TeX does (no space before the name, a thin space before the argument, none before an opening fence). The equations are therefore vector outlines and do not depend on the math fonts installed on the reader's machine; the trade-off is that they are no longer selectable text (the speech label formel puts in each SVG is used as the image's `alt` text). The formel build is pinned in `.github/formel-checksums.txt`.
-
 ## License
 
 This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
