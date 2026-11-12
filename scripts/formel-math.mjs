@@ -30,8 +30,12 @@ const mathDir = path.join(bookDir, "math");
 
 const { initSync, MathRenderer } = await import(pathToFileURL(path.join(pkgDir, "formel_wasm.js")));
 initSync({ module: new WebAssembly.Module(fs.readFileSync(path.join(pkgDir, "formel_wasm_bg.wasm"))) });
-const renderer = new MathRenderer(new Uint8Array(fs.readFileSync(fontFile)));
+const fontBytes = fs.readFileSync(fontFile);
+const renderer = new MathRenderer(new Uint8Array(fontBytes));
 const upm = renderer.units_per_em();
+// The file name has to follow the font too: same MathML in another face is another picture, and
+// the old name would keep serving the previous glyphs from caches.
+const fontId = crypto.createHash("sha256").update(fontBytes).digest("hex").slice(0, 8);
 
 const MATH_RE = /<math\b[^>]*>[\s\S]*?<\/math>/g;
 const DISPLAY_RE = /display\s*=\s*"block"/;
@@ -121,7 +125,7 @@ function normalizeFunctionNames(mathml) {
 
 function renderOne(mathml) {
   mathml = normalizeFunctionNames(mathml);
-  const hash = crypto.createHash("sha256").update(mathml).digest("hex").slice(0, 16);
+  const hash = crypto.createHash("sha256").update(fontId).update(mathml).digest("hex").slice(0, 16);
   if (!svgByHash.has(hash)) {
     const r = renderer.render(mathml, false);
     const alt = (r.svg.match(/<title>([\s\S]*?)<\/title>/) || [, ""])[1];
