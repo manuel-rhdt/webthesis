@@ -69,58 +69,93 @@ let svgBytes = 0;
 // exactly like TeX. A name that carries limits (`\lim_{x\to0}`, `\max_{i}`) has to stay an
 // operator, so it keeps <mo> and loses its right space instead; the U+2061 then follows the
 // limits, not the name.
+//
+// The U+2061 has to be a sibling of the argument: formel looks at the *next child of the same
+// row* to decide whether to add the thin space, so a name that pandoc wrapped in its own <mrow>
+// has to hand the operator up to the enclosing row, otherwise it lands at the end of a row and
+// does nothing (that is exactly the "no space after ln" case).
 const FUNCTION_NAME = /^[A-Za-z]{2,}$/;
 const NOT_A_FUNCTION = new Set(["mod", "bmod", "pmod"]);
 const LIMIT_BASE = new Set(["munder", "mover", "munderover"]);
+const ROW_LIKE = new Set(["mrow", "mstyle", "maction", "mtd", "mphantom", "mpadded"]);
 const APPLY_FUNCTION = "<mo>&#x2061;</mo>";
 
-function normalizeFunctionNames(mathml) {
-  const tag = /<(\/?)([A-Za-z][\w:.-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
-  const out = [];
-  const stack = []; // open elements: { name, children, applyAfter }
+const TAGS = /<(\/?)([A-Za-z][\w:.-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
+
+function parseMathML(xml) {
+  const root = { name: "#root", attrs: "", children: [] };
+  const stack = [root];
   let pos = 0;
   let m;
-
-  const firstChild = () => stack.length === 0 || stack[stack.length - 1].children === 0;
-
-  while ((m = tag.exec(mathml))) {
-    out.push(mathml.slice(pos, m.index));
-    pos = tag.lastIndex;
-    const [, closing, name] = m;
-
+  TAGS.lastIndex = 0;
+  while ((m = TAGS.exec(xml))) {
+    if (m.index > pos) stack[stack.length - 1].children.push({ text: xml.slice(pos, m.index) });
+    pos = TAGS.lastIndex;
+    const [, closing, name, attrs] = m;
     if (closing) {
-      const frame = stack.pop();
-      out.push(m[0]);
-      if (frame?.applyAfter) out.push(APPLY_FUNCTION);
+      if (stack.length > 1) stack.pop();
       continue;
     }
-
-    // <mo>name</mo> with an all-letter body: a function name as pandoc writes it.
-    const body = /^([^<]*)<\/mo>/.exec(mathml.slice(pos));
-    if (name === "mo" && body && FUNCTION_NAME.test(body[1].trim()) && !NOT_A_FUNCTION.has(body[1].trim())) {
-      const text = body[1].trim();
-      pos += body[0].length;
-      tag.lastIndex = pos; // the </mo> was consumed by hand
-      const parent = stack[stack.length - 1];
-      if (firstChild() && parent && LIMIT_BASE.has(parent.name)) {
-        // keep the operator (it needs limits under/over it), zero its right space, apply after
-        const attrs = m[3].replace(/\srspace="[^"]*"/, "");
-        out.push(`<mo${attrs} rspace="0">${text}</mo>`);
-        parent.children++;
-        parent.applyAfter = true;
-      } else {
-        out.push(`<mi>${text}</mi>`, APPLY_FUNCTION);
-        if (parent) parent.children++;
-      }
-      continue;
-    }
-
-    out.push(m[0]);
-    if (stack.length) stack[stack.length - 1].children++;
-    if (!m[0].endsWith("/>")) stack.push({ name, children: 0, applyAfter: false });
+    const node = { name, attrs, children: [], empty: m[0].endsWith("/>") };
+    stack[stack.length - 1].children.push(node);
+    if (!node.empty) stack.push(node);
   }
-  out.push(mathml.slice(pos));
-  return out.join("");
+  if (pos < xml.length) stack[stack.length - 1].children.push({ text: xml.slice(pos) });
+  return root;
+}
+
+const serialize = (node) =>
+  node.text !== undefined ? node.text
+    : node.empty ? `<${node.name}${node.attrs}/>`
+    : `<${node.name}${node.attrs}>${node.children.map(serialize).join("")}</${node.name}>`;
+
+const functionName = (node) => {
+  if (!node || node.name !== "mo" || node.children.length !== 1) return null;
+  const text = node.children[0].text?.trim();
+  return text && FUNCTION_NAME.test(text) && !NOT_A_FUNCTION.has(text) ? text : null;
+};
+
+// Returns the serialized element plus `pending`: a function application that is still owed at the
+// end of this element and has to be emitted by the enclosing row.
+function rewrite(node) {
+  if (node.text !== undefined) return { xml: node.text, pending: false };
+  if (node.empty) return { xml: serialize(node), pending: false };
+
+  const out = [];
+  let pending = false;
+  const firstElement = (node.children.find((c) => !c.text) ?? {});
+  for (const child of node.children) {
+    if (child.text !== undefined) { out.push(child.text); continue; }
+
+    const name = functionName(child);
+    if (name && LIMIT_BASE.has(node.name) && child === firstElement) {
+      // keep the operator (it needs limits under/over it), zero its right space, apply after
+      out.push(`<mo${child.attrs.replace(/\srspace="[^"]*"/, "")} rspace="0">${child.children[0].text.trim()}</mo>`);
+      pending = true;
+      continue;
+    }
+    if (name) {
+      out.push(`<mi>${name}</mi>`);
+      const more = node.children.slice(node.children.indexOf(child) + 1).some((c) => !c.text);
+      if (more && ROW_LIKE.has(node.name)) out.push(APPLY_FUNCTION);
+      else pending = true;
+      continue;
+    }
+
+    const sub = rewrite(child);
+    out.push(sub.xml);
+    if (sub.pending) {
+      if (ROW_LIKE.has(node.name)) out.push(APPLY_FUNCTION);
+      else pending = true;
+    }
+  }
+
+  if (node.name === "#root") return { xml: out.join(""), pending: false };
+  return { xml: `<${node.name}${node.attrs}>${out.join("")}</${node.name}>`, pending };
+}
+
+function normalizeFunctionNames(mathml) {
+  return rewrite(parseMathML(mathml)).xml;
 }
 
 function renderOne(mathml) {
