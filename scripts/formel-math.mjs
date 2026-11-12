@@ -57,7 +57,70 @@ let occurrences = 0;
 let failures = 0;
 let svgBytes = 0;
 
+// pandoc writes a function name as <mo>sin</mo>: a multi-character operator that is in no
+// operator dictionary, so every renderer falls back to "unknown infix" — 5/18em before and after.
+// TeX makes it an Op atom followed by a function application, i.e. no space before and 3/18em
+// after (and nothing at all before an opening fence, `\sin(x)`). Rewrite the name as <mi> (which
+// renders upright because it is longer than one character) and insert U+2061, which formel spaces
+// exactly like TeX. A name that carries limits (`\lim_{x\to0}`, `\max_{i}`) has to stay an
+// operator, so it keeps <mo> and loses its right space instead; the U+2061 then follows the
+// limits, not the name.
+const FUNCTION_NAME = /^[A-Za-z]{2,}$/;
+const NOT_A_FUNCTION = new Set(["mod", "bmod", "pmod"]);
+const LIMIT_BASE = new Set(["munder", "mover", "munderover"]);
+const APPLY_FUNCTION = "<mo>&#x2061;</mo>";
+
+function normalizeFunctionNames(mathml) {
+  const tag = /<(\/?)([A-Za-z][\w:.-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
+  const out = [];
+  const stack = []; // open elements: { name, children, applyAfter }
+  let pos = 0;
+  let m;
+
+  const firstChild = () => stack.length === 0 || stack[stack.length - 1].children === 0;
+
+  while ((m = tag.exec(mathml))) {
+    out.push(mathml.slice(pos, m.index));
+    pos = tag.lastIndex;
+    const [, closing, name] = m;
+
+    if (closing) {
+      const frame = stack.pop();
+      out.push(m[0]);
+      if (frame?.applyAfter) out.push(APPLY_FUNCTION);
+      continue;
+    }
+
+    // <mo>name</mo> with an all-letter body: a function name as pandoc writes it.
+    const body = /^([^<]*)<\/mo>/.exec(mathml.slice(pos));
+    if (name === "mo" && body && FUNCTION_NAME.test(body[1].trim()) && !NOT_A_FUNCTION.has(body[1].trim())) {
+      const text = body[1].trim();
+      pos += body[0].length;
+      tag.lastIndex = pos; // the </mo> was consumed by hand
+      const parent = stack[stack.length - 1];
+      if (firstChild() && parent && LIMIT_BASE.has(parent.name)) {
+        // keep the operator (it needs limits under/over it), zero its right space, apply after
+        const attrs = m[3].replace(/\srspace="[^"]*"/, "");
+        out.push(`<mo${attrs} rspace="0">${text}</mo>`);
+        parent.children++;
+        parent.applyAfter = true;
+      } else {
+        out.push(`<mi>${text}</mi>`, APPLY_FUNCTION);
+        if (parent) parent.children++;
+      }
+      continue;
+    }
+
+    out.push(m[0]);
+    if (stack.length) stack[stack.length - 1].children++;
+    if (!m[0].endsWith("/>")) stack.push({ name, children: 0, applyAfter: false });
+  }
+  out.push(mathml.slice(pos));
+  return out.join("");
+}
+
 function renderOne(mathml) {
+  mathml = normalizeFunctionNames(mathml);
   const hash = crypto.createHash("sha256").update(mathml).digest("hex").slice(0, 16);
   if (!svgByHash.has(hash)) {
     const r = renderer.render(mathml, false);
