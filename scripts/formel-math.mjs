@@ -78,7 +78,33 @@ const FUNCTION_NAME = /^[A-Za-z]{2,}$/;
 const NOT_A_FUNCTION = new Set(["mod", "bmod", "pmod"]);
 const LIMIT_BASE = new Set(["munder", "mover", "munderover"]);
 const ROW_LIKE = new Set(["mrow", "mstyle", "maction", "mtd", "mphantom", "mpadded"]);
-const APPLY_FUNCTION = "<mo>&#x2061;</mo>";
+
+// A node whose text is U+2061 FUNCTION APPLICATION (pandoc 3.10 writes it as `&#8289;`).
+const decode = (text) =>
+  text.trim()
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(+dec));
+const isApplyNode = (node) =>
+  node && node.name === "mo" && !node.children.some((c) => !c.text) &&
+  decode(node.children.map((c) => c.text).join("")) === "\u2061";
+
+// The printed thesis puts 5/18em between \ln and its argument (measured on the PDF: 3.0pt at a
+// 10.91pt font). TeX's table says 3/18em for an operator followed by an Ord/Inner atom, so this is
+// a deliberate match to the book; before an opening fence TeX has no space at all and neither do we.
+const FUNCTION_SPACE = "0.2778em";
+const FENCES = new Set(["(", "[", "{", "\u27e8", "|", "\u2016", "\u2308", "\u230a", "\u27e6"]);
+const WRAPPERS = new Set(["mrow", "mstyle", "mpadded", "mphantom", "semantics", "maction", "mtd"]);
+
+function startsWithFence(node) {
+  if (!node) return false;
+  if (node.name === "mo") return FENCES.has(decode(node.children.map((c) => c.text ?? "").join("")));
+  if (!WRAPPERS.has(node.name)) return false;
+  return startsWithFence(node.children.find((c) => !c.text));
+}
+
+const applyOperator = (next) =>
+  startsWithFence(next) ? '<mo rspace="0">&#x2061;</mo>'
+    : `<mo lspace="0" rspace="${FUNCTION_SPACE}">&#x2061;</mo>`;
 
 const TAGS = /<(\/?)([A-Za-z][\w:.-]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
 
@@ -123,9 +149,21 @@ function rewrite(node) {
 
   const out = [];
   let pending = false;
-  const firstElement = (node.children.find((c) => !c.text) ?? {});
-  for (const child of node.children) {
+  const children = node.children;
+  const firstElement = children.find((c) => !c.text) ?? {};
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
     if (child.text !== undefined) { out.push(child.text); continue; }
+    const nextElement = children.slice(i + 1).find((c) => !c.text);
+
+    // pandoc wraps "name + U+2061" in its own <mrow>, which leaves the operator at the end of a
+    // row where it does nothing. Keep it only when an argument follows in the same row, otherwise
+    // hand it to the enclosing row so it lands next to the argument.
+    if (isApplyNode(child)) {
+      if (nextElement) out.push(applyOperator(nextElement));
+      else pending = true;
+      continue;
+    }
 
     const name = functionName(child);
     if (name && LIMIT_BASE.has(node.name) && child === firstElement) {
@@ -136,8 +174,8 @@ function rewrite(node) {
     }
     if (name) {
       out.push(`<mi>${name}</mi>`);
-      const more = node.children.slice(node.children.indexOf(child) + 1).some((c) => !c.text);
-      if (more && ROW_LIKE.has(node.name)) out.push(APPLY_FUNCTION);
+      if (isApplyNode(nextElement)) continue; // pandoc already put the operator there
+      if (nextElement && ROW_LIKE.has(node.name)) out.push(applyOperator(nextElement));
       else pending = true;
       continue;
     }
@@ -145,7 +183,7 @@ function rewrite(node) {
     const sub = rewrite(child);
     out.push(sub.xml);
     if (sub.pending) {
-      if (ROW_LIKE.has(node.name)) out.push(APPLY_FUNCTION);
+      if (ROW_LIKE.has(node.name) && nextElement) out.push(applyOperator(nextElement));
       else pending = true;
     }
   }
