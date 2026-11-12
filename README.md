@@ -62,6 +62,10 @@ BibTeX:
 }
 ```
 
+## Building
+
+The site is built with [Quarto](https://quarto.org/) (`quarto render`) and deployed by the GitHub Actions workflow in `.github/workflows/build-and-deploy.yml`. After rendering, `scripts/formel-math.mjs` replaces every MathML equation with an SVG rendered by [formel](https://github.com/manuel-rhdt/formel), written once per distinct equation to `_book/math/`. The equations are therefore vector outlines and do not depend on the math fonts installed on the reader's machine; the trade-off is that they are no longer selectable text (the speech label formel puts in each SVG is used as the image's `alt` text). The formel build is pinned in `.github/formel-checksums.txt`.
+
 ## License
 
 This work is licensed under a [Creative Commons Attribution 4.0 International License (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
