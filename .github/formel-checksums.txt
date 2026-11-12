@@ -1,0 +1,11 @@
+# Pinned inputs for scripts/formel-math.mjs, fetched by .github/workflows/build-and-deploy.yml
+# from the formel demo site. Checked with `sha256sum -c`.
+#
+# To pick up a newer formel build: download the three files, replace them, and regenerate this
+# file with
+#   sha256sum .formel/pkg/formel_wasm.js .formel/pkg/formel_wasm_bg.wasm \
+#             .formel/fonts/lisnoti-regular.ttf > .github/formel-checksums.txt
+# The Actions cache is keyed on this file, so a new hash also refetches.
+4877f5cbd2a806574b1b139320d6f532ae95781dbeb8f0dda70193f326f4e741  .formel/pkg/formel_wasm.js
+a838e4b2ffde17e728cb3645dece6227f48d08c6d80461634bf1c7d133384a89  .formel/pkg/formel_wasm_bg.wasm
+a290e0ac9f22a5cfcab14740b63e2dc8abe5e35917f2d103217c3bae37409af1  .formel/fonts/lisnoti-regular.ttf

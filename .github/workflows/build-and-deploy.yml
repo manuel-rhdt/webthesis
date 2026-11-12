@@ -30,6 +30,31 @@ jobs:
       - name: Render website with Quarto
         run: quarto render
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # The HTML is built with `html-math-method: mathml`; formel then converts every equation to
+      # an SVG so the output does not depend on the reader's math fonts. Pinned in
+      # .github/formel-checksums.txt — bump that file to move to a newer formel build.
+      - name: Cache formel wasm and math font
+        uses: actions/cache@v4
+        with:
+          path: .formel
+          key: formel-${{ hashFiles('.github/formel-checksums.txt') }}
+
+      - name: Fetch formel
+        run: |
+          mkdir -p .formel/pkg .formel/fonts
+          [ -s .formel/pkg/formel_wasm.js ] || curl -fsSL -o .formel/pkg/formel_wasm.js https://manuel-rhdt.github.io/formel/pkg/formel_wasm.js
+          [ -s .formel/pkg/formel_wasm_bg.wasm ] || curl -fsSL -o .formel/pkg/formel_wasm_bg.wasm https://manuel-rhdt.github.io/formel/pkg/formel_wasm_bg.wasm
+          [ -s .formel/fonts/lisnoti-regular.ttf ] || curl -fsSL -o .formel/fonts/lisnoti-regular.ttf https://manuel-rhdt.github.io/formel/fonts/lisnoti-regular.ttf
+          sha256sum -c .github/formel-checksums.txt
+
+      - name: Render equations as SVG
+        run: node scripts/formel-math.mjs _book .formel
+
       - name: Cache PDF thesis
         id: cache-pdf
         uses: actions/cache@v4

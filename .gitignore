@@ -16,3 +16,6 @@ _book
 /about-the-author.md
 /.quarto/
 **/*.quarto_ipynb
+
+# formel wasm + math font fetched by the build
+/.formel/
