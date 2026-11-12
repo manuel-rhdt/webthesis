@@ -5,8 +5,8 @@
 // Usage: node scripts/formel-math.mjs <book-dir> <formel-dir>
 //
 // <formel-dir> must contain pkg/formel_wasm.js, pkg/formel_wasm_bg.wasm and a font with a
-// MATH table (fonts/newcomputermodern-math.otf). The CI workflow downloads those and checks
-// them against .github/formel-checksums.txt.
+// MATH table (fonts/lisnoti-regular.ttf, the sans maths face that matches the Noto Sans body).
+// The CI workflow downloads those and checks them against .github/formel-checksums.txt.
 //
 // The book is rendered with `html-math-method: mathml`, so the input is pandoc's MathML.
 // Each <math> is turned into <img src="…/math/<hash>.svg"> sized in em, with the speech text
@@ -25,7 +25,7 @@ if (!bookDir || !formelDir) {
 }
 
 const pkgDir = path.join(formelDir, "pkg");
-const fontFile = path.join(formelDir, "fonts", "newcomputermodern-math.otf");
+const fontFile = path.join(formelDir, "fonts", "lisnoti-regular.ttf");
 const mathDir = path.join(bookDir, "math");
 
 const { initSync, MathRenderer } = await import(pathToFileURL(path.join(pkgDir, "formel_wasm.js")));

@@ -4,8 +4,8 @@
 # To pick up a newer formel build: download the three files, replace them, and regenerate this
 # file with
 #   sha256sum .formel/pkg/formel_wasm.js .formel/pkg/formel_wasm_bg.wasm \
-#             .formel/fonts/newcomputermodern-math.otf > .github/formel-checksums.txt
+#             .formel/fonts/lisnoti-regular.ttf > .github/formel-checksums.txt
 # The Actions cache is keyed on this file, so a new hash also refetches.
 4877f5cbd2a806574b1b139320d6f532ae95781dbeb8f0dda70193f326f4e741  .formel/pkg/formel_wasm.js
 1f979a8eeaf45398eb8c16cd1e3667e6aaa71d326153ae996ec5601f658f55fe  .formel/pkg/formel_wasm_bg.wasm
-2ea09ebc9167b1e1a66f31390dc917f2d4004ecfca72d51b28010e4ad6becd95  .formel/fonts/newcomputermodern-math.otf
+a290e0ac9f22a5cfcab14740b63e2dc8abe5e35917f2d103217c3bae37409af1  .formel/fonts/lisnoti-regular.ttf

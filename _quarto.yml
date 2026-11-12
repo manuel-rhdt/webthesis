@@ -1,5 +1,7 @@
 project:
   type: book
+  resources:
+    - theme/fonts/*.woff2
 
 book:
   title: "Quantifying the Flow of Information"
@@ -33,6 +35,7 @@ format:
     theme:
       - cosmo
       - brand
+    css: theme/fonts.css
     html-math-method: mathml
 
 filters:

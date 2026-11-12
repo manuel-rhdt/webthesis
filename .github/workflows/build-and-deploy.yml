@@ -49,7 +49,7 @@ jobs:
           mkdir -p .formel/pkg .formel/fonts
           [ -s .formel/pkg/formel_wasm.js ] || curl -fsSL -o .formel/pkg/formel_wasm.js https://manuel-rhdt.github.io/formel/pkg/formel_wasm.js
           [ -s .formel/pkg/formel_wasm_bg.wasm ] || curl -fsSL -o .formel/pkg/formel_wasm_bg.wasm https://manuel-rhdt.github.io/formel/pkg/formel_wasm_bg.wasm
-          [ -s .formel/fonts/newcomputermodern-math.otf ] || curl -fsSL -o .formel/fonts/newcomputermodern-math.otf https://manuel-rhdt.github.io/formel/fonts/newcomputermodern-math.otf
+          [ -s .formel/fonts/lisnoti-regular.ttf ] || curl -fsSL -o .formel/fonts/lisnoti-regular.ttf https://manuel-rhdt.github.io/formel/fonts/lisnoti-regular.ttf
           sha256sum -c .github/formel-checksums.txt
 
       - name: Render equations as SVG
