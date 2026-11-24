@@ -9,9 +9,14 @@
 // The CI workflow downloads those and checks them against .github/formel-checksums.txt.
 //
 // The book is rendered with `html-math-method: mathml`, so the input is pandoc's MathML.
-// Each <math> is turned into <img src="…/math/<hash>.svg"> sized in em, with the speech text
-// formel puts in the SVG's <title> as alt text. Equation anchors (<span id="eq-…">) are
-// untouched, but the equations are no longer selectable text.
+// Each <math> is turned into an inline <svg> that <use>s …/math/<hash>.svg#formel, sized in em,
+// with the speech text formel puts in the SVG's <title> as its accessible name. Equation anchors
+// (<span id="eq-…">) are untouched, but the equations are no longer selectable text.
+//
+// formel draws everything in black; the stored SVGs use `currentColor` instead. An SVG loaded
+// through <img> cannot see the page's text colour (currentColor would resolve to black there), so
+// the pages reference the file with <use>, which inherits `color` from the surrounding text. That
+// needs the pages to be served over http(s), as on GitHub Pages — not opened from file://.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -190,8 +195,13 @@ function renderOne(mathml) {
   if (!svgByHash.has(hash)) {
     const r = renderer.render(mathml, false);
     const alt = (r.svg.match(/<title>([\s\S]*?)<\/title>/) || [, ""])[1];
-    const svg = r.svg;
+    const svg = r.svg
+      .replace(/(fill|stroke)="black"/g, '$1="currentColor"')
+      .replace(/^<svg\b/, '<svg id="formel"');
+    const viewBox = (svg.match(/viewBox="([^"]*)"/) || [, null])[1];
+    if (!viewBox || svg.includes("black")) throw new Error("unexpected SVG from formel");
     const box = {
+      viewBox,
       height: num(r.height / upm),
       width: num(r.width / upm),
       depth: num((r.height - r.baseline) / upm),
@@ -229,11 +239,13 @@ for (const page of pages) {
     const src = `${rel}/${box.hash}.svg`;
     // Inline math sits on the text baseline; display math is a centred block. The SVG keeps its
     // intrinsic aspect ratio, so width/height scale together when the column is narrow.
+    const [, , vbW, vbH] = box.viewBox.split(/\s+/).map(Number);
     const style = DISPLAY_RE.test(mathml)
       ? `display:block;margin:0.7em auto;width:${box.width}em;max-width:100%;height:auto`
-      : `height:${box.height}em;width:auto;vertical-align:-${box.depth}em`;
+      : `height:${box.height}em;width:${num(box.height * vbW / vbH)}em;vertical-align:-${box.depth}em`;
     // No loading="lazy": the equations are inline content, so a late load would shift the text.
-    return `<img class="formel-math" src="${src}" alt="${box.alt}" style="${style}" decoding="async">`;
+    return `<svg class="formel-math" role="img" aria-label="${box.alt}" viewBox="${box.viewBox}" style="${style}">` +
+      `<use href="${src}#formel"/></svg>`;
   });
 
   if (changed) {

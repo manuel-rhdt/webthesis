@@ -1,0 +1,4 @@
+# Pinned formel commit built by .github/workflows/build-and-deploy.yml for scripts/formel-math.mjs.
+# To move to a newer formel: replace the SHA below with a commit of manuel-rhdt/formel.
+# The Actions cache is keyed on this file, so a new SHA also rebuilds.
+d692276686999cfc3f3b90d5eba5ec1b7a0f5669
