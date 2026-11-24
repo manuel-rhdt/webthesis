@@ -189,8 +189,16 @@ function normalizeFunctionSpacing(mathml) {
   return serialize(root);
 }
 
+// \mathcal is `mathvariant="script"`. The default script in Lisnoti is a swashy chancery hand that
+// clashes with the sans body text; its `ss01` stylistic set is a plain roundhand. Only script
+// letters get the feature, so nothing else in the maths changes.
+const SCRIPT_FEATURES = "font-feature-settings: 'ss01'";
+const useRoundhandScript = (mathml) =>
+  mathml.replace(/<mi\b([^>]*\bmathvariant="(?:bold-)?script"[^>]*)>/g, (tag, attrs) =>
+    /\bstyle=/.test(attrs) ? tag : `<mi${attrs} style="${SCRIPT_FEATURES}">`);
+
 function renderOne(mathml) {
-  mathml = normalizeFunctionSpacing(mathml);
+  mathml = useRoundhandScript(normalizeFunctionSpacing(mathml));
   const hash = crypto.createHash("sha256").update(fontId).update(mathml).digest("hex").slice(0, 16);
   if (!svgByHash.has(hash)) {
     const r = renderer.render(mathml, false);
