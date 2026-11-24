@@ -118,6 +118,13 @@ function parseMathML(xml) {
   return root;
 }
 
+const setAttr = (node, name, value) => {
+  const pattern = new RegExp(`\\s${name}="[^"]*"`);
+  node.attrs = pattern.test(node.attrs)
+    ? node.attrs.replace(pattern, ` ${name}="${value}"`)
+    : `${node.attrs} ${name}="${value}"`;
+};
+
 const serialize = (node) =>
   node.text !== undefined ? node.text
     : node.drop ? ""
@@ -171,13 +178,6 @@ function normalizeFunctionSpacing(mathml) {
     parent.set(node, to);
   };
 
-  const setAttr = (node, name, value) => {
-    const pattern = new RegExp(`\\s${name}="[^"]*"`);
-    node.attrs = pattern.test(node.attrs)
-      ? node.attrs.replace(pattern, ` ${name}="${value}"`)
-      : `${node.attrs} ${name}="${value}"`;
-  };
-
   for (const node of nodes) {
     if (!isApplyNode(node)) continue;
     const { next, climbed } = nextLaidOut(node);
@@ -186,6 +186,57 @@ function normalizeFunctionSpacing(mathml) {
     setAttr(node, "rspace", startsWithFence(next) ? "0" : FUNCTION_SPACE);
   }
 
+  return serialize(root);
+}
+
+// pandoc writes `\hat{f}` as `<mover><mi>f</mi><mo accent="true">&#770;</mo></mover>`: `accent` sits
+// on the operator, as in MathML 3. MathML Core, which formel follows, reads it from the `<mover>`
+// only, so the hat was laid out as an ordinary script: at script size, centred on the base's
+// advance with a large gap, and (the combining circumflex being stretchy) stretched to the width
+// of the base, which for a letter like f gave a wide flat hat that is not over the glyph. TeX's
+// `\hat` is a fixed accent that is placed by the base's top accent attachment at full size, and
+// formel draws that when the `<mover>` is an accent and the operator is `stretchy="false"` (the
+// form of formel's TeX oracle, tests/tex_oracle/mathml.tsv).
+//
+// pandoc gives `\hat` and `\widehat` (and `\tilde`/`\widetilde`) the same MathML, so the accent is
+// made fixed unless the TeX of the equation (its annotation) asks for a wide one. Then only the
+// `accent` attribute is moved and the accent stretches as before. The spacing form of each mark is
+// used, as in the oracle; formel swaps it for the combining form that is designed for placing over
+// a base. pandoc's U+203E (`\bar`) becomes the macron, and `\vec` is an arrow that formel maps to
+// the combining arrow.
+const WIDE_ACCENT_TEX =
+  /\\(?:wide(?:hat|tilde|check)|overline|underline|over(?:left|right|leftright)arrow|under(?:left|right|leftright)arrow|overbrace|underbrace)\b/;
+const SPACING_ACCENT = new Map([
+  ["̀", "`"], ["́", "´"], ["̂", "ˆ"], ["̃", "˜"],
+  ["̄", "¯"], ["̆", "˘"], ["̇", "˙"], ["̈", "¨"],
+  ["̊", "˚"], ["̌", "ˇ"], ["‾", "¯"],
+]);
+
+function normalizeAccents(mathml) {
+  if (!/\saccent="true"/.test(mathml)) return mathml;
+  const tex = (mathml.match(/<annotation\b[^>]*application\/x-tex[^>]*>([\s\S]*?)<\/annotation>/) || [, ""])[1];
+  const fixed = !WIDE_ACCENT_TEX.test(tex);
+  const root = parseMathML(mathml);
+  const visit = (node) => {
+    if (node.text !== undefined) return;
+    const kids = node.children.filter((c) => c.text === undefined);
+    const over = node.name === "mover";
+    if ((over || node.name === "munder") && kids.length === 2) {
+      const mark = kids[1];
+      if (mark.name === "mo" && /\saccent="true"/.test(mark.attrs)) {
+        setAttr(node, over ? "accent" : "accentunder", "true");
+        if (fixed) {
+          setAttr(mark, "stretchy", "false");
+          if (mark.children.length === 1 && mark.children[0].text !== undefined) {
+            const text = decode(mark.children[0].text);
+            if (SPACING_ACCENT.has(text)) mark.children[0].text = SPACING_ACCENT.get(text);
+          }
+        }
+      }
+    }
+    kids.forEach(visit);
+  };
+  visit(root);
   return serialize(root);
 }
 
@@ -198,7 +249,7 @@ const useRoundhandScript = (mathml) =>
     /\bstyle=/.test(attrs) ? tag : `<mi${attrs} style="${SCRIPT_FEATURES}">`);
 
 function renderOne(mathml) {
-  mathml = useRoundhandScript(normalizeFunctionSpacing(mathml));
+  mathml = useRoundhandScript(normalizeAccents(normalizeFunctionSpacing(mathml)));
   const hash = crypto.createHash("sha256").update(fontId).update(mathml).digest("hex").slice(0, 16);
   if (!svgByHash.has(hash)) {
     const r = renderer.render(mathml, false);
