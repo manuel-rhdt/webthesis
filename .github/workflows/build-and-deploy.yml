@@ -36,21 +36,33 @@ jobs:
           node-version: 20
 
       # The HTML is built with `html-math-method: mathml`; formel then converts every equation to
-      # an SVG so the output does not depend on the reader's math fonts. Pinned in
-      # .github/formel-checksums.txt — bump that file to move to a newer formel build.
+      # an SVG (drawn in currentColor) so the output does not depend on the reader's math fonts.
+      # formel is built from the commit pinned in .github/formel-version.txt — bump that file to
+      # move to a newer formel.
+      - name: Read formel version
+        id: formel
+        run: echo "sha=$(grep -v '^#' .github/formel-version.txt | tr -d '[:space:]')" >> "$GITHUB_OUTPUT"
+
       - name: Cache formel wasm and math font
+        id: formel-cache
         uses: actions/cache@v4
         with:
           path: .formel
-          key: formel-${{ hashFiles('.github/formel-checksums.txt') }}
+          key: formel-${{ steps.formel.outputs.sha }}
 
-      - name: Fetch formel
+      - name: Build formel
+        if: steps.formel-cache.outputs.cache-hit != 'true'
         run: |
-          mkdir -p .formel/pkg .formel/fonts
-          [ -s .formel/pkg/formel_wasm.js ] || curl -fsSL -o .formel/pkg/formel_wasm.js https://manuel-rhdt.github.io/formel/pkg/formel_wasm.js
-          [ -s .formel/pkg/formel_wasm_bg.wasm ] || curl -fsSL -o .formel/pkg/formel_wasm_bg.wasm https://manuel-rhdt.github.io/formel/pkg/formel_wasm_bg.wasm
-          [ -s .formel/fonts/lisnoti-regular.ttf ] || curl -fsSL -o .formel/fonts/lisnoti-regular.ttf https://manuel-rhdt.github.io/formel/fonts/lisnoti-regular.ttf
-          sha256sum -c .github/formel-checksums.txt
+          rustup target add wasm32-unknown-unknown
+          cargo install wasm-bindgen-cli --version 0.2.100 --locked
+          git clone https://github.com/manuel-rhdt/formel formel-src
+          git -C formel-src checkout "${{ steps.formel.outputs.sha }}"
+          cd formel-src
+          cargo build -p formel-wasm --target wasm32-unknown-unknown --release
+          wasm-bindgen --target web --no-typescript --out-dir ../.formel/pkg \
+            target/wasm32-unknown-unknown/release/formel_wasm.wasm
+          mkdir -p ../.formel/fonts
+          cp web/fonts/lisnoti-regular.ttf ../.formel/fonts/
 
       - name: Render equations as SVG
         run: node scripts/formel-math.mjs _book .formel
