@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -31,7 +31,7 @@ jobs:
         run: quarto render
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 20
 
@@ -45,7 +45,7 @@ jobs:
 
       - name: Cache formel wasm and math font
         id: formel-cache
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .formel
           key: formel-${{ steps.formel.outputs.sha }}
@@ -69,7 +69,7 @@ jobs:
 
       - name: Cache PDF thesis
         id: cache-pdf
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.FILENAME }}
           key: pdf-${{ env.CHECKSUM }}
@@ -85,10 +85,10 @@ jobs:
             rm checksum.sha256
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: '_book'
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
