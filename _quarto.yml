@@ -18,6 +18,7 @@ book:
     - chapters/04-chemotaxis.md
     - chapters/05-gaussian.md
     - chapters/06-mlpws.md
+  appendices:
     - chapters/appendix.md
     - part: "Endmatter"
       chapters:

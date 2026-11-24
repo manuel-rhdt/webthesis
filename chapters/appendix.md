@@ -5,7 +5,7 @@ link-citations: true
 reference-section-title: References
 ---
 
-# Appendix: Notes on Gaussian Approximation {#sec-notes-gaussian}
+# Notes on Gaussian Approximation {#sec-notes-gaussian}
 
 Mathematically, computing the mutual information between trajectories in
 the Gaussian framework is relatively simple. From Shannon's formula for
