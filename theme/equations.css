@@ -1,0 +1,29 @@
+/* Equation numbers: flush right in the content box.
+ *
+ * eq-number.lua splits Quarto's "(2.1)" off the formula, so a numbered display equation is
+ *   <span id="eq-…" class="eq-display"> <formula, display:block, centred> <span class="eq-number"> </span>
+ * The formula stays centred in the content box; the number is taken out of the flow and pinned to
+ * the right edge, vertically centred on the formula. */
+
+.eq-display {
+  display: block;
+  position: relative;
+}
+
+.eq-display > .eq-number {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* On a phone the formula can be as wide as the box, and the number would sit on top of it:
+ * put it on its own line below instead. */
+@media (max-width: 575.98px) {
+  .eq-display > .eq-number {
+    position: static;
+    display: block;
+    text-align: right;
+    transform: none;
+  }
+}

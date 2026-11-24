@@ -18,6 +18,7 @@ book:
     - chapters/04-chemotaxis.md
     - chapters/05-gaussian.md
     - chapters/06-mlpws.md
+  appendices:
     - chapters/appendix.md
     - part: "Endmatter"
       chapters:
@@ -35,10 +36,13 @@ format:
     theme:
       - cosmo
       - brand
-    css: theme/fonts.css
+    css:
+      - theme/fonts.css
+      - theme/equations.css
     html-math-method: mathml
 
 filters:
   - auto-eq.lua
   - quarto
+  - eq-number.lua
   - author-numeric.lua
