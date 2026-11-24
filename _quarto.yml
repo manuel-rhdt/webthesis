@@ -35,10 +35,13 @@ format:
     theme:
       - cosmo
       - brand
-    css: theme/fonts.css
+    css:
+      - theme/fonts.css
+      - theme/equations.css
     html-math-method: mathml
 
 filters:
   - auto-eq.lua
   - quarto
+  - eq-number.lua
   - author-numeric.lua
