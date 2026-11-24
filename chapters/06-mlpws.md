@@ -758,8 +758,7 @@ applying Jensen's inequality to the last line of
 
 $$\ln \mathrm{P}(x_{1:n}) \geq
 \mathbb{E}_{q(s_{1:n}|x_{1:n})}  \left[
-\ln\frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] = \mathcal{L}_\text{ELBO}
-\label{eq-ml_elbo}$$ {#eq-ml_elbo}
+\ln\frac{\mathrm{P}(s_{1:n})\mathrm{P}(x_{1:n}|s_{1:n})}{q(s_{1:n}|x_{1:n})} \right] = \mathcal{L}_\text{ELBO}$$ {#eq-ml_elbo}
 
 It is easy to show that maximizing the ELBO is equivalent to minimizing
 the KL-divergence between the variational distribution and the true
@@ -848,7 +847,7 @@ $$\langle S_{\tau} S_{\tau + t} \rangle = \frac{\phi^{|t|}}{1 - \phi^2} \,.$$
 
 The output $X_t$ is governed by the equation
 
-$$X_t = \sigma(\gamma S_t) + \rho X_{t-1} + \vartheta \eta_t \label{eq-nonlinear_model}$$ {#eq-nonlinear_model}
+$$X_t = \sigma(\gamma S_t) + \rho X_{t-1} + \vartheta \eta_t$$ {#eq-nonlinear_model}
 
 where $\eta_t$ are iid Gaussian random numbers, $\gamma$, $\rho$ and
 $\vartheta$ are positive real parameters, and

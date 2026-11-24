@@ -324,13 +324,13 @@ trajectories segment by segment:
         of each new segment. This Boltzmann weight of a segment from
         $\tau_{i-1}$ to $\tau_i$ can be expressed as $$U^k_i =
                 -\delta_{1i} \ln\mathrm{P}(x_0|s_0) -\int^{\tau_i}_{\tau_{i-1}} dt\ \mathcal{L}_t[\mathbfit{s}^k_{[i-1,i]}, \mathbfit{x}_{[i-1,i]}]\,,
-                \label{eq-weight_segment}$$ see [@eq-boltzmann-weight],
+                $$ {#eq-weight_segment} see [@eq-boltzmann-weight],
         and is therefore straightforward to compute from the master
         equation.
 
     3.  Sample $M$ times from the distribution
         $$p^\text{select}_i(k) = \frac{e^{-U^k_i}}{w_i}
-                \label{eq-index-prob}$$ where the Rosenbluth weight
+                $$ {#eq-index-prob} where the Rosenbluth weight
         $w_i$ is defined as $$w_i = \sum^M_{k=1} e^{-U^k_i}\,.$$ This
         sampling procedure yields $M$ randomly drawn indices
         $\ell^1_i, \ldots, \ell^M_i$. Each $\ell^k_i$ is an index that
@@ -1020,8 +1020,7 @@ reaction motif consisting of four reactions
 $$\text{0  →  S}, \quad
     \text{S  →  0}, \quad
     \text{S  →  S + X}, \quad
-    \text{X  →  0}
-    \label{eq-reaction-scheme}$$ {#eq-reaction-scheme}
+    \text{X  →  0}$$ {#eq-reaction-scheme}
 
 with input $S$ and output $X$. This reaction motif is a simple model for
 gene expression, where the rate of production of a protein $X$ is
@@ -1099,7 +1098,7 @@ functions for $t<0$ can be obtained by applying the symmetry relation
 $C_{AB}(t) = C_{BA}(-t)$.
 
 Now, we can directly compute the mutual information from the
-covariances. Using [@eq-c_ss; @eq-c_sx; @eq-c_xs; @eq-c_xx] we obtain
+covariances. Using [@eq-c_ss] we obtain
 the matrix elements of the joint covariance matrix $\Sigma$ defined in
 [@eq-cov_z] and then the mutual information is given by the expression
 

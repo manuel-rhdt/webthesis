@@ -262,7 +262,7 @@ directly measure two-point correlation functions from data or
 simulations, and use these to retrieve the power spectra in
 [@eq-gaussdef]. The second is to use @2007.vanKampen's linear noise
 approximation (LNA) and approximate the dynamics of the system to first
-order around a fixed point [@2007.vanKampen], see also [@app:gauss]. In
+order around a fixed point [@2007.vanKampen], see also [@sec-app-gauss]. In
 this work, we will analyze both of these methods.
 
 ### Path Weight Sampling for diffusive systems
@@ -402,7 +402,7 @@ $$\begin{aligned}
 where $s$ and $x$ are continuous variables representing the copy numbers
 of $S$ and $X$, and $\eta_s, \eta_x$ are independent delta-correlated
 white noise terms with $\langle \eta^2_s \rangle = 2\lambda\bar{s}$ and
-$\langle \eta^2_x \rangle = 2\mu\bar{x}$, see [@app:gauss].
+$\langle \eta^2_x \rangle = 2\mu\bar{x}$, see [@sec-app-gauss].
 
 The Gaussian approximation of the mutual information rate is derived
 from the LNA description. Using this framework, @2009.Tostevin computed
@@ -561,7 +561,7 @@ the stochastic dynamics of this nonlinear system which result in
 different information estimates.
 
 The first approach is to linearize [@eq-nonlinear_x] analytically via
-the LNA as shown in [@app:gauss:lna]. Within this approach we can obtain
+the LNA as shown in [@sec-app-gauss-lna]. Within this approach we can obtain
 an analytical expression for the information rate (see
 [@sec-gaussian-info-rate]),
 
@@ -759,7 +759,7 @@ input copy number.
 
 ## Supplementary Information
 
-### Gaussian approximation {#app:gauss}
+### Gaussian approximation {#sec-app-gauss}
 
 Here we derive the analytical expressions for the Gaussian information
 rate of the networks considered in the main text. To this end we first
@@ -803,7 +803,7 @@ $$\label{eq-specss}
     &= \frac{\langle \eta_s^2 \rangle}{\omega^2+\lambda^2}=\frac{2 \lambda \bar s}{\omega^2+\lambda^2}.
 \end{aligned}$$ {#eq-specss}
 
-#### Linear approximation {#app:gauss:lna}
+#### Linear approximation {#sec-app-gauss-lna}
 
 We now consider the readout $X$, which is produced via a nonlinear
 activation function $a(s)$:
@@ -1025,7 +1025,7 @@ timescales, system nonlinearity, and the LNA.
     recorded in the $X$ trajectories and thus different reactions
     modifying the same species can be distinguished. In contrast, in the
     continuous LNA description, all reactions that modify $X$ contribute
-    to the noise term $\eta_x(t)$ in [@eq-output-dynamics] but their
+    to the noise term $\eta_x(t)$ in [@eq-input-dynamics] but their
     contributions are lumped together and therefore cannot be
     distinguished from an observed $x(t)$-trajectory. Specifically, note
     that for the motif studied here, only the production reaction
